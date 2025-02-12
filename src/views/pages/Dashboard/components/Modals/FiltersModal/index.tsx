@@ -10,7 +10,11 @@ import { NotificationBadge } from '@/views/components/ui/notification-badge.tsx'
 interface FiltersModalProps {
   open: boolean;
   onClose?: () => void;
-  onApplyFilters(filters: { bankAccountId?: string | undefined; year: number }): void;
+  onApplyFilters(filters: {
+    bankAccountId?: string | undefined;
+    year: number;
+    isPaid?: boolean | undefined;
+  }): void;
   handleOpenFiltersModal: () => void;
 }
 
@@ -30,6 +34,8 @@ export function FiltersModal({
     countSelectedFilters,
     handleClearFilters,
     openNewAccountModal,
+    selectedType,
+    handleSelectTypeTransaction,
   } = useFiltersModal();
 
   return (
@@ -91,6 +97,48 @@ export function FiltersModal({
         </div>
       </div>
 
+      <div>
+        <span className="text-lg trackinh-[-1px] font-bold text-gray-800">Tipo</span>
+
+        <div className="mt-2 flex gap-2 items-center justify-center">
+          <Button
+            variant="secondary"
+            type="button"
+            className={cn(
+              'rounded-2xl tet-gray-800 bg-transparent shadow-none font-normal',
+              selectedType === 'all' && '!bg-gray-200',
+            )}
+            onClick={() => handleSelectTypeTransaction('all')}
+          >
+            Todas
+          </Button>
+
+          <Button
+            variant="secondary"
+            type="button"
+            className={cn(
+              'rounded-2xl tet-gray-800 bg-transparent shadow-none font-normal',
+              selectedType === 'paid' && '!bg-gray-200',
+            )}
+            onClick={() => handleSelectTypeTransaction('paid')}
+          >
+            Pagas
+          </Button>
+
+          <Button
+            variant="secondary"
+            type="button"
+            className={cn(
+              'rounded-2xl tet-gray-800 bg-transparent shadow-none font-normal',
+              selectedType === 'unpaid' && '!bg-gray-200',
+            )}
+            onClick={() => handleSelectTypeTransaction('unpaid')}
+          >
+            Não pagas
+          </Button>
+        </div>
+      </div>
+
       <div className="mt-10 text-gray-800">
         <span className="text-lg trackinh-[-1px] font-bold ">Ano</span>
 
@@ -120,6 +168,7 @@ export function FiltersModal({
           onApplyFilters({
             bankAccountId: selectedBankAccountId || undefined,
             year: selectedYear,
+            isPaid: selectedType === 'paid' ? true : selectedType === 'all' ? undefined : false,
           });
           handleUpdateCountFilters();
         }}

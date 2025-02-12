@@ -107,7 +107,9 @@ export function Transactions() {
                   // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/interactive-supports-focus
                   <div
                     key={transaction.id}
-                    className="bg-white p-4 rounded-2xl flex items-center justify-between gap-4"
+                    className={cn(
+                      'bg-white p-4 rounded-2xl flex items-center justify-between gap-4',
+                    )}
                     role="button"
                     onClick={() => handleOpenEditModal(transaction)}
                   >

@@ -6,6 +6,7 @@ export function useFiltersModal() {
   const [selectedBankAccountId, setSelectedBankAccountId] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
   const [countSelectedFilters, setCountSelectedFilters] = useState<number>(0);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
 
   const { accounts } = useBankAccounts();
 
@@ -13,6 +14,10 @@ export function useFiltersModal() {
 
   function handleSelectBankAccount(bankAccountId: string) {
     setSelectedBankAccountId((prevState) => (prevState === bankAccountId ? null : bankAccountId));
+  }
+
+  function handleSelectTypeTransaction(type: string) {
+    setSelectedType((prevState) => (prevState === type ? null : type));
   }
 
   function handleChangeYear(step: number) {
@@ -31,6 +36,10 @@ export function useFiltersModal() {
         newState += 1;
       }
 
+      if (selectedType) {
+        newState += 1;
+      }
+
       return newState;
     });
   }
@@ -39,6 +48,7 @@ export function useFiltersModal() {
     setSelectedBankAccountId(null);
     setSelectedYear(new Date().getFullYear());
     setCountSelectedFilters(0);
+    setSelectedType(null);
   }
 
   return {
@@ -51,5 +61,7 @@ export function useFiltersModal() {
     countSelectedFilters,
     handleClearFilters,
     openNewAccountModal,
+    selectedType,
+    handleSelectTypeTransaction,
   };
 }
