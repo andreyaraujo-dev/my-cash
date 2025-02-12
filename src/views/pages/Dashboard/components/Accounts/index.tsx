@@ -66,7 +66,7 @@ export function Accounts() {
                 <button
                   type="button"
                   onClick={openNewAccountModal}
-                  className="h-52 border-2 border-dashed border-teal-600 rounded-2xl flex flex-col items-center justify-center gap-4 text-white"
+                  className="h-52 border-2 border-dashed border-blue-600 rounded-2xl flex flex-col items-center justify-center gap-4 text-white"
                 >
                   <div className="w-11 h-11 rounded-full border-2 border-dashed border-white flex items-center justify-center">
                     <PlusIcon className="w-6 h-6" />
