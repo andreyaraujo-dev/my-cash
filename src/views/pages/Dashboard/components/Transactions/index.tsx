@@ -36,7 +36,7 @@ export function Transactions() {
   } = useTransactionsController();
 
   return (
-    <div className="bg-gray-100 rounded-2xl w-full h-full p-4 md:px-10 md:pt-10 pb-2 flex flex-col">
+    <div className="border border-zinc-800 rounded-2xl w-full h-full p-4 md:px-10 md:pt-10 pb-2 flex flex-col">
       {isInitialLoading && (
         <div className="flex items-center justify-center h-full w-full">
           <Spinner className="w-10 h-10" />
@@ -89,7 +89,7 @@ export function Transactions() {
             {!hasTransactions && !isLoading && (
               <div className="flex flex-col items-center h-full justify-center">
                 <img src={emptyState} alt="empty state ilustration" />
-                <p className="text-gray-700">Não encontramos nenhuma transação!</p>
+                <p className="text-zinc-300">Não encontramos nenhuma transação!</p>
               </div>
             )}
 
@@ -108,7 +108,7 @@ export function Transactions() {
                   <div
                     key={transaction.id}
                     className={cn(
-                      'bg-white p-4 rounded-2xl flex items-center justify-between gap-4',
+                      'border border-zinc-800 p-4 rounded-2xl flex items-center justify-between gap-4',
                     )}
                     role="button"
                     onClick={() => handleOpenEditModal(transaction)}
@@ -117,10 +117,10 @@ export function Transactions() {
                       <CategoryIcon type={transaction.type} category={transaction.category?.icon} />
 
                       <div>
-                        <strong className="font-bold tracking-[-0.5px] block">
+                        <strong className="font-bold tracking-[-0.5px] block text-zinc-100">
                           {transaction.name}
                         </strong>
-                        <span className="text-sm text-gray-600">
+                        <span className="text-sm text-zinc-300">
                           {formatDate(new Date(transaction.date))}
                         </span>
                       </div>

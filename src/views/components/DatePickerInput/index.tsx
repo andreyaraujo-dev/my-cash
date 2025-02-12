@@ -25,18 +25,18 @@ export function DatePickerInput({ error, value, onChange, className }: DatePicke
       <Popover>
         <PopoverTrigger
           className={cn(
-            'bg-white rounded-lg w-full border pt-4 border-gray-500 px-3 h-[52px] text-gray-700 placeholder-shown:pt-0 focus:border-gray-800 transition-all outline-none text-left relative',
+            'rounded-lg w-full border pt-4 border-zinc-800 px-3 h-[52px] text-zinc-100 placeholder-shown:pt-0 focus:border-zinc-800 transition-all outline-none text-left relative',
             error && '!border-red-900',
             className,
           )}
         >
-          <span className="absolute text-gray-700 text-xs left-[13px] top-2 pointer-events-none">
+          <span className="absolute text-zinc-300 text-xs left-[13px] top-2 pointer-events-none">
             Data
           </span>
           <span>{formatDate(selectedDate)}</span>
         </PopoverTrigger>
 
-        <PopoverContent>
+        <PopoverContent className="border-zinc-800 w-max">
           <DatePicker value={selectedDate} onChange={handleChangeDate} />
         </PopoverContent>
       </Popover>

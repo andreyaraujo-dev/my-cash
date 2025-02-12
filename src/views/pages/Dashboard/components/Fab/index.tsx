@@ -19,14 +19,14 @@ export function Fab() {
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger
         className={cn(
-          'fixed z-[999] bottom-4 right-4 rounded-full text-white bg-teal-900 w-12 h-12 flex items-center justify-center transition-all outline-none',
+          'fixed z-[999] bottom-4 right-4 rounded-full text-zinc-800 bg-white w-12 h-12 flex items-center justify-center transition-all outline-none',
           open && 'rotate-45',
         )}
       >
         <PlusIcon className="w-6 h-6" />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="font-normal text-sm" align="end">
+      <DropdownMenuContent className="font-normal text-sm border" align="end">
         <DropdownMenuItem onSelect={() => openNewTransactionModal('EXPENSE')}>
           <span className="flex items-center justify-center gap-2">
             <CategoryIcon type="EXPENSE" />

@@ -63,20 +63,20 @@ export function ColorsDropdownInput({
           <button
             type="button"
             className={cn(
-              'bg-white rounded-lg w-full border border-gray-500 px-3 h-[52px] text-gray-700 placeholder-shown:pt-0 focus:border-gray-800 transition-all outline-none text-left relative',
+              'bg-transparent rounded-lg w-full border border-zinc-800 px-3 h-[52px] text-zinc-100 placeholder-shown:pt-0 focus:border-zinc-700 transition-all outline-none text-left relative',
               error && '!border-red-900',
               className,
             )}
           >
             Cor
-            <div className="text-gray-800 absolute right-3 top-1/2 -translate-y-1/2">
+            <div className="text-zinc-100 absolute right-3 top-1/2 -translate-y-1/2">
               {!selectedColor && <ChevronDownIcon className="h-4 w-4 opacity-50" />}
               {selectedColor && <ColorIcon color={selectedColor.color} bg={selectedColor.bg} />}
             </div>
           </button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="grid grid-cols-4">
+        <DropdownMenuContent className="grid grid-cols-4 border-zinc-800 w-48">
           {colors.map((color) => (
             <DropdownMenuItem key={color.color} onSelect={() => handleSelect(color)}>
               <ColorIcon color={color.color} bg={color.bg} />

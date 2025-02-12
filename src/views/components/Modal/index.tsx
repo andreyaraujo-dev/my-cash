@@ -15,8 +15,8 @@ export function Modal({ open, children, onClose, title, rightAction, trigger }: 
   return (
     <Dialog open={open} onOpenChange={onClose}>
       {trigger}
-      <DialogContent className="rounded-2xl max-w-[90%] md:max-w-[30%]">
-        <DialogHeader className="h-12 flex flex-row items-center justify-between text-gray-800">
+      <DialogContent className="rounded-2xl max-w-[90%] md:max-w-[30%] bg-zinc-950 border border-zinc-800">
+        <DialogHeader className="h-12 flex flex-row items-center justify-between text-zinc-300">
           <button
             type="button"
             className="w-12 h-12 flex items-center justify-center outline-none"

@@ -24,10 +24,10 @@ export function Accounts() {
   } = useAccountsController();
 
   return (
-    <div className="bg-teal-900 rounded-2xl w-full h-full px-4 py-8 md:p-10 flex flex-col">
+    <div className="bg-zinc-950 border border-zinc-800 rounded-2xl w-full h-full px-4 py-8 md:p-10 flex flex-col">
       {isLoading && (
         <div className="flex items-center justify-center h-full w-full">
-          <Spinner className="w-10 h-10 border-l-teal-950/50 border-r-teal-950/50 border-b-teal-950/50 border-t-white" />
+          <Spinner className="w-10 h-10" />
         </div>
       )}
 

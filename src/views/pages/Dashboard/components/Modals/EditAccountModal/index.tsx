@@ -8,7 +8,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/views/components/ui/form.tsx';
-import { InputCurrency } from '@/views/components/InputCurrency.tsx';
+import { Index } from '@/views/components/InputCurrency';
 import { Input } from '@/views/components/ui/input.tsx';
 import { Select } from '@/views/components/Select';
 import { ColorsDropdownInput } from '@/views/components/ColorsDropdownInput';
@@ -50,7 +50,7 @@ export function EditAccountModal() {
         <button
           type="button"
           onClick={handleOpenDeleteModal}
-          className="rounded-full hover:bg-red-50 w-max h-max flex items-center justify-center p-2 transition-colors"
+          className="rounded-full hover:bg-zinc-900 w-max h-max flex items-center justify-center p-2 transition-colors"
         >
           <TrashIcon className="w-6 h-6 text-red-900" />
         </button>
@@ -68,7 +68,7 @@ export function EditAccountModal() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <InputCurrency
+                      <Index
                         error={form.formState.errors.initialBalance?.message}
                         {...field}
                         value={field.value}

@@ -20,7 +20,7 @@ export const NotificationBadge = ({
       {showBadge && (
         <Badge
           className={cn(
-            'absolute top-0 right-0 rounded-full text-[8px] p-1 h-4 w-4 flex items-center justify-center hover:bg-teal-800 bg-teal-900',
+            'absolute top-0 right-0 rounded-full text-[8px] p-1 h-4 w-4 flex items-center justify-center hover:bg-blue-800 bg-blue-900',
             typeof label !== 'undefined' && ('' + label).length === 0
               ? 'translate-x-1 -translate-y-1'
               : 'translate-x-1.5 -translate-y-1.5',

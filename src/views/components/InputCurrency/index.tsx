@@ -10,13 +10,7 @@ interface InputCurrencyProps {
   onChange(value?: string): void;
 }
 
-export function InputCurrency({
-  error,
-  value,
-  onChange,
-  className,
-  defaultValue,
-}: InputCurrencyProps) {
+export function Index({ error, value, onChange, className, defaultValue }: InputCurrencyProps) {
   function handleTransform(value: string) {
     return value.length === 0 ? '0' : value;
   }
@@ -32,7 +26,7 @@ export function InputCurrency({
         onValueChange={(value) => onChange(value)}
         transformRawValue={handleTransform}
         className={cn(
-          'w-full text-gray-800 text-[32px] font-bold tracking-[-1px] outline-none',
+          'w-full text-zinc-100 bg-transparent text-[32px] font-bold tracking-[-1px] outline-none',
           error && 'text-red-900',
           className,
         )}
@@ -41,7 +35,7 @@ export function InputCurrency({
   );
 }
 
-InputCurrency.defaultProps = {
+Index.defaultProps = {
   value: null,
   defaultValue: null,
   error: '',

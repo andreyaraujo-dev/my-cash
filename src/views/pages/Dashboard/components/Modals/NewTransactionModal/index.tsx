@@ -6,7 +6,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/views/components/ui/form.tsx';
-import { InputCurrency } from '@/views/components/InputCurrency.tsx';
+import { Index } from '@/views/components/InputCurrency';
 import { Button } from '@/views/components/ui/button.tsx';
 import { Input } from '@/views/components/ui/input.tsx';
 import { Select } from '@/views/components/Select';
@@ -47,7 +47,7 @@ export function NewTransactionModal() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <InputCurrency
+                      <Index
                         error={form.formState.errors.value?.message}
                         {...field}
                         value={field.value}
