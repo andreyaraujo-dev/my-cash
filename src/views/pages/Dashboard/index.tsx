@@ -15,7 +15,7 @@ export function Dashboard() {
         {({ accountBeingEdited }) => (
           <div className="w-full h-full p-4 lg:px-8 lg:pt-6 lg:pb-8 flex flex-col gap-4">
             <header className="h-12 flex items-center justify-between">
-              <Logo className="h-6 text-teal-900" />
+              <Logo className="h-8" />
               <UserMenu />
             </header>
 
