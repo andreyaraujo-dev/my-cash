@@ -26,6 +26,7 @@ const schema = z.object({
   categoryId: z.string().nonempty('Informe a categoria'),
   bankAccountId: z.string().nonempty('Informe a conta'),
   date: z.date(),
+  isPaid: z.boolean().optional().default(false),
 });
 
 type FormData = z.infer<typeof schema>;

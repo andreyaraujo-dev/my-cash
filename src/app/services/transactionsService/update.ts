@@ -8,6 +8,7 @@ export interface UpdateTransactionParams {
   value: number;
   type: 'INCOME' | 'EXPENSE';
   date: string;
+  isPaid?: boolean;
 }
 
 export async function update({ id, ...params }: UpdateTransactionParams) {

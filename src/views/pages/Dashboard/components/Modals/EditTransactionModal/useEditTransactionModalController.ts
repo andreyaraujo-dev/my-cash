@@ -26,6 +26,7 @@ const schema = z.object({
   categoryId: z.string().nonempty('Informe a categoria'),
   bankAccountId: z.string().nonempty('Informe a conta'),
   date: z.date(),
+  isPaid: z.boolean().optional().default(false),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -43,6 +44,7 @@ export function useEditTransactionModalController(
       bankAccountId: transaction?.bankAccountId,
       categoryId: transaction?.categoryId,
       date: transaction ? new Date(transaction.date) : new Date(),
+      isPaid: transaction?.isPaid,
     },
   });
 

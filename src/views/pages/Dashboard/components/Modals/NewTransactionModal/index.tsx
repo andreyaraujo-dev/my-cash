@@ -4,6 +4,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/views/components/ui/form.tsx';
 import { Index } from '@/views/components/InputCurrency';
@@ -12,6 +13,7 @@ import { Input } from '@/views/components/ui/input.tsx';
 import { Select } from '@/views/components/Select';
 import { useNewTransactionModalController } from '@/views/pages/Dashboard/components/Modals/NewTransactionModal/useNewTransactionModalController.ts';
 import { DatePickerInput } from '@/views/components/DatePickerInput';
+import { Checkbox } from '@/views/components/ui/checkbox';
 
 export function NewTransactionModal() {
   const {
@@ -145,6 +147,25 @@ export function NewTransactionModal() {
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="isPaid"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className="mr-2"
+                    />
+                  </FormControl>
+                  <FormLabel className="text-zinc-100">
+                    Já foi {isExpense ? 'Pago?' : 'Recebido?'}
+                  </FormLabel>
                 </FormItem>
               )}
             />

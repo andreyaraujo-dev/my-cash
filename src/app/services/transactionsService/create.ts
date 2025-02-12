@@ -7,6 +7,7 @@ export interface CreateTransactionParams {
   value: number;
   type: 'INCOME' | 'EXPENSE';
   date: string;
+  isPaid?: boolean;
 }
 
 export async function create(params: CreateTransactionParams) {

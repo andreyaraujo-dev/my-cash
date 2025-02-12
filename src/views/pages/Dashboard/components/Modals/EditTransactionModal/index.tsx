@@ -4,6 +4,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/views/components/ui/form.tsx';
 import { Index } from '@/views/components/InputCurrency';
@@ -15,6 +16,7 @@ import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
 import { useEditTransactionModalController } from '@/views/pages/Dashboard/components/Modals/EditTransactionModal/useEditTransactionModalController.ts';
 import { TrashIcon } from 'lucide-react';
 import { Transaction } from '@/app/entities/Transaction.ts';
+import { Checkbox } from '@/views/components/ui/checkbox';
 
 interface EditTransactionModalProps {
   open: boolean;
@@ -175,6 +177,25 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
                     />
                   </FormControl>
                   <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="isPaid"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className="mr-2"
+                    />
+                  </FormControl>
+                  <FormLabel className="text-zinc-100">
+                    Já foi {isExpense ? 'Pago?' : 'Recebido?'}
+                  </FormLabel>
                 </FormItem>
               )}
             />
