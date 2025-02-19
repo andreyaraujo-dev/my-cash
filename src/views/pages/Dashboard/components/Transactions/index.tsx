@@ -109,6 +109,7 @@ export function Transactions() {
                     key={transaction.id}
                     className={cn(
                       'border border-zinc-800 p-4 rounded-2xl flex items-center justify-between gap-4',
+                      transaction.isPaid && 'bg-zinc-900 opacity-50',
                     )}
                     role="button"
                     onClick={() => handleOpenEditModal(transaction)}
@@ -117,7 +118,12 @@ export function Transactions() {
                       <CategoryIcon type={transaction.type} category={transaction.category?.icon} />
 
                       <div>
-                        <strong className="font-bold tracking-[-0.5px] block text-zinc-100">
+                        <strong
+                          className={cn(
+                            'font-bold tracking-[-0.5px] block text-zinc-100',
+                            transaction.isPaid && 'line-through',
+                          )}
+                        >
                           {transaction.name}
                         </strong>
                         <span className="text-sm text-zinc-300">

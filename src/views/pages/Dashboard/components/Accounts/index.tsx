@@ -9,6 +9,7 @@ import { formatCurrency } from '@/app/utils/formatCurrency.ts';
 import { cn } from '@/lib/utils.ts';
 import { Spinner } from '@/views/components/Loading/Spinner';
 import { PlusIcon } from 'lucide-react';
+import { InfoAccountsTooltip } from './InfoAccountsTooltip';
 
 export function Accounts() {
   const {
@@ -34,7 +35,10 @@ export function Accounts() {
       {!isLoading && (
         <>
           <div>
-            <span className="tracking-[-0.5px] text-white block">Saldo total</span>
+            <span className="tracking-[-0.5px] text-white block">
+              Saldo total
+              <InfoAccountsTooltip />
+            </span>
             <div className="flex items-center gap-2">
               <strong
                 className={cn(

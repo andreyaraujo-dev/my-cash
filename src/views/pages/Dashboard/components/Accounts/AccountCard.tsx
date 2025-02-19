@@ -3,6 +3,7 @@ import { BankAccountType } from '@/views/components/icons/BankAccountType';
 import { cn } from '@/lib/utils.ts';
 import { useDashboard } from '@/app/hooks/useDashboard.ts';
 import { BankAccount } from '@/app/entities/BankAccount.ts';
+import { InfoAccountsTooltip } from './InfoAccountsTooltip';
 
 interface AccountCardProps {
   data: BankAccount;
@@ -19,9 +20,13 @@ export function AccountCard({ data }: AccountCardProps) {
       role="button"
       onClick={() => openEditAccountModal(data)}
     >
-      <div>
-        <BankAccountType type={type} />
-        <span className="text-zinc-100 font-medium tracking-[-0.5px] mt-4 block">{name}</span>
+      <div className="flex justify-between items-start">
+        <div>
+          <BankAccountType type={type} />
+          <span className="text-zinc-100 font-medium tracking-[-0.5px] mt-4 block">{name}</span>
+        </div>
+
+        <InfoAccountsTooltip />
       </div>
 
       <div>
