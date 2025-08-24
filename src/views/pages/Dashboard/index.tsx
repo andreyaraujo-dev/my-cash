@@ -1,5 +1,3 @@
-import { Logo } from '../../components/Logo';
-import { UserMenu } from '../../components/UserMenu';
 import { Accounts } from './components/Accounts';
 import { Fab } from './components/Fab';
 import { Transactions } from './components/Transactions';
@@ -14,11 +12,6 @@ export function Dashboard() {
       <DashboardContext.Consumer>
         {({ accountBeingEdited }) => (
           <div className="w-full h-full flex flex-col gap-4">
-            <header className="h-12 flex items-center justify-between">
-              <Logo className="h-8" />
-              <UserMenu />
-            </header>
-
             <main className="flex-1 flex flex-col lg:flex-row gap-4 max-h-[90%]">
               <div className="w-full lg:w-1/2">
                 <Accounts />
