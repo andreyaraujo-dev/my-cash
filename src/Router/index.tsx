@@ -4,6 +4,7 @@ import { Login } from '../views/pages/Login';
 import { Register } from '../views/pages/Register';
 import { AuthLayout } from '../views/layouts/AuthLayout.tsx';
 import { Dashboard } from '../views/pages/Dashboard';
+import { DashboardLayout } from '../views/layouts/DashboardLayout';
 
 export function Router() {
   return (
@@ -17,7 +18,9 @@ export function Router() {
         </Route>
 
         <Route element={<AuthGuard isPrivate />}>
-          <Route path="/" element={<Dashboard />} />
+          <Route element={<DashboardLayout />}>
+            <Route path="/" element={<Dashboard />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

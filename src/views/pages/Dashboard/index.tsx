@@ -13,7 +13,7 @@ export function Dashboard() {
     <DashboardProvider>
       <DashboardContext.Consumer>
         {({ accountBeingEdited }) => (
-          <div className="w-full h-full p-4 lg:px-8 lg:pt-6 lg:pb-8 flex flex-col gap-4">
+          <div className="w-full h-full flex flex-col gap-4">
             <header className="h-12 flex items-center justify-between">
               <Logo className="h-8" />
               <UserMenu />
