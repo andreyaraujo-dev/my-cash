@@ -13,6 +13,8 @@ import { FiltersModal } from '@/views/pages/Dashboard/components/Modals/FiltersM
 import { formatDate } from '@/app/utils/formatDate.ts';
 import { EditTransactionModal } from '@/views/pages/Dashboard/components/Modals/EditTransactionModal';
 import { TotalTransactions } from '@/views/pages/Dashboard/components/Transactions/TotalTransactions.tsx';
+import { Button } from '@/views/components/ui/button';
+import { Check, Clock, Plus } from 'lucide-react';
 
 export function Transactions() {
   const {
@@ -34,6 +36,8 @@ export function Transactions() {
     totalIncome,
     totalExpenses,
   } = useTransactionsController();
+
+  function onTogglePaid() {}
 
   return (
     <div className="border-l border-zinc-800 h-full p-4 pr-0 flex flex-col">
@@ -108,22 +112,34 @@ export function Transactions() {
                   <div
                     key={transaction.id}
                     className={cn(
-                      'border border-zinc-800 p-4 rounded-2xl flex items-center justify-between gap-4',
-                      transaction.isPaid && 'bg-zinc-900 opacity-50',
+                      'p-4 flex items-center justify-between gap-4 hover:bg-zinc-900 transition-all rounded-sm',
+                      transaction.isPaid && 'opacity-60',
                     )}
                     role="button"
                     onClick={() => handleOpenEditModal(transaction)}
                   >
                     <div className="flex-1 flex items-center gap-3">
-                      <CategoryIcon type={transaction.type} category={transaction.category?.icon} />
+                      <div className="relative">
+                        <CategoryIcon
+                          type={transaction.type}
+                          category={transaction.category?.icon}
+                        />
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className={`h-4 w-4 absolute -bottom-1 -right-1 border-2 ${
+                            transaction.isPaid
+                              ? 'bg-green-500 border-green-500 text-white hover:bg-green-600'
+                              : 'bg-background border-muted-foreground text-muted-foreground hover:bg-muted'
+                          }`}
+                          onClick={onTogglePaid}
+                        >
+                          {transaction.isPaid ? <Check size={10} /> : <Clock size={10} />}
+                        </Button>
+                      </div>
 
                       <div>
-                        <strong
-                          className={cn(
-                            'font-bold tracking-[-0.5px] block text-zinc-100',
-                            transaction.isPaid && 'line-through',
-                          )}
-                        >
+                        <strong className={cn('font-bold tracking-[-0.5px] block text-zinc-100')}>
                           {transaction.name}
                         </strong>
                         <span className="text-sm text-zinc-300">
@@ -134,13 +150,18 @@ export function Transactions() {
 
                     <span
                       className={cn(
-                        'tracking-[-0.5px] font-medium',
+                        'tracking-[-0.5px] font-semibold flex flex-col items-end text-sm',
                         transaction.type === 'EXPENSE' ? 'text-red-800' : 'text-green-800',
                         !areValuesVisible && 'blur-md',
                       )}
                     >
                       {transaction.type === 'EXPENSE' ? '- ' : '+ '}
                       {formatCurrency(transaction.value)}
+                      {transaction.isPaid ? (
+                        <span className="text-zinc-100 text-xs font-normal">Pago</span>
+                      ) : (
+                        <span className="text-zinc-100 text-xs font-normal">Pendente</span>
+                      )}
                     </span>
                   </div>
                 ))}
@@ -156,6 +177,10 @@ export function Transactions() {
               totalExpense={totalExpenses}
             />
           )}
+
+          <Button className="w-full rounded-sm" size="icon">
+            <Plus size={20} />
+          </Button>
         </>
       )}
     </div>

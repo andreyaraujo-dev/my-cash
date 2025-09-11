@@ -4,9 +4,11 @@ import { TrendingUp } from 'lucide-react';
 import { InfoAccountsTooltip } from '../Accounts/InfoAccountsTooltip';
 import { useAccountsController } from '../Accounts/useAccountsController';
 import { formatCurrency } from '@/app/utils/formatCurrency';
+import { EyeIcon } from '@/views/components/icons/EyeIcon';
+import { cn } from '@/lib/utils';
 
 export function BalanceCard() {
-  const { currentBalance } = useAccountsController();
+  const { currentBalance, toggleValuesVisibility, areValuesVisible } = useAccountsController();
 
   return (
     <Card className="p-6 bg-card/50 border border-border">
@@ -20,7 +22,23 @@ export function BalanceCard() {
         </Button>
       </div>
 
-      <p className="text-3xl font-bold text-foreground">{formatCurrency(currentBalance)}</p>
+      <div className="flex">
+        <strong
+          className={cn(
+            'text-2xl tracking-[-1px] text-white',
+            !areValuesVisible && 'blur-md select-none',
+          )}
+        >
+          {formatCurrency(currentBalance)}
+        </strong>
+        <button
+          type="button"
+          className="w-8 h-8 flex items-center justify-center"
+          onClick={toggleValuesVisibility}
+        >
+          <EyeIcon open={!areValuesVisible} />
+        </button>
+      </div>
     </Card>
   );
 }
