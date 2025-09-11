@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from '@/views/components/ui/dropdown-menu.tsx';
 import { useAuth } from '@/app/hooks/useAuth.ts';
-import { ExitIcon } from '@radix-ui/react-icons';
+import { CircleUser } from 'lucide-react';
 
 export function UserMenu() {
   const { signout, user } = useAuth();
@@ -25,12 +25,9 @@ export function UserMenu() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem
-          onSelect={signout}
-          className="flex items-center justify-between font-medium"
-        >
-          Sair
-          <ExitIcon className="w-4 h-4" />
+        <DropdownMenuItem onSelect={signout} className="flex items-center gap-2 font-medium">
+          <CircleUser className="w-4 h-4" />
+          Perfil
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

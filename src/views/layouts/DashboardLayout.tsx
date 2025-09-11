@@ -9,7 +9,7 @@ export function DashboardLayout() {
       <AppSidebar />
 
       <SidebarInset className="flex flex-col min-w-0">
-        <div className="flex items-center justify-between gap-2 border-b p-3">
+        <div className="flex items-center justify-between gap-2 border-b p-6">
           <div className="flex items-center gap-2">
             <SidebarTrigger />
             <h1 className="text-lg font-semibold">Dashboard</h1>
