@@ -36,7 +36,7 @@ export function Transactions() {
   } = useTransactionsController();
 
   return (
-    <div className="border border-zinc-800 rounded-2xl w-full h-full p-4 md:px-10 md:pt-10 pb-2 flex flex-col">
+    <div className="border-l border-zinc-800 h-full p-4 pr-0 flex flex-col">
       {isInitialLoading && (
         <div className="flex items-center justify-center h-full w-full">
           <Spinner className="w-10 h-10" />
