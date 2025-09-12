@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Spinner } from '@/views/components/Loading/Spinner';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center w-full justify-center gap-2 whitespace-nowrap rounded-2xl text-white text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center w-full justify-center gap-2 whitespace-nowrap rounded-md text-white text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {

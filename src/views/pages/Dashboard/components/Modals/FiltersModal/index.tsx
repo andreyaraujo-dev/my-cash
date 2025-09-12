@@ -45,9 +45,14 @@ export function FiltersModal({
       onClose={onClose}
       trigger={
         <NotificationBadge label={countSelectedFilters} show={countSelectedFilters > 0}>
-          <button type="button" onClick={handleOpenFiltersModal}>
+          <Button
+            type="button"
+            variant="outline"
+            className="p-3 h-auto rounded-md"
+            onClick={handleOpenFiltersModal}
+          >
             <FilterIcon />
-          </button>
+          </Button>
         </NotificationBadge>
       }
       rightAction={

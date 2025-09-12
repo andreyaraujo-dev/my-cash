@@ -1,9 +1,18 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { AppSidebar } from '../components/AppSidebar';
 import { SidebarTrigger, SidebarInset } from '../components/ui/sidebar';
 import { UserMenu } from '../components/UserMenu';
 
+const TITLES = [
+  { pathname: '/', title: 'Dashboard' },
+  { pathname: '/accounts', title: 'Minhas Contas' },
+  { pathname: '/transactions', title: 'Minhas Transações' },
+];
+
 export function DashboardLayout() {
+  const { pathname } = useLocation();
+  const currentTitle = TITLES.find((title) => title.pathname === pathname)?.title;
+
   return (
     <div className="flex h-screen w-full">
       <AppSidebar />
@@ -12,7 +21,7 @@ export function DashboardLayout() {
         <div className="flex items-center justify-between gap-2 border-b p-6">
           <div className="flex items-center gap-2">
             <SidebarTrigger />
-            <h1 className="text-lg font-semibold">Dashboard</h1>
+            <h1 className="text-lg font-semibold">{currentTitle}</h1>
           </div>
 
           <UserMenu />
