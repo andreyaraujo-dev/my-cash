@@ -6,6 +6,7 @@ import { AuthLayout } from '../views/layouts/AuthLayout.tsx';
 import { Dashboard } from '../views/pages/Dashboard';
 import { DashboardLayout } from '../views/layouts/DashboardLayout';
 import { AccountsPage } from '@/views/pages/Accounts/index.tsx';
+import { TransactionsPage } from '@/views/pages/Transactions/index.tsx';
 
 export function Router() {
   return (
@@ -22,6 +23,7 @@ export function Router() {
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/accounts" element={<AccountsPage />} />
+            <Route path="/transactions" element={<TransactionsPage />} />
           </Route>
         </Route>
       </Routes>

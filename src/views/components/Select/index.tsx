@@ -44,7 +44,7 @@ export function Select({ className, error, placeholder, options, value, onChange
         <SelectShadcn onValueChange={handleSelect} value={value}>
           <SelectTrigger
             className={cn(
-              'bg-transparent rounded-lg w-full border border-zinc-800 px-3 h-[52px] text-zinc-100 placeholder-shown:pt-0 focus:border-zinc-800 transition-all outline-none text-left relative pt-4',
+              'bg-transparent rounded-lg w-full border border-zinc-800 px-3 py-1 h-9 text-zinc-100 placeholder-shown:pt-0 focus:border-zinc-800 transition-all outline-none text-left relative',
               error && '!border-red-900',
               className,
             )}
