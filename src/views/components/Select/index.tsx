@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils.ts';
 import {
   Select as SelectShadcn,
@@ -24,10 +24,17 @@ interface SelectProps {
 export function Select({ className, error, placeholder, options, value, onChange }: SelectProps) {
   const [selectedValue, setSelectedValue] = useState(value ?? '');
 
+  useEffect(() => {
+    setSelectedValue(value ?? '');
+  }, [value]);
+
   function handleSelect(value: string) {
     setSelectedValue(value);
     onChange?.(value);
   }
+
+  const selectedOption = options.find((option) => option.value === selectedValue);
+  const displayValue = selectedOption?.label || '';
 
   return (
     <div>
@@ -49,7 +56,7 @@ export function Select({ className, error, placeholder, options, value, onChange
               className,
             )}
           >
-            <SelectValue />
+            <SelectValue>{displayValue}</SelectValue>
           </SelectTrigger>
 
           <SelectContent className="z-[99] overflow-hidden rounded-2xl border-zinc-800 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)]">

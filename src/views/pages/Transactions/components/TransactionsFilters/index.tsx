@@ -1,49 +1,191 @@
-import { MonthYearPicker } from '@/views/components/MonthYearPicker';
 import { Select } from '@/views/components/Select';
 import { Button } from '@/views/components/ui/button';
 import { Card } from '@/views/components/ui/card';
 import { Input } from '@/views/components/ui/input';
-import { getMonth, getYear } from 'date-fns';
+import { useTransactionsController } from '@/views/pages/Dashboard/components/Transactions/useTransactionsController';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Filter } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import {
+  filterTransactionsSchema,
+  FilterTransactionsSchema,
+} from '../../schemas/filter-transactions-schemas';
+import { Form, FormControl, FormField, FormItem } from '@/views/components/ui/form';
 
 export function TransactionsFilters() {
-  const now = new Date();
+  const { filters, handleChangeFilters, handleApplyFilters } = useTransactionsController();
+  const form = useForm<FilterTransactionsSchema>({
+    resolver: zodResolver(filterTransactionsSchema),
+    defaultValues: {
+      month: filters.month,
+      year: filters.year,
+      isPaid: filters.isPaid ? 'paid' : filters.isPaid === undefined ? 'all' : 'pending',
+      name: '',
+      type: filters.type,
+    },
+  });
+
+  async function handleSubmit(data: FilterTransactionsSchema) {
+    console.log(data);
+    handleApplyFilters({
+      isPaid: data.isPaid === 'paid' ? true : data.isPaid === 'all' ? undefined : false,
+      year: data.year as number,
+      month: data.month as number,
+      type: data.type,
+    });
+  }
 
   return (
     <Card className="p-4 w-full">
       <div className="flex items-center gap-4">
-        <div className="flex-1">
-          <Input type="search" placeholder="Buscar transações..." className="w-full" />
-        </div>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="flex flex-col md:flex-row gap-2 items-center justify-between w-full flex-wrap"
+          >
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem className="flex-1">
+                  <FormControl>
+                    <Input
+                      {...field}
+                      type="search"
+                      placeholder="Buscar transações..."
+                      className="w-full"
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-        <MonthYearPicker
-          selectedMonth={getMonth(now).toString()}
-          selectedYear={getYear(now).toString()}
-        />
+            <FormField
+              control={form.control}
+              name="month"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select
+                      {...field}
+                      value={field.value?.toString()}
+                      onChange={(value: string) => {
+                        const monthValue = parseInt(value, 10);
+                        field.onChange(monthValue);
+                        handleChangeFilters('month')(monthValue);
+                      }}
+                      options={[
+                        { value: '0', label: 'Janeiro' },
+                        { value: '1', label: 'Fevereiro' },
+                        { value: '2', label: 'Março' },
+                        { value: '3', label: 'Abril' },
+                        { value: '4', label: 'Maio' },
+                        { value: '5', label: 'Junho' },
+                        { value: '6', label: 'Julho' },
+                        { value: '7', label: 'Agosto' },
+                        { value: '8', label: 'Setembro' },
+                        { value: '9', label: 'Outubro' },
+                        { value: '10', label: 'Novembro' },
+                        { value: '11', label: 'Dezembro' },
+                      ]}
+                      className="w-max min-w-32"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-        <Select
-          options={[
-            { label: 'Todos', value: 'all' },
-            { label: 'Receitas', value: 'income' },
-            { label: 'Despesas', value: 'expense' },
-          ]}
-          placeholder="Tipo"
-          className="w-28"
-        />
+            <FormField
+              control={form.control}
+              name="year"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select
+                      {...field}
+                      value={field.value?.toString()}
+                      onChange={(value: string) => {
+                        const yearValue = parseInt(value, 10);
+                        field.onChange(yearValue);
+                        handleChangeFilters('year')(yearValue);
+                      }}
+                      options={(() => {
+                        const currentYear = new Date().getFullYear();
+                        const years = [];
+                        for (let year = currentYear; year >= currentYear - 9; year--) {
+                          years.push({
+                            value: year.toString(),
+                            label: year.toString(),
+                          });
+                        }
+                        return years;
+                      })()}
+                      className="w-max min-w-24"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-        <Select
-          className="w-28"
-          options={[
-            { label: 'Todos', value: 'all' },
-            { label: 'Pagos', value: 'paid' },
-            { label: 'Pendentes', value: 'pending' },
-          ]}
-          placeholder="Status"
-        />
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select
+                      {...field}
+                      value={field.value || 'ALL'}
+                      onChange={(value: 'INCOME' | 'EXPENSE') => {
+                        handleChangeFilters('type')(value);
+                        field.onChange(value);
+                      }}
+                      options={[
+                        { label: 'Todos', value: 'ALL' },
+                        { label: 'Receitas', value: 'INCOME' },
+                        { label: 'Despesas', value: 'EXPENSE' },
+                      ]}
+                      className="w-28"
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
 
-        <Button variant="outline" className="w-max">
-          <Filter size={16} />
-        </Button>
+            <FormField
+              control={form.control}
+              name="isPaid"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Select
+                      {...field}
+                      value={field.value || ''}
+                      onChange={(value: 'paid' | 'pending' | 'all') => {
+                        handleChangeFilters('isPaid')(
+                          value === 'paid' ? true : value === 'pending' ? false : undefined,
+                        );
+                        field.onChange(value);
+                      }}
+                      className="w-28"
+                      options={[
+                        { label: 'Todos', value: 'all' },
+                        { label: 'Pagos', value: 'paid' },
+                        { label: 'Pendentes', value: 'pending' },
+                      ]}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit" variant="outline" className="w-max">
+              <Filter size={16} />
+            </Button>
+          </form>
+        </Form>
       </div>
     </Card>
   );

@@ -3,7 +3,9 @@ import { cn } from '@/lib/utils';
 
 interface MonthYearPickerProps {
   className?: string;
+  // eslint-disable-next-line no-unused-vars
   onMonthChange?: (month: number) => void;
+  // eslint-disable-next-line no-unused-vars
   onYearChange?: (year: number) => void;
   selectedMonth?: string;
   selectedYear?: string;
@@ -24,12 +26,12 @@ const months = [
   { value: '11', label: 'Dezembro' },
 ];
 
-// Gera uma lista dos últimos 10 anos até o próximo ano
+// Gera uma lista dos últimos 10 anos até o ano atual
 const generateYears = () => {
   const currentYear = new Date().getFullYear();
   const years = [];
 
-  for (let year = currentYear + 1; year >= currentYear - 9; year--) {
+  for (let year = currentYear; year >= currentYear - 9; year--) {
     years.push({
       value: year.toString(),
       label: year.toString(),
@@ -60,7 +62,7 @@ export function MonthYearPicker({
     <div className={cn('flex gap-2', className)}>
       <Select
         options={months}
-        placeholder="Mês"
+        // placeholder="Mês"
         value={selectedMonth}
         onChange={handleMonthChange}
         className="w-max min-w-32"
@@ -68,7 +70,7 @@ export function MonthYearPicker({
 
       <Select
         options={years}
-        placeholder="Ano"
+        // placeholder="Ano"
         value={selectedYear}
         onChange={handleYearChange}
         className="w-max min-w-24"

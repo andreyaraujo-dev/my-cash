@@ -2,12 +2,16 @@ import { Transaction } from '@/app/entities/Transaction';
 import { Badge } from '@/views/components/ui/badge';
 import { Card } from '@/views/components/ui/card';
 import { TransactionItem } from './TransactionItem';
+import { useTransactionsController } from '@/views/pages/Dashboard/components/Transactions/useTransactionsController';
+import { MONTHS } from '@/app/config/constants';
 
 interface TransactionsListProps {
   transactions: Transaction[];
 }
 
 export function TransactionsList({ transactions }: TransactionsListProps) {
+  const { filters } = useTransactionsController();
+
   const togglePaid = (id: string) => {
     // TODO: implement function
     console.log(id);
@@ -19,7 +23,9 @@ export function TransactionsList({ transactions }: TransactionsListProps) {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-semibold">Histórico de Transações</h2>
           <div className="flex gap-2">
-            <Badge variant="outline">Set 2025</Badge>
+            <Badge variant="outline">
+              {MONTHS[filters.month]} {filters.year}
+            </Badge>
           </div>
         </div>
 
