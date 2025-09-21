@@ -1,5 +1,5 @@
 import { useDashboard } from '@/app/hooks/useDashboard.ts';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Transaction } from '@/app/entities/Transaction.ts';
 import { useTransactions } from '@/app/hooks/useTransactions.ts';
 
@@ -21,12 +21,7 @@ export function useTransactionsController() {
     year: new Date().getFullYear(),
   });
 
-  const { transactions, isLoading, isInitialLoading, refetchTransactions } =
-    useTransactions(filters);
-
-  useEffect(() => {
-    refetchTransactions();
-  }, [filters, refetchTransactions]);
+  const { transactions, isLoading, isInitialLoading } = useTransactions(filters);
 
   function handleChangeFilters<TFilter extends keyof TransactionsFilters>(filter: TFilter) {
     return (value: TransactionsFilters[TFilter]) => {

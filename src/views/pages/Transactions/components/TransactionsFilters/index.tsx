@@ -1,8 +1,8 @@
+/* eslint-disable no-unused-vars */
 import { Select } from '@/views/components/Select';
 import { Button } from '@/views/components/ui/button';
 import { Card } from '@/views/components/ui/card';
 import { Input } from '@/views/components/ui/input';
-import { useTransactionsController } from '@/views/pages/Dashboard/components/Transactions/useTransactionsController';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Filter } from 'lucide-react';
 import { useForm } from 'react-hook-form';
@@ -11,9 +11,28 @@ import {
   FilterTransactionsSchema,
 } from '../../schemas/filter-transactions-schemas';
 import { Form, FormControl, FormField, FormItem } from '@/views/components/ui/form';
+import { TransactionsFilters as Filters } from '@/app/services/transactionsService/getAll';
+import { Transaction } from '@/app/entities/Transaction';
 
-export function TransactionsFilters() {
-  const { filters, handleChangeFilters, handleApplyFilters } = useTransactionsController();
+interface TransactionsFiltersProps {
+  filters: Filters;
+  handleChangeFilters: <TFilter extends keyof Filters>(
+    filter: TFilter,
+  ) => (value: Filters[TFilter]) => void;
+  handleApplyFilters: (filters: {
+    bankAccountId?: string | undefined;
+    year: number;
+    isPaid: boolean | undefined;
+    month?: number;
+    type?: Transaction['type'];
+  }) => void;
+}
+
+export function TransactionsFilters({
+  filters,
+  handleApplyFilters,
+  handleChangeFilters,
+}: TransactionsFiltersProps) {
   const form = useForm<FilterTransactionsSchema>({
     resolver: zodResolver(filterTransactionsSchema),
     defaultValues: {
@@ -26,7 +45,6 @@ export function TransactionsFilters() {
   });
 
   async function handleSubmit(data: FilterTransactionsSchema) {
-    console.log(data);
     handleApplyFilters({
       isPaid: data.isPaid === 'paid' ? true : data.isPaid === 'all' ? undefined : false,
       year: data.year as number,
