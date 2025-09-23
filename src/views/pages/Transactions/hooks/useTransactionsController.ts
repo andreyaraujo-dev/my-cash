@@ -1,5 +1,5 @@
 import { useDashboard } from '@/app/hooks/useDashboard.ts';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Transaction } from '@/app/entities/Transaction.ts';
 import { useTransactions } from '@/app/hooks/useTransactions.ts';
 
@@ -20,8 +20,15 @@ export function useTransactionsController() {
     month: new Date().getMonth(),
     year: new Date().getFullYear(),
   });
+  const [shouldFetch, setShouldFetch] = useState(true);
 
-  const { transactions, isLoading, isInitialLoading } = useTransactions(filters);
+  useEffect(() => {
+    if (shouldFetch) {
+      setShouldFetch(false);
+    }
+  }, [shouldFetch]);
+
+  const { transactions, isLoading, isInitialLoading } = useTransactions(filters, shouldFetch);
 
   function handleChangeFilters<TFilter extends keyof TransactionsFilters>(filter: TFilter) {
     return (value: TransactionsFilters[TFilter]) => {
@@ -52,6 +59,7 @@ export function useTransactionsController() {
     handleChangeFilters('isPaid')(isPaid);
     if (month) handleChangeFilters('month')(month);
     if (type) handleChangeFilters('type')(type);
+    setShouldFetch(true);
     handleCloseFiltersModal();
   }
 

@@ -8,11 +8,13 @@ import { Check, Clock } from 'lucide-react';
 interface TransactionItemProps {
   transaction: Transaction;
   onTogglePaid: () => void;
+  onClick: () => void;
 }
 
 export function TransactionItem({
   transaction: { type, date, name, value, isPaid },
   onTogglePaid,
+  onClick,
 }: TransactionItemProps) {
   const amountColor = type === 'INCOME' ? 'text-green-500' : 'text-red-500';
   const prefix = type === 'INCOME' ? '+' : '-';
@@ -56,10 +58,15 @@ export function TransactionItem({
           )}
         </div>
 
-        <div>
-          <h4 className={`font-medium ${!isPaid ? 'text-foreground' : 'text-muted-foreground'}`}>
+        <div className="flex flex-col gap-1">
+          <button
+            type="button"
+            className={`font-medium text-left bg-transparent border-none p-0 m-0 cursor-pointer hover:underline ${!isPaid ? 'text-foreground' : 'text-muted-foreground'}`}
+            onClick={onClick}
+            tabIndex={0}
+          >
             {name}
-          </h4>
+          </button>
           <p className="text-sm text-muted-foreground">{format(date, 'dd/MM/yyyy')}</p>
         </div>
       </div>

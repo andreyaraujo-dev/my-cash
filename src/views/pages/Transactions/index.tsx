@@ -3,7 +3,8 @@ import { Plus } from 'lucide-react';
 import { TransactionStatus } from './components/TransactionsStatus';
 import { TransactionsList } from './components/TransactionsList';
 import { TransactionsFilters } from './components/TransactionsFilters';
-import { useTransactionsController } from '../Dashboard/components/Transactions/useTransactionsController';
+import { useTransactionsController } from './hooks/useTransactionsController';
+import { EditTransactionModal } from './components/EditTransactionModal';
 
 export function TransactionsPage() {
   const {
@@ -13,13 +14,12 @@ export function TransactionsPage() {
     transactions,
     handleChangeFilters,
     handleApplyFilters,
+    isEditModalOpen,
+    handleCloseEditModal,
+    transactionBeingEdited,
+    handleOpenEditModal,
   } = useTransactionsController();
-  console.log('transaction page', {
-    filters,
-    isLoading,
-    isInitialLoading,
-    transactions: transactions.length,
-  });
+
   return (
     <div className="h-full flex flex-col gap-4 items-center">
       <div className="flex justify-end w-full">
@@ -42,7 +42,16 @@ export function TransactionsPage() {
         isInitialLoading={isInitialLoading}
         isLoading={isLoading}
         filters={filters}
+        handleOpenEditModal={handleOpenEditModal}
       />
+
+      {transactionBeingEdited && (
+        <EditTransactionModal
+          open={isEditModalOpen}
+          onClose={handleCloseEditModal}
+          transaction={transactionBeingEdited}
+        />
+      )}
     </div>
   );
 }

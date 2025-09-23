@@ -13,7 +13,7 @@ import { Select } from '@/views/components/Select';
 import { DatePickerInput } from '@/views/components/DatePickerInput';
 import { Button } from '@/views/components/ui/button.tsx';
 import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
-import { useEditTransactionModalController } from '@/views/pages/Dashboard/components/Modals/EditTransactionModal/useEditTransactionModalController.ts';
+import { useEditTransactionModalController } from '@/views/pages/Transactions/components/EditTransactionModal/useEditTransactionModalController';
 import { TrashIcon } from 'lucide-react';
 import { Transaction } from '@/app/entities/Transaction.ts';
 import { Checkbox } from '@/views/components/ui/checkbox';
@@ -106,7 +106,6 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
                       type="text"
                       placeholder={isExpense ? 'Nome da Despesa' : 'Nome da Receita'}
                       {...field}
-                      error={form.formState.errors.name?.message}
                       onChange={field.onChange}
                       value={field.value}
                     />

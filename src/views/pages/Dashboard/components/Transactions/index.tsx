@@ -5,13 +5,13 @@ import { SliderNavigation } from '@/views/pages/Dashboard/components/Transaction
 import { formatCurrency } from '@/app/utils/formatCurrency.ts';
 import { CategoryIcon } from '@/views/components/icons/Categories/CategoryIcon.tsx';
 import { cn } from '@/lib/utils.ts';
-import { useTransactionsController } from '@/views/pages/Dashboard/components/Transactions/useTransactionsController.ts';
+import { useTransactionsController } from '@/views/pages/Transactions/hooks/useTransactionsController';
 import { Spinner } from '@/views/components/Loading/Spinner';
 import emptyState from '@/assets/empty-state.svg';
 import { TransactionTypeDropdown } from '@/views/pages/Dashboard/components/Transactions/TransactionTypeDropdown.tsx';
 import { FiltersModal } from '@/views/pages/Dashboard/components/Modals/FiltersModal';
 import { formatDate } from '@/app/utils/formatDate.ts';
-import { EditTransactionModal } from '@/views/pages/Dashboard/components/Modals/EditTransactionModal';
+import { EditTransactionModal } from '@/views/pages/Transactions/components/EditTransactionModal';
 import { TotalTransactions } from '@/views/pages/Dashboard/components/Transactions/TotalTransactions.tsx';
 import { Button } from '@/views/components/ui/button';
 import { Check, Clock, Plus } from 'lucide-react';

@@ -11,6 +11,7 @@ interface TransactionsListProps {
   isLoading: boolean;
   isInitialLoading: boolean;
   filters: TransactionsFilters;
+  handleOpenEditModal: (_transaction: Transaction) => void;
 }
 
 export function TransactionsList({
@@ -18,6 +19,7 @@ export function TransactionsList({
   isInitialLoading,
   isLoading,
   filters,
+  handleOpenEditModal,
 }: TransactionsListProps) {
   const togglePaid = (id: string) => {
     // TODO: implement function
@@ -67,6 +69,7 @@ export function TransactionsList({
                 key={transaction.id}
                 transaction={transaction}
                 onTogglePaid={() => togglePaid(transaction.id)}
+                onClick={() => handleOpenEditModal(transaction)}
               />
             ))
           )}
