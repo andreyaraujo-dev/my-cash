@@ -2,6 +2,8 @@ import { useDashboard } from '@/app/hooks/useDashboard.ts';
 import { useEffect, useMemo, useState } from 'react';
 import { Transaction } from '@/app/entities/Transaction.ts';
 import { useTransactions } from '@/app/hooks/useTransactions.ts';
+import { useMutation } from '@tanstack/react-query';
+import { updateTransactionStatusAction } from '../actions/update-transaction-status';
 
 export type TransactionsFilters = {
   month: number;
@@ -90,6 +92,15 @@ export function useTransactionsController() {
 
   const hasTransactions = transactions.length > 0;
 
+  const {
+    mutateAsync: updateTransactionStatus,
+    isPending: isLoadingUpdateTransactionStatus,
+    isError: isErrorUpdateTransactionStatus,
+  } = useMutation({
+    mutationKey: ['update-transaction-status', transactionIdToUpdate],
+    mutationFn: updateTransactionStatusAction,
+  });
+
   const totalExpenses = useMemo(() => {
     return transactions.reduce((total, transaction) => {
       if (transaction.type === 'EXPENSE') {
@@ -131,5 +142,8 @@ export function useTransactionsController() {
     transactionIdToUpdate,
     handleTogglePaid,
     setShouldFetch,
+    updateTransactionStatus,
+    isErrorUpdateTransactionStatus,
+    isLoadingUpdateTransactionStatus,
   };
 }

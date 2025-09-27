@@ -7,8 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/views/components/ui/dialog';
-import { useMutation } from '@tanstack/react-query';
-import { updateTransactionStatusAction } from '../../actions/update-transaction-status';
 import { useToast } from '@/app/hooks/useToast';
 import { queryClient } from '@/app/services/react-query/queryClient';
 import { useTransactionsController } from '../../hooks/useTransactionsController';
@@ -25,20 +23,21 @@ export function UpdateTransactionStatus({
   setIsOpen,
   transactionId,
 }: UpdateTransactionStatusProps) {
-  const { mutateAsync, isPending, isError } = useMutation({
-    mutationKey: ['update-transaction-status', transactionId],
-    mutationFn: () => updateTransactionStatusAction(transactionId),
-  });
-
-  const { filters, setShouldFetch } = useTransactionsController();
+  const {
+    filters,
+    setShouldFetch,
+    isLoadingUpdateTransactionStatus,
+    updateTransactionStatus,
+    isErrorUpdateTransactionStatus,
+  } = useTransactionsController();
 
   const { toast } = useToast();
 
   async function handleUpdateStatus() {
     try {
-      await mutateAsync();
+      await updateTransactionStatus(transactionId);
 
-      if (isError) {
+      if (isErrorUpdateTransactionStatus) {
         toast({
           title: 'Erro',
           description: 'Não possível atualizar o status da transação.',
@@ -76,8 +75,8 @@ export function UpdateTransactionStatus({
             type="button"
             variant="blue-primary"
             onClick={handleUpdateStatus}
-            disabled={isPending}
-            isLoading={isPending}
+            disabled={isLoadingUpdateTransactionStatus}
+            isLoading={isLoadingUpdateTransactionStatus}
           >
             Salvar
           </Button>
