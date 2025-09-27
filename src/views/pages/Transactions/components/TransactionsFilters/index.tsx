@@ -10,7 +10,7 @@ import {
   filterTransactionsSchema,
   FilterTransactionsSchema,
 } from '../../schemas/filter-transactions-schemas';
-import { Form, FormControl, FormField, FormItem } from '@/views/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/views/components/ui/form';
 import { TransactionsFilters as Filters } from '@/app/services/transactionsService/getAll';
 import { Transaction } from '@/app/entities/Transaction';
 
@@ -59,13 +59,14 @@ export function TransactionsFilters({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
-            className="flex flex-col md:flex-row gap-2 items-center justify-between w-full flex-wrap"
+            className="flex flex-col md:flex-row gap-2 items-end justify-between w-full flex-wrap"
           >
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem className="flex-1">
+                  <FormLabel>Título</FormLabel>
                   <FormControl>
                     <Input
                       {...field}
@@ -85,6 +86,8 @@ export function TransactionsFilters({
               name="month"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Mês</FormLabel>
+
                   <FormControl>
                     <Select
                       {...field}
@@ -120,6 +123,8 @@ export function TransactionsFilters({
               name="year"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Ano</FormLabel>
+
                   <FormControl>
                     <Select
                       {...field}
@@ -152,6 +157,8 @@ export function TransactionsFilters({
               name="type"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Tipo</FormLabel>
+
                   <FormControl>
                     <Select
                       {...field}
@@ -177,6 +184,8 @@ export function TransactionsFilters({
               name="isPaid"
               render={({ field }) => (
                 <FormItem>
+                  <FormLabel>Status</FormLabel>
+
                   <FormControl>
                     <Select
                       {...field}
