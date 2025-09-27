@@ -21,6 +21,13 @@ export function useTransactionsController() {
     year: new Date().getFullYear(),
   });
   const [shouldFetch, setShouldFetch] = useState(true);
+  const [isOpenUpdateTransactionStatusDialog, setIsOpenUpdateTransactionStatusDialog] =
+    useState(false);
+  const [transactionIdToUpdate, setTransactionIdToUpdate] = useState('');
+  const handleTogglePaid = (id: string) => {
+    setIsOpenUpdateTransactionStatusDialog(true);
+    setTransactionIdToUpdate(id);
+  };
 
   useEffect(() => {
     if (shouldFetch) {
@@ -119,5 +126,10 @@ export function useTransactionsController() {
     transactionBeingEdited,
     totalIncome,
     totalExpenses,
+    isOpenUpdateTransactionStatusDialog,
+    setIsOpenUpdateTransactionStatusDialog,
+    transactionIdToUpdate,
+    handleTogglePaid,
+    setShouldFetch,
   };
 }

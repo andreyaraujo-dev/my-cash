@@ -18,6 +18,10 @@ export function TransactionsPage() {
     handleCloseEditModal,
     transactionBeingEdited,
     handleOpenEditModal,
+    handleTogglePaid,
+    transactionIdToUpdate,
+    setIsOpenUpdateTransactionStatusDialog,
+    isOpenUpdateTransactionStatusDialog,
   } = useTransactionsController();
 
   return (
@@ -43,6 +47,10 @@ export function TransactionsPage() {
         isLoading={isLoading}
         filters={filters}
         handleOpenEditModal={handleOpenEditModal}
+        handleTogglePaid={handleTogglePaid}
+        transactionIdToUpdate={transactionIdToUpdate}
+        setIsOpenUpdateTransactionStatusDialog={setIsOpenUpdateTransactionStatusDialog}
+        isOpenUpdateTransactionStatusDialog={isOpenUpdateTransactionStatusDialog}
       />
 
       {transactionBeingEdited && (

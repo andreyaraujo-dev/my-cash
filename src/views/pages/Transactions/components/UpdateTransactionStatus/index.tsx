@@ -1,0 +1,88 @@
+import { Button } from '@/views/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from '@/views/components/ui/dialog';
+import { useMutation } from '@tanstack/react-query';
+import { updateTransactionStatusAction } from '../../actions/update-transaction-status';
+import { useToast } from '@/app/hooks/useToast';
+import { queryClient } from '@/app/services/react-query/queryClient';
+import { useTransactionsController } from '../../hooks/useTransactionsController';
+
+interface UpdateTransactionStatusProps {
+  isOpen: boolean;
+  // eslint-disable-next-line no-unused-vars
+  setIsOpen: (value: boolean) => void;
+  transactionId: string;
+}
+
+export function UpdateTransactionStatus({
+  isOpen,
+  setIsOpen,
+  transactionId,
+}: UpdateTransactionStatusProps) {
+  const { mutateAsync, isPending, isError } = useMutation({
+    mutationKey: ['update-transaction-status', transactionId],
+    mutationFn: () => updateTransactionStatusAction(transactionId),
+  });
+
+  const { filters, setShouldFetch } = useTransactionsController();
+
+  const { toast } = useToast();
+
+  async function handleUpdateStatus() {
+    try {
+      await mutateAsync();
+
+      if (isError) {
+        toast({
+          title: 'Erro',
+          description: 'Não possível atualizar o status da transação.',
+          duration: 3000,
+        });
+      }
+
+      setShouldFetch(true);
+      await queryClient.refetchQueries({ queryKey: ['transactions', filters] });
+      setIsOpen(false);
+    } catch {
+      toast({
+        title: 'Ops...',
+        description: 'Ocorreu um erro, tente novamente.',
+        duration: 3000,
+      });
+    }
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Alterar status da transação</DialogTitle>
+          <DialogDescription>
+            Tem certeza que deseja alterar o status desta transação.
+          </DialogDescription>
+        </DialogHeader>
+
+        <DialogFooter>
+          <Button type="button" onClick={() => setIsOpen(false)}>
+            Cancelar
+          </Button>
+          <Button
+            type="button"
+            variant="blue-primary"
+            onClick={handleUpdateStatus}
+            disabled={isPending}
+            isLoading={isPending}
+          >
+            Salvar
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
