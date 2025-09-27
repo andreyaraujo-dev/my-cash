@@ -25,6 +25,7 @@ interface TransactionsFiltersProps {
     isPaid: boolean | undefined;
     month?: number;
     type?: Transaction['type'];
+    title?: string;
   }) => void;
 }
 
@@ -50,6 +51,7 @@ export function TransactionsFilters({
       year: data.year as number,
       month: data.month as number,
       type: data.type,
+      title: data.name,
     });
   }
 

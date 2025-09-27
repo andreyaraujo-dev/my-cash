@@ -11,6 +11,7 @@ export type TransactionsFilters = {
   bankAccountId?: string;
   type?: Transaction['type'];
   isPaid?: boolean;
+  title?: string;
 };
 
 export function useTransactionsController() {
@@ -56,16 +57,19 @@ export function useTransactionsController() {
     isPaid,
     month,
     type,
+    title,
   }: {
     bankAccountId?: string | undefined;
     year: number;
     isPaid: boolean | undefined;
     month?: number;
     type?: Transaction['type'];
+    title?: string;
   }) {
     handleChangeFilters('bankAccountId')(bankAccountId);
     handleChangeFilters('year')(year);
     handleChangeFilters('isPaid')(isPaid);
+    handleChangeFilters('title')(title);
     if (month) handleChangeFilters('month')(month);
     if (type) handleChangeFilters('type')(type);
     setShouldFetch(true);
