@@ -7,9 +7,29 @@ import { useTransactions } from '@/app/hooks/useTransactions';
 import { PatrimonyCard } from './components/PatrimonyCard';
 import { AccountsList } from './components/AccountsList';
 import { AccountsStats } from './components/AccountsStats';
+import { NewAccountModal } from '../Dashboard/components/Modals/NewAccountModal';
+import { DashboardContext, DashboardProvider } from '@/app/context/DashboardContext';
+import { EditAccountModal } from '../Dashboard/components/Modals/EditAccountModal';
+import { Skeleton } from '@/views/components/ui/skeleton';
 
 export function AccountsPage() {
-  const { accounts, isLoading: isLoadingAccounts } = useAccountsController();
+  return (
+    <DashboardProvider>
+      <DashboardContext.Consumer>
+        {({ accountBeingEdited }) => (
+          <>
+            <AccountsPageContent />
+            {accountBeingEdited && <EditAccountModal />}
+            <NewAccountModal />
+          </>
+        )}
+      </DashboardContext.Consumer>
+    </DashboardProvider>
+  );
+}
+
+export function AccountsPageContent() {
+  const { accounts, isLoading: isLoadingAccounts, openNewAccountModal } = useAccountsController();
   const totalCheckingAccount = accounts.filter(
     (account) => account.type === BankAccountType.checking,
   ).length;
@@ -32,18 +52,24 @@ export function AccountsPage() {
   const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
 
   const { transactions: currentMonthTransactions, isLoading: isLoadingCurrentMonth } =
-    useTransactions({
-      month: currentMonth,
-      year: currentYear,
-      // isPaid: true,
-    });
+    useTransactions(
+      {
+        month: currentMonth,
+        year: currentYear,
+        // isPaid: true,
+      },
+      true,
+    );
 
   const { transactions: previousMonthTransactions, isLoading: isLoadingPreviousMonth } =
-    useTransactions({
-      month: previousMonth,
-      year: previousYear,
-      // isPaid: true,
-    });
+    useTransactions(
+      {
+        month: previousMonth,
+        year: previousYear,
+        // isPaid: true,
+      },
+      true,
+    );
 
   const monthlyVariation = useMemo(() => {
     const previousMonthIncome = previousMonthTransactions
@@ -90,10 +116,14 @@ export function AccountsPage() {
     <div className="flex flex-col justify-between gap-4 h-full">
       <div>
         <div className="w-full flex justify-end">
-          <Button className="w-max text-base ">
-            <Plus />
-            Nova Conta
-          </Button>
+          {isLoadingAccounts ? (
+            <Skeleton className="w-32 h-10 rounded-md" />
+          ) : (
+            <Button className="w-max text-base " onClick={openNewAccountModal}>
+              <Plus />
+              Nova Conta
+            </Button>
+          )}
         </div>
 
         <AccountsStats
