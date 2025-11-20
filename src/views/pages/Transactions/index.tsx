@@ -1,10 +1,11 @@
-import { Button } from '@/views/components/ui/button';
-import { Plus } from 'lucide-react';
 import { TransactionStatus } from './components/TransactionsStatus';
 import { TransactionsList } from './components/TransactionsList';
 import { TransactionsFilters } from './components/TransactionsFilters';
 import { useTransactionsController } from './hooks/useTransactionsController';
 import { EditTransactionModal } from './components/EditTransactionModal';
+import { Fab } from '../Dashboard/components/Fab';
+import { NewTransactionModal } from '../Dashboard/components/Modals/NewTransactionModal';
+import { DashboardProvider } from '@/app/context/DashboardContext';
 
 export function TransactionsPage() {
   const {
@@ -27,10 +28,10 @@ export function TransactionsPage() {
   return (
     <div className="h-full flex flex-col gap-4 items-center">
       <div className="flex justify-end w-full">
-        <Button className="gap-2 w-max">
-          <Plus size={16} />
-          Nova Transação
-        </Button>
+        <DashboardProvider>
+          <Fab className="w-max px-3 h-10 text-base" buttonText="Nova Transação" />
+          <NewTransactionModal />
+        </DashboardProvider>
       </div>
 
       <TransactionsFilters

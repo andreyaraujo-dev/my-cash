@@ -10,7 +10,12 @@ import { useDashboard } from '@/app/hooks/useDashboard.ts';
 import { useState } from 'react';
 import { cn } from '@/lib/utils.ts';
 
-export function Fab() {
+interface FabProps {
+  className?: string;
+  buttonText?: string;
+}
+
+export function Fab({ className, buttonText }: FabProps) {
   const { openNewTransactionModal } = useDashboard();
   const [open, setOpen] = useState(false);
 
@@ -26,9 +31,11 @@ export function Fab() {
       <DropdownMenuTrigger
         className={cn(
           'rounded-md text-zinc-800 bg-white w-full h-12 flex items-center justify-center transition-all outline-none',
+          className,
         )}
       >
-        <PlusIcon className="w-6 h-6" />
+        <PlusIcon className="w-5 h-5" />
+        {buttonText && <span className="font-medium">{buttonText}</span>}
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="font-normal text-sm border" align="end">
