@@ -14,7 +14,8 @@ import { formatDate } from '@/app/utils/formatDate.ts';
 import { EditTransactionModal } from '@/views/pages/Transactions/components/EditTransactionModal';
 import { TotalTransactions } from '@/views/pages/Dashboard/components/Transactions/TotalTransactions.tsx';
 import { Button } from '@/views/components/ui/button';
-import { Check, Clock, Plus } from 'lucide-react';
+import { Check, Clock } from 'lucide-react';
+import { Fab } from '../Fab';
 
 export function Transactions() {
   const {
@@ -178,9 +179,7 @@ export function Transactions() {
             />
           )}
 
-          <Button className="w-full rounded-sm" size="icon">
-            <Plus size={20} />
-          </Button>
+          <Fab />
         </>
       )}
     </div>

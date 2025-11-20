@@ -6,43 +6,42 @@ import {
   DropdownMenuTrigger,
 } from '@/views/components/ui/dropdown-menu.tsx';
 import { CategoryIcon } from '@/views/components/icons/Categories/CategoryIcon.tsx';
-import { BankAccountIcon } from '@/views/components/icons/BankAccountIcon.tsx';
 import { useDashboard } from '@/app/hooks/useDashboard.ts';
 import { useState } from 'react';
 import { cn } from '@/lib/utils.ts';
 
 export function Fab() {
-  const { openNewAccountModal, openNewTransactionModal } = useDashboard();
+  const { openNewTransactionModal } = useDashboard();
   const [open, setOpen] = useState(false);
+
+  const handleOpenModal = (type: 'INCOME' | 'EXPENSE') => {
+    setOpen(false);
+    setTimeout(() => {
+      openNewTransactionModal(type);
+    }, 0);
+  };
 
   return (
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger
         className={cn(
-          'fixed z-[999] bottom-4 right-4 rounded-full text-zinc-800 bg-white w-12 h-12 flex items-center justify-center transition-all outline-none',
-          open && 'rotate-45',
+          'rounded-md text-zinc-800 bg-white w-full h-12 flex items-center justify-center transition-all outline-none',
         )}
       >
         <PlusIcon className="w-6 h-6" />
       </DropdownMenuTrigger>
 
       <DropdownMenuContent className="font-normal text-sm border" align="end">
-        <DropdownMenuItem onSelect={() => openNewTransactionModal('EXPENSE')}>
+        <DropdownMenuItem onSelect={() => handleOpenModal('EXPENSE')}>
           <span className="flex items-center justify-center gap-2">
             <CategoryIcon type="EXPENSE" />
           </span>
           Nova Despesa
         </DropdownMenuItem>
-        <DropdownMenuItem onSelect={() => openNewTransactionModal('INCOME')}>
+        <DropdownMenuItem onSelect={() => handleOpenModal('INCOME')}>
           <span className="flex items-center justify-center gap-2">
             <CategoryIcon type="INCOME" />
             Nova Receita
-          </span>
-        </DropdownMenuItem>
-        <DropdownMenuItem onSelect={openNewAccountModal}>
-          <span className="flex items-center justify-center gap-2">
-            <BankAccountIcon />
-            Nova Conta
           </span>
         </DropdownMenuItem>
       </DropdownMenuContent>

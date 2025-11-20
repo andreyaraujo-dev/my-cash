@@ -1,5 +1,4 @@
 import { Accounts } from './components/Accounts';
-import { Fab } from './components/Fab';
 import { DashboardContext, DashboardProvider } from '@/app/context/DashboardContext.tsx';
 import { NewAccountModal } from '@/views/pages/Dashboard/components/Modals/NewAccountModal';
 import { NewTransactionModal } from '@/views/pages/Dashboard/components/Modals/NewTransactionModal';
@@ -23,8 +22,6 @@ export function Dashboard() {
                 <Transactions />
               </div>
             </main>
-
-            <Fab />
 
             <NewAccountModal />
             <NewTransactionModal />

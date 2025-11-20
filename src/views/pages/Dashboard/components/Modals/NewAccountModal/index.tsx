@@ -57,7 +57,6 @@ export function NewAccountModal() {
                       type="text"
                       placeholder="Nome da Conta"
                       {...field}
-                      error={form.formState.errors.name?.message}
                       onChange={field.onChange}
                       value={field.value}
                     />
