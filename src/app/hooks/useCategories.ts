@@ -14,6 +14,10 @@ export function useCategoriesWithTransactions() {
   const { data, isFetching } = useQuery({
     queryKey: ['categoriesWithTransactions'],
     queryFn: categoriesService.getAllWithTransactions,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
 
   return {

@@ -6,11 +6,18 @@ import { Plus, Edit, Trash2 } from 'lucide-react';
 import { useCategoriesController } from './hooks/useCategoriesController';
 import { CategoryIcon } from '@/views/components/icons/Categories/CategoryIcon';
 import { Spinner } from '@/views/components/Loading/Spinner';
+import { NewCategoryModal } from './components/NewCategoryModal';
 
 export function CategoriesPage() {
   const {
     categoriesWithTransactions: { summary, categories },
     isLoadingCategoriesWithTransactions,
+    openNewCategoryModal,
+    isNewCategoryModalOpen,
+    closeNewCategoryModal,
+    form,
+    handleSubmit,
+    isLoadingCreateCategory,
   } = useCategoriesController();
 
   const getBudgetStatus = (usage: number) => {
@@ -31,11 +38,19 @@ export function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Categorias</h1>
-        <Button className="gap-2 w-max text-base">
+        <Button className="gap-2 w-max text-base" onClick={openNewCategoryModal}>
           <Plus size={16} />
           Nova Categoria
         </Button>
       </div>
+
+      <NewCategoryModal
+        isOpen={isNewCategoryModalOpen}
+        onClose={closeNewCategoryModal}
+        form={form}
+        handleSubmit={handleSubmit}
+        isLoading={isLoadingCreateCategory}
+      />
 
       {/* Resumo Geral */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -150,7 +165,10 @@ export function CategoriesPage() {
       </div>
 
       {/* Card de Adicionar Categoria */}
-      <Card className="p-6 bg-card/30 border-dashed border-2 border-muted hover:border-primary/50 transition-colors cursor-pointer">
+      <Card
+        className="p-6 bg-card/30 border-dashed border-2 border-muted hover:border-primary/50 transition-colors cursor-pointer"
+        onClick={openNewCategoryModal}
+      >
         <div className="flex flex-col items-center justify-center text-center space-y-2 py-8">
           <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
             <Plus size={24} className="text-muted-foreground" />
