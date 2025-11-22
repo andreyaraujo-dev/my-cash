@@ -9,3 +9,22 @@ export function useCategories() {
 
   return { categories: data ?? [], isFetching };
 }
+
+export function useCategoriesWithTransactions() {
+  const { data, isFetching } = useQuery({
+    queryKey: ['categoriesWithTransactions'],
+    queryFn: categoriesService.getAllWithTransactions,
+  });
+
+  return {
+    categoriesWithTransactions: data ?? {
+      summary: {
+        totalCategories: 0,
+        totalBudget: 0,
+        totalSpending: 0,
+      },
+      categories: [],
+    },
+    isFetching,
+  };
+}
