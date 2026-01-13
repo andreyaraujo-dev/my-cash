@@ -4,7 +4,6 @@ export const createCategorySchema = z.object({
   name: z.string().nonempty('Nome é obrigatório'),
   type: z.enum(['INCOME', 'EXPENSE'], { message: 'Tipo é obrigatório' }),
   icon: z.string().nonempty('Ícone é obrigatório'),
-  color: z.string().nonempty('Cor é obrigatória'),
   budget: z
     .union([z.string(), z.number()])
     .optional()

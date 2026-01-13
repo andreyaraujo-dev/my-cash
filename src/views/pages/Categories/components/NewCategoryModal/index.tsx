@@ -1,7 +1,6 @@
 import { Modal } from '@/views/components/Modal';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/views/components/ui/form';
 import { Index } from '@/views/components/InputCurrency';
-import { ColorsDropdownInput } from '@/views/components/ColorsDropdownInput';
 import { IconDropdownInput } from '@/views/components/IconDropdownInput';
 import { Button } from '@/views/components/ui/button';
 import { Input } from '@/views/components/ui/input';
@@ -113,25 +112,6 @@ export function NewCategoryModal({
                 )}
               />
             )}
-
-            <FormField
-              control={form.control}
-              name="color"
-              defaultValue=""
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <ColorsDropdownInput
-                      error={form.formState.errors.color?.message}
-                      {...field}
-                      onChange={field.onChange}
-                      value={field.value}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
 
             <FormField
               control={form.control}

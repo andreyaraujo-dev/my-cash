@@ -4,7 +4,6 @@ export interface CreateCategoryParams {
   name: string;
   icon: string;
   type: 'INCOME' | 'EXPENSE';
-  color: string;
   budget?: number;
 }
 

@@ -7,6 +7,8 @@ import { useCategoriesController } from './hooks/useCategoriesController';
 import { CategoryIcon } from '@/views/components/icons/Categories/CategoryIcon';
 import { Spinner } from '@/views/components/Loading/Spinner';
 import { NewCategoryModal } from './components/NewCategoryModal';
+import { EditCategoryModal } from './components/EditCategoryModal';
+import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
 
 export function CategoriesPage() {
   const {
@@ -18,6 +20,19 @@ export function CategoriesPage() {
     form,
     handleSubmit,
     isLoadingCreateCategory,
+    isEditCategoryModalOpen,
+    selectedCategoryForEdit,
+    openEditCategoryModal,
+    closeEditCategoryModal,
+    editForm,
+    handleUpdateSubmit,
+    isLoadingUpdateCategory,
+    isDeleteModalOpen,
+    selectedCategoryForDelete,
+    openDeleteModal,
+    closeDeleteModal,
+    handleDeleteConfirm,
+    isLoadingDeleteCategory,
   } = useCategoriesController();
 
   const getBudgetStatus = (usage: number) => {
@@ -51,6 +66,26 @@ export function CategoriesPage() {
         handleSubmit={handleSubmit}
         isLoading={isLoadingCreateCategory}
       />
+
+      <EditCategoryModal
+        isOpen={isEditCategoryModalOpen}
+        onClose={closeEditCategoryModal}
+        form={editForm}
+        handleSubmit={handleUpdateSubmit}
+        isLoading={isLoadingUpdateCategory}
+        category={selectedCategoryForEdit}
+      />
+
+      {isDeleteModalOpen && (
+        <ConfirmDeleteModal
+          onConfirm={handleDeleteConfirm}
+          onClose={closeDeleteModal}
+          title={`Tem certeza que deseja excluir a categoria "${selectedCategoryForDelete?.name}"?`}
+          description="Esta ação não pode ser desfeita."
+          isLoading={isLoadingDeleteCategory}
+          open={isDeleteModalOpen}
+        />
+      )}
 
       {/* Resumo Geral */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -92,7 +127,7 @@ export function CategoriesPage() {
                 {/* Header */}
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <Avatar className={`h-10 w-10 ${category.color}`}>
+                    <Avatar className="h-10 w-10">
                       <AvatarFallback className="bg-transparent text-white">
                         <CategoryIcon type={category.type} category={category.icon} />
                       </AvatarFallback>
@@ -106,13 +141,19 @@ export function CategoriesPage() {
                   </div>
 
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => openEditCategoryModal(category)}
+                    >
                       <Edit size={14} />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8 text-red-500 hover:text-red-600"
+                      onClick={() => openDeleteModal(category)}
                     >
                       <Trash2 size={14} />
                     </Button>
