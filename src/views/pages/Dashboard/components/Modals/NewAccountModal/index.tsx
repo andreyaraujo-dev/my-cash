@@ -7,7 +7,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/views/components/ui/form.tsx';
-import { Index } from '@/views/components/InputCurrency';
+import { InputCurrency } from '@/views/components/InputCurrency';
 import { ColorsDropdownInput } from '@/views/components/ColorsDropdownInput';
 import { Button } from '@/views/components/ui/button.tsx';
 import { Input } from '@/views/components/ui/input.tsx';
@@ -31,7 +31,7 @@ export function NewAccountModal() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Index
+                      <InputCurrency
                         error={form.formState.errors.initialBalance?.message}
                         {...field}
                         value={field.value}

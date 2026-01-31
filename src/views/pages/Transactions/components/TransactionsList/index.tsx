@@ -39,7 +39,7 @@ export function TransactionsList({
           <h2 className="text-lg font-semibold">Histórico de Transações</h2>
           <div className="flex gap-2">
             <Badge variant="outline">
-              {MONTHS[filters.month]} {filters.year}
+              {MONTHS[filters.month - 1]} {filters.year}
             </Badge>
           </div>
         </div>

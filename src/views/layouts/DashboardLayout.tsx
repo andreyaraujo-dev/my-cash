@@ -7,6 +7,8 @@ const TITLES = [
   { pathname: '/', title: 'Dashboard' },
   { pathname: '/accounts', title: 'Minhas Contas' },
   { pathname: '/transactions', title: 'Minhas Transações' },
+  { pathname: '/categories', title: 'Minhas Categorias' },
+  { pathname: '/reports', title: 'Relatórios' },
 ];
 
 export function DashboardLayout() {

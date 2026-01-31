@@ -20,20 +20,20 @@ export function Register() {
       </header>
 
       <form onSubmit={handleSubmit} className="w-full flex flex-col items-center gap-4">
-        <Input type="text" placeholder="Nome" {...register('name')} error={errors.name?.message} />
+        <Input type="text" placeholder="Nome" {...register('name')} />
         <Input
           type="email"
           placeholder="E-mail"
           {...register('email')}
-          error={errors.email?.message}
-          showErrorMessage
+          // error={errors.email?.message}
+          // showErrorMessage
         />
         <Input
           type="password"
           placeholder="Senha"
           {...register('password')}
-          error={errors.password?.message}
-          showErrorMessage
+          // error={errors.password?.message}
+          // showErrorMessage
         />
 
         <Button type="submit" className="rounded-[16px] mt-2" isLoading={isPending}>

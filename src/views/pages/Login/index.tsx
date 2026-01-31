@@ -24,15 +24,15 @@ export function Login() {
           type="email"
           placeholder="E-mail"
           {...register('email')}
-          error={errors.email?.message}
-          showErrorMessage
+          // error={errors.email?.message}
+          // showErrorMessage
         />
         <Input
           type="password"
           placeholder="Senha"
           {...register('password')}
-          error={errors.password?.message}
-          showErrorMessage
+          // error={errors.password?.message}
+          // showErrorMessage
         />
 
         <Button type="submit" className="rounded-[16px] mt-2" isLoading={isPending}>

@@ -8,7 +8,7 @@ import {
   FormItem,
   FormMessage,
 } from '@/views/components/ui/form.tsx';
-import { Index } from '@/views/components/InputCurrency';
+import { InputCurrency } from '@/views/components/InputCurrency';
 import { Input } from '@/views/components/ui/input.tsx';
 import { Select } from '@/views/components/Select';
 import { ColorsDropdownInput } from '@/views/components/ColorsDropdownInput';
@@ -68,7 +68,7 @@ export function EditAccountModal() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Index
+                      <InputCurrency
                         error={form.formState.errors.initialBalance?.message}
                         {...field}
                         value={field.value}
@@ -94,7 +94,7 @@ export function EditAccountModal() {
                       type="text"
                       placeholder="Nome da Conta"
                       {...field}
-                      error={form.formState.errors.name?.message}
+                      // error={form.formState.errors.name?.message}
                       onChange={field.onChange}
                       value={field.value}
                     />

@@ -1,4 +1,4 @@
-import { useDashboard } from '@/app/hooks/useDashboard.ts';
+import { useTransactionsContext } from '@/app/hooks/useTransactionsContext';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -33,7 +33,7 @@ type FormData = z.infer<typeof schema>;
 
 export function useNewTransactionModalController() {
   const { isNewTransactionModalOpen, closeNewTransactionModal, newTransactionType } =
-    useDashboard();
+    useTransactionsContext();
   const { toast } = useToast();
 
   const form = useForm<FormData>({
@@ -63,7 +63,7 @@ export function useNewTransactionModalController() {
         date: data.date.toISOString(),
       });
 
-      queryClient.invalidateQueries({ queryKey: ['transactions'] });
+      queryClient.invalidateQueries({ queryKey: ['transactions'], exact: false });
       queryClient.invalidateQueries({ queryKey: ['bankAccounts'] });
 
       toast({

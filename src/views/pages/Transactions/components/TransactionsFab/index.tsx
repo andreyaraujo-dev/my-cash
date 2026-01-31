@@ -6,17 +6,17 @@ import {
   DropdownMenuTrigger,
 } from '@/views/components/ui/dropdown-menu.tsx';
 import { CategoryIcon } from '@/views/components/icons/Categories/CategoryIcon.tsx';
-import { useDashboard } from '@/app/hooks/useDashboard.ts';
+import { useTransactionsContext } from '@/app/hooks/useTransactionsContext';
 import { useState } from 'react';
 import { cn } from '@/lib/utils.ts';
 
-interface FabProps {
+interface TransactionsFabProps {
   className?: string;
   buttonText?: string;
 }
 
-export function Fab({ className, buttonText }: FabProps) {
-  const { openNewTransactionModal } = useDashboard();
+export function TransactionsFab({ className, buttonText }: TransactionsFabProps) {
+  const { openNewTransactionModal } = useTransactionsContext();
   const [open, setOpen] = useState(false);
 
   const handleOpenModal = (type: 'INCOME' | 'EXPENSE') => {

@@ -1,5 +1,5 @@
 import { useDashboard } from '@/app/hooks/useDashboard.ts';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Transaction } from '@/app/entities/Transaction.ts';
 import { useTransactions } from '@/app/hooks/useTransactions.ts';
 import { useMutation } from '@tanstack/react-query';
@@ -20,25 +20,19 @@ export function useTransactionsController() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [transactionBeingEdited, setTransactionBeingEdited] = useState<Transaction | null>(null);
   const [filters, setFilters] = useState<TransactionsFilters>({
-    month: new Date().getMonth(),
+    month: new Date().getMonth() + 1,
     year: new Date().getFullYear(),
   });
-  const [shouldFetch, setShouldFetch] = useState(true);
   const [isOpenUpdateTransactionStatusDialog, setIsOpenUpdateTransactionStatusDialog] =
     useState(false);
   const [transactionIdToUpdate, setTransactionIdToUpdate] = useState('');
+
   const handleTogglePaid = (id: string) => {
     setIsOpenUpdateTransactionStatusDialog(true);
     setTransactionIdToUpdate(id);
   };
 
-  useEffect(() => {
-    if (shouldFetch) {
-      setShouldFetch(false);
-    }
-  }, [shouldFetch]);
-
-  const { transactions, isLoading, isInitialLoading } = useTransactions(filters, shouldFetch);
+  const { transactions, isLoading, isInitialLoading } = useTransactions(filters);
 
   function handleChangeFilters<TFilter extends keyof TransactionsFilters>(filter: TFilter) {
     return (value: TransactionsFilters[TFilter]) => {
@@ -72,7 +66,6 @@ export function useTransactionsController() {
     handleChangeFilters('title')(title);
     if (month) handleChangeFilters('month')(month);
     if (type) handleChangeFilters('type')(type);
-    setShouldFetch(true);
     handleCloseFiltersModal();
   }
 
@@ -145,7 +138,6 @@ export function useTransactionsController() {
     setIsOpenUpdateTransactionStatusDialog,
     transactionIdToUpdate,
     handleTogglePaid,
-    setShouldFetch,
     updateTransactionStatus,
     isErrorUpdateTransactionStatus,
     isLoadingUpdateTransactionStatus,

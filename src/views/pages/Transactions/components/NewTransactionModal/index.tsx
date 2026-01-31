@@ -7,11 +7,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/views/components/ui/form.tsx';
-import { Index } from '@/views/components/InputCurrency';
+import { InputCurrency } from '@/views/components/InputCurrency';
 import { Button } from '@/views/components/ui/button.tsx';
 import { Input } from '@/views/components/ui/input.tsx';
 import { Select } from '@/views/components/Select';
-import { useNewTransactionModalController } from '@/views/pages/Dashboard/components/Modals/NewTransactionModal/useNewTransactionModalController.ts';
+import { useNewTransactionModalController } from './useNewTransactionModalController';
 import { DatePickerInput } from '@/views/components/DatePickerInput';
 import { Checkbox } from '@/views/components/ui/checkbox';
 
@@ -49,7 +49,7 @@ export function NewTransactionModal() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Index
+                      <InputCurrency
                         error={form.formState.errors.value?.message}
                         {...field}
                         value={field.value}
@@ -76,7 +76,7 @@ export function NewTransactionModal() {
                       type="text"
                       placeholder={isExpense ? 'Nome da Despesa' : 'Nome da Receita'}
                       {...field}
-                      error={form.formState.errors.name?.message}
+                      // error={form.formState.errors.name?.message}
                       onChange={field.onChange}
                       value={field.value}
                     />

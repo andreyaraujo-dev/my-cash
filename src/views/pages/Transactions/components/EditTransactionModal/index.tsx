@@ -7,7 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/views/components/ui/form.tsx';
-import { Index } from '@/views/components/InputCurrency';
+import { InputCurrency } from '@/views/components/InputCurrency';
 import { Input } from '@/views/components/ui/input.tsx';
 import { Select } from '@/views/components/Select';
 import { DatePickerInput } from '@/views/components/DatePickerInput';
@@ -79,7 +79,7 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Index
+                      <InputCurrency
                         error={form.formState.errors.value?.message}
                         {...field}
                         value={field.value}
@@ -98,7 +98,6 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
             <FormField
               control={form.control}
               name="name"
-              defaultValue=""
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -118,7 +117,6 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
             <FormField
               control={form.control}
               name="categoryId"
-              defaultValue=""
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
@@ -142,7 +140,6 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
             <FormField
               control={form.control}
               name="bankAccountId"
-              defaultValue=""
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

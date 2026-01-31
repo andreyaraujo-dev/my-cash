@@ -52,24 +52,18 @@ export function AccountsPageContent() {
   const previousYear = currentMonth === 0 ? currentYear - 1 : currentYear;
 
   const { transactions: currentMonthTransactions, isLoading: isLoadingCurrentMonth } =
-    useTransactions(
-      {
-        month: currentMonth,
-        year: currentYear,
-        // isPaid: true,
-      },
-      true,
-    );
+    useTransactions({
+      month: currentMonth,
+      year: currentYear,
+      // isPaid: true,
+    });
 
   const { transactions: previousMonthTransactions, isLoading: isLoadingPreviousMonth } =
-    useTransactions(
-      {
-        month: previousMonth,
-        year: previousYear,
-        // isPaid: true,
-      },
-      true,
-    );
+    useTransactions({
+      month: previousMonth,
+      year: previousYear,
+      // isPaid: true,
+    });
 
   const monthlyVariation = useMemo(() => {
     const previousMonthIncome = previousMonthTransactions

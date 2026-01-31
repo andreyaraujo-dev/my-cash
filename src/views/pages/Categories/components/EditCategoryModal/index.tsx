@@ -1,6 +1,6 @@
 import { Modal } from '@/views/components/Modal';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/views/components/ui/form';
-import { Index } from '@/views/components/InputCurrency';
+import { InputCurrency } from '@/views/components/InputCurrency';
 import { IconDropdownInput } from '@/views/components/IconDropdownInput';
 import { Button } from '@/views/components/ui/button';
 import { Input } from '@/views/components/ui/input';
@@ -128,7 +128,7 @@ export function EditCategoryModal({
                     <div className="flex items-center justify-center gap-2 mt-2">
                       <span className="text-gray-600 tracking-[-0.5px] text-lg">R$</span>
                       <FormControl>
-                        <Index
+                        <InputCurrency
                           error={form.formState.errors.budget?.message}
                           {...field}
                           value={field.value || ''}
