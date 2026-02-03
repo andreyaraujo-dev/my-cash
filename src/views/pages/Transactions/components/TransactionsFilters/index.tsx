@@ -210,7 +210,7 @@ export function TransactionsFilters({
               )}
             />
 
-            <Button type="submit" variant="outline" className="h-12">
+            <Button type="submit" variant="outline" className="h-12 w-max">
               <Filter size={16} />
             </Button>
           </form>

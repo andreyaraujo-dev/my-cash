@@ -5,7 +5,7 @@ import {
   PieChart,
   Settings,
   Wallet,
-  TrendingUp,
+  Target,
   PiggyBank,
   LogOut,
 } from 'lucide-react';
@@ -55,7 +55,7 @@ const items = [
   {
     title: 'Metas',
     url: '/goals',
-    icon: TrendingUp,
+    icon: Target,
   },
   {
     title: 'Investimentos',

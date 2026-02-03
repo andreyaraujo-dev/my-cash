@@ -1,0 +1,125 @@
+import { Button } from '@/views/components/ui/button';
+import { Plus } from 'lucide-react';
+import { useGoalsController } from './hooks/useGoalsController';
+import { GoalsFilters } from './components/GoalsFilters';
+import { GoalsList } from './components/GoalsList';
+import { NewGoalModal } from './components/NewGoalModal';
+import { EditGoalModal } from './components/EditGoalModal';
+import { GoalDetailsModal } from './components/GoalDetailsModal';
+import { GoalOperationModal } from './components/GoalOperationModal';
+import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { goalsService } from '@/app/services/goalsService';
+import { useToast } from '@/app/hooks/useToast';
+
+export function GoalsPage() {
+  const {
+    goals,
+    isLoading,
+    filters,
+    handleChangeFilters,
+    handleClearFilters,
+    isNewModalOpen,
+    handleOpenNewModal,
+    handleCloseNewModal,
+    isEditModalOpen,
+    handleOpenEditModal,
+    handleCloseEditModal,
+    goalBeingEdited,
+    isDetailsModalOpen,
+    handleOpenDetailsModal,
+    handleCloseDetailsModal,
+    goalForDetails,
+    isOperationModalOpen,
+    handleOpenOperationModal,
+    handleCloseOperationModal,
+    goalForOperation,
+    isDeleteModalOpen,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
+    goalToDelete,
+  } = useGoalsController();
+
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const { isPending: isDeleting, mutateAsync: deleteGoal } = useMutation({
+    mutationFn: goalsService.remove,
+  });
+
+  const handleConfirmDelete = async () => {
+    if (!goalToDelete) return;
+
+    try {
+      await deleteGoal(goalToDelete.id);
+
+      queryClient.invalidateQueries({ queryKey: ['goals'] });
+
+      toast({
+        title: 'Sucesso!',
+        description: 'Meta deletada com sucesso!',
+        duration: 3000,
+      });
+
+      handleCloseDeleteModal();
+    } catch {
+      toast({
+        title: 'Erro!',
+        description: 'Erro ao deletar meta. Tente novamente.',
+        duration: 3000,
+      });
+    }
+  };
+
+  return (
+    <div className="h-full flex flex-col gap-4">
+      <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <h1 className="text-2xl font-bold">Minhas Metas</h1>
+        <Button onClick={handleOpenNewModal} className="w-max">
+          <Plus className="w-4 h-4 mr-2" />
+          Nova Meta
+        </Button>
+      </header>
+
+      <GoalsFilters
+        filters={filters}
+        handleChangeFilters={handleChangeFilters}
+        handleClearFilters={handleClearFilters}
+      />
+
+      <GoalsList
+        goals={goals}
+        isLoading={isLoading}
+        onEdit={handleOpenEditModal}
+        onDelete={handleOpenDeleteModal}
+        onDetails={handleOpenDetailsModal}
+        onAddValue={handleOpenOperationModal}
+      />
+
+      <NewGoalModal open={isNewModalOpen} onClose={handleCloseNewModal} />
+
+      <EditGoalModal open={isEditModalOpen} onClose={handleCloseEditModal} goal={goalBeingEdited} />
+
+      <GoalDetailsModal
+        open={isDetailsModalOpen}
+        onClose={handleCloseDetailsModal}
+        goal={goalForDetails}
+      />
+
+      <GoalOperationModal
+        open={isOperationModalOpen}
+        onClose={handleCloseOperationModal}
+        goal={goalForOperation}
+      />
+
+      <ConfirmDeleteModal
+        open={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleConfirmDelete}
+        isLoading={isDeleting}
+        title="Deletar Meta"
+        description={`Tem certeza que deseja deletar a meta "${goalToDelete?.name}"? Esta ação não pode ser desfeita.`}
+      />
+    </div>
+  );
+}
