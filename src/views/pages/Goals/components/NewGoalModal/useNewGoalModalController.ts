@@ -22,7 +22,8 @@ export function useNewGoalModalController({ isOpen, onClose }: UseNewGoalModalCo
     resolver: zodResolver(createGoalSchema),
     defaultValues: {
       name: '',
-      value: 0,
+      targetValue: 0,
+      currentValue: 0,
       dueDate: undefined,
       status: 'PENDING',
       importance: 'MEDIUM',
@@ -33,13 +34,21 @@ export function useNewGoalModalController({ isOpen, onClose }: UseNewGoalModalCo
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: goalsService.create,
+    mutationKey: ['createGoal'],
   });
 
   const handleSubmit = form.handleSubmit(async (data) => {
     try {
       await mutateAsync({
         ...data,
-        value: typeof data.value === 'string' ? currencyStringToNumber(data.value) : data.value,
+        targetValue:
+          typeof data.targetValue === 'string'
+            ? currencyStringToNumber(data.targetValue)
+            : data.targetValue,
+        currentValue:
+          typeof data.currentValue === 'string'
+            ? currencyStringToNumber(data.currentValue)
+            : (data.currentValue ?? 0),
         dueDate: data.dueDate.toISOString(),
       });
 
@@ -66,7 +75,8 @@ export function useNewGoalModalController({ isOpen, onClose }: UseNewGoalModalCo
     if (isOpen) {
       form.reset({
         name: '',
-        value: 0,
+        targetValue: 0,
+        currentValue: 0,
         dueDate: undefined,
         status: 'PENDING',
         importance: 'MEDIUM',

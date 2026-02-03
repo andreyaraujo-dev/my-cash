@@ -16,8 +16,15 @@ interface GoalCardProps {
   onAddValue: (goal: Goal) => void;
 }
 
+function safeNumber(value: unknown): number {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : 0;
+}
+
 export function GoalCard({ goal, onEdit, onDelete, onDetails, onAddValue }: GoalCardProps) {
-  const progress = (goal.currentValue / goal.value) * 100;
+  const targetValue = safeNumber(goal.targetValue);
+  const currentValue = safeNumber(goal.currentValue);
+  const progress = targetValue === 0 ? 0 : (currentValue / targetValue) * 100;
 
   const getProgressColor = (percentage: number) => {
     if (percentage >= 100) return 'bg-green-500';
@@ -149,12 +156,12 @@ export function GoalCard({ goal, onEdit, onDelete, onDetails, onAddValue }: Goal
           <div className="flex items-center justify-between text-sm">
             <span className="text-zinc-400">Progresso</span>
             <span className="font-semibold">
-              {formatCurrency(goal.currentValue)} / {formatCurrency(goal.value)}
+              {formatCurrency(currentValue)} / {formatCurrency(targetValue)}
             </span>
           </div>
           <Progress
-            value={goal.currentValue}
-            max={goal.value}
+            value={currentValue}
+            max={targetValue || 1}
             indicatorClassName={getProgressColor(progress)}
           />
           <div className="text-right text-xs text-zinc-500">{progress.toFixed(1)}% atingido</div>

@@ -30,10 +30,12 @@ export function useEditGoalModalController({
 
   const { isPending: isUpdating, mutateAsync: updateGoal } = useMutation({
     mutationFn: goalsService.update,
+    mutationKey: ['updateGoal'],
   });
 
   const { isPending: isDeleting, mutateAsync: deleteGoal } = useMutation({
     mutationFn: goalsService.remove,
+    mutationKey: ['deleteGoal'],
   });
 
   const handleSubmit = form.handleSubmit(async (data) => {
@@ -43,7 +45,14 @@ export function useEditGoalModalController({
       await updateGoal({
         id: goal.id,
         ...data,
-        value: typeof data.value === 'string' ? currencyStringToNumber(data.value) : data.value,
+        targetValue:
+          typeof data.targetValue === 'string'
+            ? currencyStringToNumber(data.targetValue)
+            : data.targetValue,
+        currentValue:
+          typeof data.currentValue === 'string'
+            ? currencyStringToNumber(data.currentValue)
+            : (data.currentValue ?? 0),
         dueDate: data.dueDate.toISOString(),
       });
 
@@ -93,7 +102,8 @@ export function useEditGoalModalController({
     if (isOpen && goal) {
       form.reset({
         name: goal.name,
-        value: goal.value,
+        targetValue: goal.targetValue,
+        currentValue: goal.currentValue ?? 0,
         dueDate: new Date(goal.dueDate),
         status: goal.status,
         categoryId: goal.categoryId,

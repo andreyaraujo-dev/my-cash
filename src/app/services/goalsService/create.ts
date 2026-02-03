@@ -3,7 +3,8 @@ import { httpClient } from '../httpClient';
 
 export interface CreateGoalParams {
   name: string;
-  value: number;
+  targetValue: number;
+  currentValue?: number;
   dueDate: string;
   status: Goal['status'];
   categoryId: string;

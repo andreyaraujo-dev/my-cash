@@ -4,7 +4,8 @@ import { httpClient } from '../httpClient';
 export interface UpdateGoalParams {
   id: string;
   name: string;
-  value: number;
+  targetValue: number;
+  currentValue: number;
   dueDate: string;
   status: Goal['status'];
   categoryId: string;

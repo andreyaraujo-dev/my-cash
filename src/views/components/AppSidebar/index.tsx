@@ -6,7 +6,6 @@ import {
   Settings,
   Wallet,
   Target,
-  PiggyBank,
   LogOut,
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
@@ -56,11 +55,6 @@ const items = [
     title: 'Metas',
     url: '/goals',
     icon: Target,
-  },
-  {
-    title: 'Investimentos',
-    url: '/investments',
-    icon: PiggyBank,
   },
 ];
 

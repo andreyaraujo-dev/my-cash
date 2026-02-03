@@ -13,10 +13,17 @@ interface GoalDetailsModalProps {
   goal: Goal | null;
 }
 
+function safeNumber(value: unknown): number {
+  const n = Number(value);
+  return Number.isFinite(n) ? n : 0;
+}
+
 export function GoalDetailsModal({ open, onClose, goal }: GoalDetailsModalProps) {
   if (!goal) return null;
 
-  const progress = (goal.currentValue / goal.value) * 100;
+  const targetValue = safeNumber(goal.targetValue);
+  const currentValue = safeNumber(goal.currentValue);
+  const progress = targetValue === 0 ? 0 : (currentValue / targetValue) * 100;
 
   const getProgressColor = (percentage: number) => {
     if (percentage >= 100) return 'bg-green-500';
@@ -109,25 +116,25 @@ export function GoalDetailsModal({ open, onClose, goal }: GoalDetailsModalProps)
             <span className="font-semibold text-lg">{progress.toFixed(1)}%</span>
           </div>
           <Progress
-            value={goal.currentValue}
-            max={goal.value}
+            value={currentValue}
+            max={targetValue || 1}
             indicatorClassName={getProgressColor(progress)}
             className="h-3"
           />
           <div className="flex items-center justify-between text-sm">
             <div>
               <p className="text-zinc-400">Valor Atual</p>
-              <p className="font-semibold text-lg">{formatCurrency(goal.currentValue)}</p>
+              <p className="font-semibold text-lg">{formatCurrency(currentValue)}</p>
             </div>
             <div className="text-right">
               <p className="text-zinc-400">Valor Alvo</p>
-              <p className="font-semibold text-lg">{formatCurrency(goal.value)}</p>
+              <p className="font-semibold text-lg">{formatCurrency(targetValue)}</p>
             </div>
           </div>
           <div className="pt-2 border-t border-zinc-700">
             <p className="text-zinc-400 text-sm">Falta alcançar</p>
             <p className="font-semibold text-lg">
-              {formatCurrency(Math.max(0, goal.value - goal.currentValue))}
+              {formatCurrency(Math.max(0, targetValue - currentValue))}
             </p>
           </div>
         </div>

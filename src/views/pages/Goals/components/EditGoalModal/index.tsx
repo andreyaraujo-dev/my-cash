@@ -14,7 +14,6 @@ import { Input } from '@/views/components/ui/input';
 import { Select } from '@/views/components/Select';
 import { useEditGoalModalController } from './useEditGoalModalController';
 import { Textarea } from '@/views/components/ui/textarea';
-import { Trash2 } from 'lucide-react';
 import { DatePickerInput } from '@/views/components/DatePickerInput';
 
 interface EditGoalModalProps {
@@ -27,9 +26,7 @@ export function EditGoalModal({ open, onClose, goal }: EditGoalModalProps) {
   const {
     form,
     handleSubmit,
-    handleDelete,
     isLoading,
-    isDeleting,
     statusOptions,
     importanceOptions,
     priorityOptions,
@@ -39,22 +36,7 @@ export function EditGoalModal({ open, onClose, goal }: EditGoalModalProps) {
   if (!goal) return null;
 
   return (
-    <Modal
-      open={open}
-      title="Editar Meta"
-      onClose={onClose}
-      rightAction={
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={handleDelete}
-          disabled={isDeleting}
-          className="text-red-500 hover:text-red-600"
-        >
-          <Trash2 className="w-4 h-4" />
-        </Button>
-      }
-    >
+    <Modal open={open} title="Editar Meta" onClose={onClose}>
       <Form {...form}>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
@@ -74,7 +56,7 @@ export function EditGoalModal({ open, onClose, goal }: EditGoalModalProps) {
 
             <FormField
               control={form.control}
-              name="value"
+              name="targetValue"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor Alvo</FormLabel>
@@ -82,7 +64,29 @@ export function EditGoalModal({ open, onClose, goal }: EditGoalModalProps) {
                     <span className="text-gray-600">R$</span>
                     <FormControl>
                       <InputCurrency
-                        error={form.formState.errors.value?.message}
+                        error={form.formState.errors.targetValue?.message}
+                        {...field}
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="currentValue"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Valor Atual</FormLabel>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600">R$</span>
+                    <FormControl>
+                      <InputCurrency
+                        error={form.formState.errors.currentValue?.message}
                         {...field}
                         value={field.value}
                         onChange={field.onChange}

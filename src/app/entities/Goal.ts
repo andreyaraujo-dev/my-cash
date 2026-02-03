@@ -1,7 +1,7 @@
 export interface Goal {
   id: string;
   name: string;
-  value: number; // valor alvo
+  targetValue: number; // valor alvo
   currentValue: number; // valor atual (progresso)
   dueDate: string; // data de vencimento
   status: 'PENDING' | 'IN_PROGRESS' | 'COMPLETED' | 'CANCELLED';

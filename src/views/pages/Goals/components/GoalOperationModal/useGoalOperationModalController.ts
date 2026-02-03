@@ -6,7 +6,6 @@ import { useEffect, useMemo } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useBankAccounts } from '@/app/hooks/useBankAccounts';
 import { goalsService } from '@/app/services/goalsService';
-import { currencyStringToNumber } from '@/app/utils/currencyStringToNumber';
 import { Goal } from '@/app/entities/Goal';
 
 interface UseGoalOperationModalControllerProps {
@@ -36,6 +35,7 @@ export function useGoalOperationModalController({
 
   const { isPending, mutateAsync } = useMutation({
     mutationFn: goalsService.createOperation,
+    mutationKey: ['createGoalOperation'],
   });
 
   const operationType = form.watch('type');
@@ -44,24 +44,19 @@ export function useGoalOperationModalController({
     if (!goal) return;
 
     // Validação: não pode retirar mais do que tem disponível
-    if (data.type === 'WITHDRAW') {
-      const value =
-        typeof data.value === 'string' ? currencyStringToNumber(data.value) : data.value;
-      if (value > goal.currentValue) {
-        toast({
-          title: 'Erro!',
-          description: 'Não é possível retirar mais do que o valor disponível na meta.',
-          duration: 3000,
-        });
-        return;
-      }
+    if (data.type === 'WITHDRAW' && data.value > goal.currentValue) {
+      toast({
+        title: 'Erro!',
+        description: 'Não é possível retirar mais do que o valor disponível na meta.',
+        duration: 3000,
+      });
+      return;
     }
 
     try {
       await mutateAsync({
         goalId: goal.id,
         ...data,
-        value: typeof data.value === 'string' ? currencyStringToNumber(data.value) : data.value,
       });
 
       queryClient.invalidateQueries({ queryKey: ['goals'] });

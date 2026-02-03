@@ -2,16 +2,17 @@ import { z } from 'zod';
 
 export const createGoalSchema = z.object({
   name: z.string().min(3, 'O nome deve ter no mínimo 3 caracteres'),
-  value: z.union([z.string(), z.number()]).transform((val, ctx) => {
+  targetValue: z.union([z.string(), z.number()]).transform((val, ctx) => {
     if (val === 0 || val === '0' || val === '0,00') {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
-        message: 'A meta precisa ter um valor',
+        message: 'A meta precisa ter um valor alvo',
       });
       return z.NEVER;
     }
     return val;
   }),
+  currentValue: z.union([z.string(), z.number()]).optional().default(0),
   dueDate: z
     .date({ required_error: 'Data de vencimento é obrigatória' })
     .nullable()

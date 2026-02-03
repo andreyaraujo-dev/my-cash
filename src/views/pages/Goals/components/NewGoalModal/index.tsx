@@ -52,7 +52,7 @@ export function NewGoalModal({ open, onClose }: NewGoalModalProps) {
 
             <FormField
               control={form.control}
-              name="value"
+              name="targetValue"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Valor Alvo</FormLabel>
@@ -60,7 +60,29 @@ export function NewGoalModal({ open, onClose }: NewGoalModalProps) {
                     <span className="text-gray-600">R$</span>
                     <FormControl>
                       <InputCurrency
-                        error={form.formState.errors.value?.message}
+                        error={form.formState.errors.targetValue?.message}
+                        {...field}
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </FormControl>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="currentValue"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Valor Atual</FormLabel>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-600">R$</span>
+                    <FormControl>
+                      <InputCurrency
+                        error={form.formState.errors.currentValue?.message}
                         {...field}
                         value={field.value}
                         onChange={field.onChange}

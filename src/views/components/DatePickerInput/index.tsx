@@ -1,53 +1,52 @@
-/* eslint-disable no-unused-vars */
-import { useState } from 'react';
-import { Popover, PopoverContent, PopoverTrigger } from '@/views/components/ui/popover.tsx';
-import { cn } from '@/lib/utils.ts';
-import { formatDate } from '@/app/utils/formatDate.ts';
-import { DatePicker } from '@/views/components/DatePicker';
-import { Calendar } from 'lucide-react';
+'use client';
 
-interface DatePickerInputProps {
+import * as React from 'react';
+import { Button } from '@/views/components/ui/button';
+import { Calendar } from '@/views/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/views/components/ui/popover';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+
+export interface DatePickerInputProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   error?: string;
-  className?: string;
   value?: Date;
-  onChange?: (date: Date) => void;
+  onChange?: (_date: Date | undefined) => void;
 }
 
-export function DatePickerInput({ error, value, onChange, className }: DatePickerInputProps) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  function handleChangeDate(date: Date) {
-    onChange?.(date);
-    setIsOpen(false);
-  }
+export function DatePickerInput({
+  error,
+  value,
+  onChange,
+  className,
+  ...rest
+}: DatePickerInputProps) {
+  const [open, setOpen] = React.useState(false);
+  const date = value;
+  const setDate = React.useCallback(
+    (date: Date | undefined) => {
+      onChange?.(date);
+      setOpen(false);
+    },
+    [onChange],
+  );
 
   return (
-    <div>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
+    <div className={cn(className)} {...rest}>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <button
-            type="button"
+          <Button
+            variant="outline"
             className={cn(
-              'rounded-lg w-full border pt-4 border-zinc-800 px-3 h-[52px] text-zinc-100 placeholder-shown:pt-0 focus:border-zinc-800 transition-all outline-none text-left relative hover:border-zinc-700',
-              error && '!border-red-900',
-              !value && 'pt-0 text-zinc-500',
-              className,
+              'w-full justify-start font-normal h-12',
+              error && 'border-destructive text-destructive',
             )}
           >
-            {value && (
-              <span className="absolute text-zinc-300 text-xs left-[13px] top-2 pointer-events-none">
-                Data
-              </span>
-            )}
-            <span className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              {value ? formatDate(value) : 'Selecione uma data'}
-            </span>
-          </button>
+            {date ? format(date, 'dd/MM/yyyy') : <span>Selecione uma data</span>}
+          </Button>
         </PopoverTrigger>
-
-        <PopoverContent className="border-zinc-800 w-auto p-3 z-[9999]" align="start">
-          <DatePicker value={value ?? new Date()} onChange={handleChangeDate} />
+        <PopoverContent className="w-auto p-0 z-[9999]" align="start" data-datepicker-content>
+          <Calendar mode="single" selected={date} onSelect={setDate} defaultMonth={date} />
         </PopoverContent>
       </Popover>
     </div>
