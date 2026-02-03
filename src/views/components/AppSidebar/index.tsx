@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { useAuth } from '@/app/hooks/useAuth';
 import {
   Sidebar,
   SidebarContent,
@@ -74,6 +75,7 @@ const footerItems = [
 export function AppSidebar() {
   const location = useLocation();
   const { open } = useSidebar();
+  const { signout } = useAuth();
 
   return (
     <Sidebar collapsible="icon">
@@ -129,6 +131,23 @@ export function AppSidebar() {
             <SidebarMenu>
               {footerItems.map((item) => {
                 const isActive = location.pathname === item.url;
+                const isSignOut = item.title === 'Sair';
+
+                if (isSignOut) {
+                  return (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton
+                        tooltip={item.title}
+                        className="w-full justify-start gap-3 h-12 text-muted-foreground hover:text-foreground"
+                        onClick={signout}
+                      >
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                }
+
                 return (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton

@@ -10,7 +10,7 @@ import { useAuth } from '@/app/hooks/useAuth.ts';
 import { CircleUser } from 'lucide-react';
 
 export function UserMenu() {
-  const { signout, user } = useAuth();
+  const { user } = useAuth();
 
   return (
     <DropdownMenu>
@@ -25,7 +25,7 @@ export function UserMenu() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem onSelect={signout} className="flex items-center gap-2 font-medium">
+        <DropdownMenuItem className="flex items-center gap-2 font-medium">
           <CircleUser className="w-4 h-4" />
           Perfil
         </DropdownMenuItem>
