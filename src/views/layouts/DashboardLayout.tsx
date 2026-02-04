@@ -11,6 +11,7 @@ const TITLES = [
   { pathname: '/reports', title: 'Relatórios' },
   { pathname: '/goals', title: 'Metas' },
   { pathname: '/profile', title: 'Perfil' },
+  { pathname: '/profile/subscription', title: 'Gerenciar assinatura' },
 ];
 
 export function DashboardLayout() {

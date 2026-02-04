@@ -1,17 +1,20 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, KeyRound, Trash2, Wallet, CreditCard, PieChart, Target } from 'lucide-react';
+import { User, KeyRound, Trash2, Wallet, CreditCard, PieChart, Target, Receipt } from 'lucide-react';
 import { useAuth } from '@/app/hooks/useAuth';
 import { useBankAccounts } from '@/app/hooks/useBankAccounts';
 import { useTransactions } from '@/app/hooks/useTransactions';
 import { useGoals } from '@/app/hooks/useGoals';
 import { useCategories } from '@/app/hooks/useCategories';
+import { useSubscription } from '@/app/hooks/useSubscription';
 import { useProfileController } from './hooks/useProfileController';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '@/app/services/authService';
 import { usersService } from '@/app/services/usersService';
 import { useToast } from '@/app/hooks/useToast';
 import { formatCurrency } from '@/app/utils/formatCurrency';
+import { formatDate } from '@/app/utils/formatDate';
+import { getDaysRemaining } from '@/app/utils/getDaysRemaining';
 import {
   Card,
   CardContent,
@@ -53,6 +56,7 @@ export function Profile() {
     });
   const { goals, isLoading: isLoadingGoals } = useGoals({});
   const { categories, isFetching: isLoadingCategories } = useCategories();
+  const { subscription, isLoading: isLoadingSubscription } = useSubscription();
 
   const deleteAccountMutation = useMutation({
     mutationFn: authService.deleteAccount,
@@ -212,6 +216,52 @@ export function Profile() {
         <CardContent>
           <Button variant="outline" onClick={() => setChangePasswordOpen(true)}>
             Alterar senha
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Seção – Assinatura */}
+      <Card>
+        <CardHeader className="flex flex-row items-center gap-2">
+          <Receipt className="h-5 w-5 text-muted-foreground" />
+          <div>
+            <CardTitle>Assinatura</CardTitle>
+            <CardDescription>Gerencie sua assinatura do plano</CardDescription>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {isLoadingSubscription ? (
+            <p className="text-muted-foreground">Carregando...</p>
+          ) : subscription ? (
+            <div className="space-y-2">
+              <div className="flex flex-wrap items-center gap-2">
+                <span
+                  className={`text-sm font-medium ${subscription.isActive ? 'text-green-600' : 'text-muted-foreground'}`}
+                >
+                  {subscription.isTrial ? 'Trial' : subscription.isActive ? 'Ativa' : 'Cancelada'}
+                </span>
+                <span className="text-muted-foreground">·</span>
+                <span className="text-sm">{formatCurrency(subscription.value)}/mês</span>
+              </div>
+              {subscription.isTrial && subscription.trialEndsAt ? (
+                <p className="text-sm text-muted-foreground">
+                  Trial até {formatDate(new Date(subscription.trialEndsAt))}
+                  {getDaysRemaining(subscription.trialEndsAt) > 0 &&
+                    ` (${getDaysRemaining(subscription.trialEndsAt)} dias restantes)`}
+                </p>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  Próxima renovação: {formatDate(new Date(subscription.nextRenewalAt))}
+                  {getDaysRemaining(subscription.nextRenewalAt) > 0 &&
+                    ` (${getDaysRemaining(subscription.nextRenewalAt)} dias restantes)`}
+                </p>
+              )}
+            </div>
+          ) : (
+            <p className="text-sm text-muted-foreground">Você ainda não possui uma assinatura ativa.</p>
+          )}
+          <Button variant="outline" onClick={() => navigate('/profile/subscription')}>
+            Gerenciar assinatura
           </Button>
         </CardContent>
       </Card>
