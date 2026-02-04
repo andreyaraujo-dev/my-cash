@@ -8,6 +8,7 @@ import {
 } from '@/views/components/ui/dropdown-menu.tsx';
 import { useAuth } from '@/app/hooks/useAuth.ts';
 import { CircleUser } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function UserMenu() {
   const { user } = useAuth();
@@ -25,9 +26,11 @@ export function UserMenu() {
 
         <DropdownMenuSeparator />
 
-        <DropdownMenuItem className="flex items-center gap-2 font-medium">
-          <CircleUser className="w-4 h-4" />
-          Perfil
+        <DropdownMenuItem asChild>
+          <Link to="/profile" className="flex items-center gap-2 font-medium cursor-pointer">
+            <CircleUser className="w-4 h-4" />
+            Perfil
+          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

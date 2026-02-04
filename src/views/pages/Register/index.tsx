@@ -4,7 +4,7 @@ import { Button } from '@/views/components/ui/button.tsx';
 import { useRegisterController } from '@/views/pages/Register/useRegisterController.tsx';
 
 export function Register() {
-  const { register, handleSubmit, errors, isPending } = useRegisterController();
+  const { register, handleSubmit, isPending } = useRegisterController();
 
   return (
     <div className="flex flex-col items-center justify-center gap-12">
@@ -36,7 +36,7 @@ export function Register() {
           // showErrorMessage
         />
 
-        <Button type="submit" className="rounded-[16px] mt-2" isLoading={isPending}>
+        <Button type="submit" className="rounded-sm mt-2 h-12" isLoading={isPending}>
           Criar conta
         </Button>
       </form>

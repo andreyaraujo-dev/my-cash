@@ -3,7 +3,7 @@ import {
   CreditCard,
   Home,
   PieChart,
-  Settings,
+  User,
   Wallet,
   Target,
   LogOut,
@@ -61,9 +61,9 @@ const items = [
 
 const footerItems = [
   {
-    title: 'Configurações',
-    url: '/settings',
-    icon: Settings,
+    title: 'Perfil',
+    url: '/profile',
+    icon: User,
   },
   {
     title: 'Sair',

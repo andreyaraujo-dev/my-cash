@@ -10,6 +10,7 @@ import { TransactionsPage } from '@/views/pages/Transactions/index.tsx';
 import { CategoriesPage } from '@/views/pages/Categories/index.tsx';
 import { ReportsPage } from '@/views/pages/Reports/index.tsx';
 import { GoalsPage } from '@/views/pages/Goals/index.tsx';
+import { Profile } from '@/views/pages/Profile';
 
 export function Router() {
   return (
@@ -30,6 +31,7 @@ export function Router() {
             <Route path="/categories" element={<CategoriesPage />} />
             <Route path="/reports" element={<ReportsPage />} />
             <Route path="/goals" element={<GoalsPage />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
         </Route>
       </Routes>

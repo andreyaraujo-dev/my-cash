@@ -19,7 +19,7 @@ const buttonVariants = cva(
         'blue-primary': 'bg-blue-900 hover:bg-opacity-80 transition-colors disabled:bg-blue-900/70',
       },
       size: {
-        default: 'h-9 px-3 py-1',
+        default: 'h-12 px-3 py-1',
         sm: 'h-8 rounded-md px-3 text-xs',
         lg: 'h-10 rounded-md px-8',
         icon: 'h-9 w-9',
