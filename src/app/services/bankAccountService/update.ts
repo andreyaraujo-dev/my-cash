@@ -5,7 +5,7 @@ export interface UpdateBankAccountParams {
   name: string;
   initialBalance: number;
   color: string;
-  type: 'CHECKING' | 'INVESTMENT' | 'CASH';
+  type: 'CHECKING' | 'INVESTMENT' | 'CASH' | 'SAVING';
 }
 
 export async function update({ id, ...params }: UpdateBankAccountParams) {

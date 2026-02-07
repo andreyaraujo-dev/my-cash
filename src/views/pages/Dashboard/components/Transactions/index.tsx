@@ -15,7 +15,7 @@ import { EditTransactionModal } from '@/views/pages/Transactions/components/Edit
 import { TotalTransactions } from '@/views/pages/Dashboard/components/Transactions/TotalTransactions.tsx';
 import { Button } from '@/views/components/ui/button';
 import { Check, Clock } from 'lucide-react';
-import { Fab } from '../Fab';
+import { TransactionsFab } from '@/views/pages/Transactions/components/TransactionsFab';
 
 export function Transactions() {
   const {
@@ -179,7 +179,7 @@ export function Transactions() {
             />
           )}
 
-          <Fab />
+          <TransactionsFab />
         </>
       )}
     </div>

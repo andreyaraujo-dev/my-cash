@@ -25,7 +25,6 @@ export function UpdateTransactionStatus({
 }: UpdateTransactionStatusProps) {
   const {
     filters,
-    setShouldFetch,
     isLoadingUpdateTransactionStatus,
     updateTransactionStatus,
     isErrorUpdateTransactionStatus,
@@ -45,7 +44,6 @@ export function UpdateTransactionStatus({
         });
       }
 
-      setShouldFetch(true);
       await queryClient.refetchQueries({ queryKey: ['transactions', filters] });
       setIsOpen(false);
     } catch {

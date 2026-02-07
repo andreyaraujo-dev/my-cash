@@ -11,7 +11,7 @@ import { useToast } from '@/app/hooks/useToast.ts';
 const schema = z.object({
   initialBalance: z.union([z.string().nonempty('Saldo inicial é obrigatório'), z.number()]),
   name: z.string().nonempty('Nome é obrigatório'),
-  type: z.enum(['CHECKING', 'INVESTMENT', 'CASH']),
+  type: z.enum(['CHECKING', 'INVESTMENT', 'CASH', 'SAVING']),
   color: z.string().nonempty('Cor é obrigatória'),
 });
 

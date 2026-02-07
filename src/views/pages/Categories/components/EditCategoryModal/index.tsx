@@ -26,7 +26,6 @@ export function EditCategoryModal({
   form,
   handleSubmit,
   isLoading,
-  category,
 }: EditCategoryModalProps) {
   const selectedType = useWatch({ control: form.control, name: 'type' });
   const currentIcon = useWatch({ control: form.control, name: 'icon' });

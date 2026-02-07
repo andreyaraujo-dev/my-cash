@@ -1,9 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { Goal } from '@/app/entities/Goal';
 import { Badge } from '@/views/components/ui/badge';
 import { Button } from '@/views/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/views/components/ui/card';
 import { Progress } from '@/views/components/ui/progress';
-import { cn } from '@/lib/utils';
 import { Calendar, Edit2, Eye, Plus, Trash2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';

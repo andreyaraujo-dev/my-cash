@@ -27,11 +27,7 @@ export function DatePicker({ value, onChange }: DatePickerProps) {
         day_selected: '!bg-zinc-700 text-white font-medium',
       }}
       formatters={{
-        formatCaption: (date, options) => (
-          <span className="text-zinc-100 pl-2 tracking-[-0.408px] font-medium">
-            {capitalizeFirstLetter(format(date, 'LLLL yyyy', options))}
-          </span>
-        ),
+        formatCaption: (date, options) => capitalizeFirstLetter(format(date, 'LLLL yyyy', options)),
       }}
     />
   );
