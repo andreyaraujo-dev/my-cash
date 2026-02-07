@@ -1,0 +1,44 @@
+import { Button } from '@/views/components/ui/button';
+import { Card } from '@/views/components/ui/card';
+import { TrendingUp } from 'lucide-react';
+import { InfoAccountsTooltip } from '../Accounts/InfoAccountsTooltip';
+import { useAccountsController } from '../Accounts/useAccountsController';
+import { formatCurrency } from '@/app/utils/formatCurrency';
+import { EyeIcon } from '@/views/components/icons/EyeIcon';
+import { cn } from '@/lib/utils';
+
+export function BalanceCard() {
+  const { currentBalance, toggleValuesVisibility, areValuesVisible } = useAccountsController();
+
+  return (
+    <Card className="p-6 bg-card/50 border border-border">
+      <div className="flex items-start justify-between mb-2">
+        <div className="flex items-center">
+          <h2 className="text-sm text-muted-foreground">Saldo total</h2>
+          <InfoAccountsTooltip />
+        </div>
+        <Button variant="ghost" size="icon" className="h-6 w-6 text-muted-foreground">
+          <TrendingUp size={16} />
+        </Button>
+      </div>
+
+      <div className="flex">
+        <strong
+          className={cn(
+            'text-2xl tracking-[-1px] text-white',
+            !areValuesVisible && 'blur-md select-none',
+          )}
+        >
+          {formatCurrency(currentBalance)}
+        </strong>
+        <button
+          type="button"
+          className="w-8 h-8 flex items-center justify-center"
+          onClick={toggleValuesVisibility}
+        >
+          <EyeIcon open={!areValuesVisible} />
+        </button>
+      </div>
+    </Card>
+  );
+}

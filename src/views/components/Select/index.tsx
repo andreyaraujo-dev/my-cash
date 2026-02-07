@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import { useState } from 'react';
 import { cn } from '@/lib/utils.ts';
 import {
   Select as SelectShadcn,
@@ -8,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
+import { forwardRef } from 'react';
 
 interface SelectProps {
   className?: string;
@@ -21,50 +21,39 @@ interface SelectProps {
   onChange?(value: string): void;
 }
 
-export function Select({ className, error, placeholder, options, value, onChange }: SelectProps) {
-  const [selectedValue, setSelectedValue] = useState(value ?? '');
+export const Select = forwardRef<HTMLButtonElement, SelectProps>(
+  ({ className, error, placeholder, options, value, onChange }, ref) => {
+    function handleSelect(selectedValue: string) {
+      onChange?.(selectedValue);
+    }
 
-  function handleSelect(value: string) {
-    setSelectedValue(value);
-    onChange?.(value);
-  }
-
-  return (
-    <div>
-      <div className="relative">
-        <label
+    return (
+      <SelectShadcn onValueChange={handleSelect} value={value || undefined}>
+        <SelectTrigger
+          ref={ref}
           className={cn(
-            'absolute z-10 top-1/2 -translate-y-1/2 left-3 text-zinc-300 pointer-events-none',
-            selectedValue && 'text-xs left-[13px] top-2 transition-all translate-y-0',
+            'bg-transparent rounded-lg w-full border border-zinc-800 px-3 py-2 h-12 text-zinc-100 placeholder-shown:pt-0 focus:border-zinc-800 transition-all outline-none text-left relative',
+            error && '!border-red-900',
+            className,
           )}
         >
-          {placeholder}
-        </label>
+          <SelectValue placeholder={placeholder} />
+        </SelectTrigger>
 
-        <SelectShadcn onValueChange={handleSelect} value={value}>
-          <SelectTrigger
-            className={cn(
-              'bg-transparent rounded-lg w-full border border-zinc-800 px-3 h-[52px] text-zinc-100 placeholder-shown:pt-0 focus:border-zinc-800 transition-all outline-none text-left relative pt-4',
-              error && '!border-red-900',
-              className,
-            )}
-          >
-            <SelectValue />
-          </SelectTrigger>
+        <SelectContent className="z-[99] overflow-hidden rounded-2xl border-zinc-800 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)]">
+          {options.map((option) => (
+            <SelectItem
+              key={option.value}
+              value={option.value}
+              className="p-2 text-zinc-100 text-sm data-[state=checked]:font-bold data-[highlighted]:bg-zinc-900 data-[highlighted]:text-zinc-100 outline-none rounded-lg transition-colors"
+            >
+              {option.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </SelectShadcn>
+    );
+  },
+);
 
-          <SelectContent className="z-[99] overflow-hidden rounded-2xl border-zinc-800 shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)]">
-            {options.map((option) => (
-              <SelectItem
-                key={option.value}
-                value={option.value}
-                className="p-2 text-zinc-100 text-sm data-[state=checked]:font-bold data-[highlighted]:bg-zinc-900 data-[highlighted]:text-zinc-100 outline-none rounded-lg transition-colors"
-              >
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </SelectShadcn>
-      </div>
-    </div>
-  );
-}
+Select.displayName = 'Select';

@@ -3,4 +3,8 @@ export interface Category {
   name: string;
   icon: string;
   type: 'INCOME' | 'EXPENSE';
+  color?: string;
+  budget?: number;
+  totalSpent?: number;
+  transactions?: number;
 }

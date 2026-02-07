@@ -5,14 +5,17 @@ import { SliderNavigation } from '@/views/pages/Dashboard/components/Transaction
 import { formatCurrency } from '@/app/utils/formatCurrency.ts';
 import { CategoryIcon } from '@/views/components/icons/Categories/CategoryIcon.tsx';
 import { cn } from '@/lib/utils.ts';
-import { useTransactionsController } from '@/views/pages/Dashboard/components/Transactions/useTransactionsController.ts';
+import { useTransactionsController } from '@/views/pages/Transactions/hooks/useTransactionsController';
 import { Spinner } from '@/views/components/Loading/Spinner';
 import emptyState from '@/assets/empty-state.svg';
 import { TransactionTypeDropdown } from '@/views/pages/Dashboard/components/Transactions/TransactionTypeDropdown.tsx';
 import { FiltersModal } from '@/views/pages/Dashboard/components/Modals/FiltersModal';
 import { formatDate } from '@/app/utils/formatDate.ts';
-import { EditTransactionModal } from '@/views/pages/Dashboard/components/Modals/EditTransactionModal';
+import { EditTransactionModal } from '@/views/pages/Transactions/components/EditTransactionModal';
 import { TotalTransactions } from '@/views/pages/Dashboard/components/Transactions/TotalTransactions.tsx';
+import { Button } from '@/views/components/ui/button';
+import { Check, Clock } from 'lucide-react';
+import { TransactionsFab } from '@/views/pages/Transactions/components/TransactionsFab';
 
 export function Transactions() {
   const {
@@ -35,8 +38,10 @@ export function Transactions() {
     totalExpenses,
   } = useTransactionsController();
 
+  function onTogglePaid() {}
+
   return (
-    <div className="border border-zinc-800 rounded-2xl w-full h-full p-4 md:px-10 md:pt-10 pb-2 flex flex-col">
+    <div className="border-l border-zinc-800 h-full p-4 pr-0 flex flex-col">
       {isInitialLoading && (
         <div className="flex items-center justify-center h-full w-full">
           <Spinner className="w-10 h-10" />
@@ -108,22 +113,34 @@ export function Transactions() {
                   <div
                     key={transaction.id}
                     className={cn(
-                      'border border-zinc-800 p-4 rounded-2xl flex items-center justify-between gap-4',
-                      transaction.isPaid && 'bg-zinc-900 opacity-50',
+                      'p-4 flex items-center justify-between gap-4 hover:bg-zinc-900 transition-all rounded-sm',
+                      transaction.isPaid && 'opacity-60',
                     )}
                     role="button"
                     onClick={() => handleOpenEditModal(transaction)}
                   >
                     <div className="flex-1 flex items-center gap-3">
-                      <CategoryIcon type={transaction.type} category={transaction.category?.icon} />
+                      <div className="relative">
+                        <CategoryIcon
+                          type={transaction.type}
+                          category={transaction.category?.icon}
+                        />
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className={`h-4 w-4 absolute -bottom-1 -right-1 border-2 ${
+                            transaction.isPaid
+                              ? 'bg-green-500 border-green-500 text-white hover:bg-green-600'
+                              : 'bg-background border-muted-foreground text-muted-foreground hover:bg-muted'
+                          }`}
+                          onClick={onTogglePaid}
+                        >
+                          {transaction.isPaid ? <Check size={10} /> : <Clock size={10} />}
+                        </Button>
+                      </div>
 
                       <div>
-                        <strong
-                          className={cn(
-                            'font-bold tracking-[-0.5px] block text-zinc-100',
-                            transaction.isPaid && 'line-through',
-                          )}
-                        >
+                        <strong className={cn('font-bold tracking-[-0.5px] block text-zinc-100')}>
                           {transaction.name}
                         </strong>
                         <span className="text-sm text-zinc-300">
@@ -134,13 +151,18 @@ export function Transactions() {
 
                     <span
                       className={cn(
-                        'tracking-[-0.5px] font-medium',
+                        'tracking-[-0.5px] font-semibold flex flex-col items-end text-sm',
                         transaction.type === 'EXPENSE' ? 'text-red-800' : 'text-green-800',
                         !areValuesVisible && 'blur-md',
                       )}
                     >
                       {transaction.type === 'EXPENSE' ? '- ' : '+ '}
                       {formatCurrency(transaction.value)}
+                      {transaction.isPaid ? (
+                        <span className="text-zinc-100 text-xs font-normal">Pago</span>
+                      ) : (
+                        <span className="text-zinc-100 text-xs font-normal">Pendente</span>
+                      )}
                     </span>
                   </div>
                 ))}
@@ -156,6 +178,8 @@ export function Transactions() {
               totalExpense={totalExpenses}
             />
           )}
+
+          <TransactionsFab />
         </>
       )}
     </div>

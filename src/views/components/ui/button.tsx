@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/utils.ts';
+import { cn } from '@/lib/utils';
 import { Spinner } from '@/views/components/Loading/Spinner';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center w-full justify-center gap-2 whitespace-nowrap rounded-2xl text-white text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
+  'inline-flex items-center justify-center w-full justify-center gap-2 whitespace-nowrap rounded-md text-white text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:bg-gray-100 disabled:text-gray-400 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
   {
     variants: {
       variant: {
@@ -16,9 +16,10 @@ const buttonVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        'blue-primary': 'bg-blue-900 hover:bg-opacity-80 transition-colors disabled:bg-blue-900/70',
       },
       size: {
-        default: 'h-12 px-6 py-2',
+        default: 'h-12 px-3 py-1',
         sm: 'h-8 rounded-md px-3 text-xs',
         lg: 'h-10 rounded-md px-8',
         icon: 'h-9 w-9',

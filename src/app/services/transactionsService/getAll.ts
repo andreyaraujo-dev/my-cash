@@ -9,6 +9,7 @@ export type TransactionsFilters = {
   bankAccountId?: string;
   type?: Transaction['type'];
   isPaid?: boolean;
+  title?: string;
 };
 
 export async function getAll(filters: TransactionsFilters) {

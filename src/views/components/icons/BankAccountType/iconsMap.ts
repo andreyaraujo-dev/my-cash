@@ -1,9 +1,8 @@
-import { CashIcon } from './CashIcon';
-import { CheckingIcon } from './CheckingIcon';
-import { InvestmentIcon } from './InvestmentIcon';
+import { Banknote, Building, Landmark, PiggyBank } from 'lucide-react';
 
 export const iconsMap = {
-  CHECKING: CheckingIcon,
-  CASH: CashIcon,
-  INVESTMENT: InvestmentIcon,
+  CHECKING: Building,
+  CASH: Banknote,
+  INVESTMENT: Landmark,
+  SAVING: PiggyBank,
 };
