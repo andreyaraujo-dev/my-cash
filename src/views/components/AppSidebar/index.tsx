@@ -1,13 +1,4 @@
-import {
-  BarChart3,
-  CreditCard,
-  Home,
-  PieChart,
-  User,
-  Wallet,
-  Target,
-  LogOut,
-} from 'lucide-react';
+import { BarChart3, CreditCard, Home, PieChart, User, Wallet, Target, LogOut } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useAuth } from '@/app/hooks/useAuth';
@@ -87,7 +78,7 @@ export function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem className="items-center justify-start flex gap-2">
                 <img src="/favicon.svg" alt="MyCash" className="h-8 w-8" />
-                {open && <span className="text-xl font-semibold">cash+</span>}
+                {open && <span className="text-xl font-semibold">myCash</span>}
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>

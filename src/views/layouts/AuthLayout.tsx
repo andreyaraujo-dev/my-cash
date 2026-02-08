@@ -6,7 +6,7 @@ export function AuthLayout() {
   return (
     <div className="flex w-full h-full">
       <div className="w-full lg:w-1/2 h-full flex items-center justify-center flex-col gap-16">
-        <Logo className="text-zinc-200" />
+        <img src="/cash-logo.svg" alt="myCash" className="h-40 w-40" />
 
         <div className="w-full max-w-[504px] px-8">
           <Outlet />
@@ -23,8 +23,8 @@ export function AuthLayout() {
           <Logo className="text-blue-900 h-8" />
 
           <p className="text-gray-700 font-medium text-xl mt-6">
-            Gerencie suas finanças pessoais de uma forma simples com o cash+, e o melhor, totalmente
-            de graça!
+            Gerencie suas finanças pessoais de uma forma simples com o myCash, e o melhor,
+            totalmente de graça!
           </p>
         </div>
       </div>
