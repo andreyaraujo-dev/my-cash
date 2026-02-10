@@ -13,6 +13,8 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@headlessui/react": "^2.2.0",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-avatar": "^1.1.10",
@@ -34,6 +36,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "lucide-react": "^0.541.0",
+    "motion": "^12.34.0",
     "react": "^18.3.1",
     "react-currency-input-field": "^3.6.11",
     "react-day-picker": "^9.13.0",
