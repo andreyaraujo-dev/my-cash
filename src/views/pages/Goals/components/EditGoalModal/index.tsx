@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { Goal } from '@/app/entities/Goal';
 import { Modal } from '@/views/components/Modal';
+import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
 import {
   Form,
   FormControl,
@@ -26,14 +28,31 @@ export function EditGoalModal({ open, onClose, goal }: EditGoalModalProps) {
   const {
     form,
     handleSubmit,
+    handleDelete,
     isLoading,
+    isDeleting,
     statusOptions,
     importanceOptions,
     priorityOptions,
     categoryOptions,
   } = useEditGoalModalController({ isOpen: open, onClose, goal });
 
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
   if (!goal) return null;
+
+  if (isDeleteModalOpen) {
+    return (
+      <ConfirmDeleteModal
+        open={isDeleteModalOpen}
+        title={`Tem certeza que deseja excluir a meta "${goal.name}"?`}
+        description="Esta ação não pode ser desfeita."
+        isLoading={isDeleting}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={handleDelete}
+      />
+    );
+  }
 
   return (
     <Modal open={open} title="Editar Meta" onClose={onClose}>
@@ -218,6 +237,15 @@ export function EditGoalModal({ open, onClose, goal }: EditGoalModalProps) {
 
             <Button type="submit" className="w-full" isLoading={isLoading}>
               Salvar Alterações
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full mt-2 text-red-500 hover:text-red-600 border-red-500/30 hover:border-red-500/50 hover:bg-red-500/10"
+              onClick={() => setIsDeleteModalOpen(true)}
+            >
+              Excluir meta
             </Button>
           </div>
         </form>
