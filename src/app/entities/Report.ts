@@ -71,6 +71,6 @@ export interface ExpensesByCategoryReport {
 }
 
 export interface ReportsFilters {
-  month?: number;
-  year?: number;
+  startDate?: string; // formato YYYY-MM-DD
+  endDate?: string; // formato YYYY-MM-DD
 }

@@ -1,11 +1,5 @@
 import { TrendingUp, TrendingDown, Wallet, Percent } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/views/components/ui/select';
+import { DateRangePickerInput } from '@/views/components/DateRangePickerInput';
 import { MetricCard } from './components/MetricCard';
 import { IncomeExpensesChart } from './components/IncomeExpensesChart';
 import { ExpensesByCategoryChart } from './components/ExpensesByCategoryChart';
@@ -16,13 +10,14 @@ import { formatCurrency } from '@/app/utils/formatCurrency';
 export function ReportsPage() {
   const {
     filters,
+    dateRange,
     incomeExpensesData,
     savingsRateData,
     averageBalanceData,
     isLoadingIncomeExpenses,
     isLoadingSavingsRate,
     isLoadingAverageBalance,
-    handlePeriodChange,
+    handleDateRangeChange,
   } = useReportsController();
 
   return (
@@ -30,18 +25,7 @@ export function ReportsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Relatórios</h1>
-        <div className="flex items-center gap-3">
-          <Select defaultValue="current-month" onValueChange={handlePeriodChange}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Período" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="current-month">Mês atual</SelectItem>
-              <SelectItem value="previous-month">Mês anterior</SelectItem>
-              <SelectItem value="current-year">Ano atual</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <DateRangePickerInput value={dateRange} onChange={handleDateRangeChange} />
       </div>
 
       {/* Metric Cards */}

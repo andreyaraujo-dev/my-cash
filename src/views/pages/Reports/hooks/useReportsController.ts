@@ -1,18 +1,26 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useCallback } from 'react';
+import { type DateRange } from 'react-day-picker';
+import { format, startOfMonth, endOfMonth } from 'date-fns';
 import { useIncomeExpenses, useSavingsRate, useAverageBalance } from '@/app/hooks/useReports';
 import { ReportsFilters } from '@/app/entities/Report';
 
+function getDefaultDateRange(): DateRange {
+  const now = new Date();
+  return {
+    from: startOfMonth(now),
+    to: endOfMonth(now),
+  };
+}
+
 export function useReportsController() {
-  const currentDate = new Date();
-  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth() + 1);
-  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(getDefaultDateRange);
 
   const filters: ReportsFilters = useMemo(
     () => ({
-      month: selectedMonth,
-      year: selectedYear,
+      startDate: dateRange?.from ? format(dateRange.from, 'yyyy-MM-dd') : undefined,
+      endDate: dateRange?.to ? format(dateRange.to, 'yyyy-MM-dd') : undefined,
     }),
-    [selectedMonth, selectedYear],
+    [dateRange],
   );
 
   // Buscar dados
@@ -20,42 +28,19 @@ export function useReportsController() {
   const { savingsRateData, isLoadingSavingsRate } = useSavingsRate(filters);
   const { averageBalanceData, isLoadingAverageBalance } = useAverageBalance();
 
-  const handlePeriodChange = (value: string) => {
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1;
-    const currentYear = currentDate.getFullYear();
-
-    switch (value) {
-      case 'current-month':
-        setSelectedMonth(currentMonth);
-        setSelectedYear(currentYear);
-        break;
-      case 'previous-month': {
-        const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
-        const prevYear = currentMonth === 1 ? currentYear - 1 : currentYear;
-        setSelectedMonth(prevMonth);
-        setSelectedYear(prevYear);
-        break;
-      }
-      case 'current-year':
-        setSelectedMonth(currentMonth);
-        setSelectedYear(currentYear);
-        break;
-      default:
-        break;
-    }
-  };
+  const handleDateRangeChange = useCallback((range: DateRange | undefined) => {
+    setDateRange(range);
+  }, []);
 
   return {
     filters,
-    selectedMonth,
-    selectedYear,
+    dateRange,
     incomeExpensesData,
     savingsRateData,
     averageBalanceData,
     isLoadingIncomeExpenses,
     isLoadingSavingsRate,
     isLoadingAverageBalance,
-    handlePeriodChange,
+    handleDateRangeChange,
   };
 }
