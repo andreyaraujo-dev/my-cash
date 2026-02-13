@@ -8,6 +8,7 @@ import { EditGoalModal } from './components/EditGoalModal';
 import { GoalDetailsModal } from './components/GoalDetailsModal';
 import { GoalOperationModal } from './components/GoalOperationModal';
 import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
+import { Skeleton } from '@/views/components/ui/skeleton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { goalsService } from '@/app/services/goalsService';
 import { useToast } from '@/app/hooks/useToast';
@@ -75,16 +76,21 @@ export function GoalsPage() {
     <div className="h-full flex flex-col gap-4">
       <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Minhas Metas</h1>
-        <Button onClick={handleOpenNewModal} className="w-max">
-          <Plus className="w-4 h-4 mr-2" />
-          Nova Meta
-        </Button>
+        {isLoading ? (
+          <Skeleton className="h-10 w-32 rounded-md" />
+        ) : (
+          <Button onClick={handleOpenNewModal} className="w-max">
+            <Plus className="w-4 h-4 mr-2" />
+            Nova Meta
+          </Button>
+        )}
       </header>
 
       <GoalsFilters
         filters={filters}
         handleChangeFilters={handleChangeFilters}
         handleClearFilters={handleClearFilters}
+        isLoading={isLoading}
       />
 
       <GoalsList

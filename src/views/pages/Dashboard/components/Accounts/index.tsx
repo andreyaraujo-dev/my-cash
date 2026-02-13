@@ -3,7 +3,7 @@ import 'swiper/css';
 
 import { SliderNavigation } from '@/views/pages/Dashboard/components/Accounts/SliderNavigation.tsx';
 import { useAccountsController } from '@/views/pages/Dashboard/components/Accounts/useAccountsController.ts';
-import { Spinner } from '@/views/components/Loading/Spinner';
+import { Skeleton } from '@/views/components/ui/skeleton';
 import { PlusIcon } from 'lucide-react';
 import { AccountCard } from '../AccountCard';
 
@@ -14,8 +14,28 @@ export function Accounts() {
   return (
     <div className="bg-zinc-950 w-full h-max flex flex-col">
       {isLoading && (
-        <div className="flex items-center justify-center h-full w-full">
-          <Spinner className="w-10 h-10" />
+        <div className="flex-1 flex flex-col justify-end mt-10 md:mt-0">
+          <div className="mb-4">
+            <Skeleton className="h-6 w-36" />
+          </div>
+          <div className="flex gap-4">
+            {Array.from({ length: 2 }).map((_, i) => (
+              <div
+                key={i}
+                className="p-6 rounded-lg border-2 border-muted min-w-[200px] flex-1 space-y-4"
+              >
+                <div className="flex items-start justify-between">
+                  <Skeleton className="w-10 h-10 rounded-full" />
+                  <Skeleton className="w-6 h-6" />
+                </div>
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-7 w-32" />
+                  <Skeleton className="h-3 w-16" />
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

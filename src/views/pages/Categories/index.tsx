@@ -5,8 +5,8 @@ import { Avatar, AvatarFallback } from '@/views/components/ui/avatar';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { useCategoriesController } from './hooks/useCategoriesController';
 import { CategoryIcon } from '@/views/components/icons/Categories/CategoryIcon';
-import { Spinner } from '@/views/components/Loading/Spinner';
 import { NewCategoryModal } from './components/NewCategoryModal';
+import { CategoriesSkeleton } from './components/CategoriesSkeleton';
 import { EditCategoryModal } from './components/EditCategoryModal';
 import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
 
@@ -42,11 +42,7 @@ export function CategoriesPage() {
   };
 
   if (isLoadingCategoriesWithTransactions) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Spinner />
-      </div>
-    );
+    return <CategoriesSkeleton />;
   }
 
   return (

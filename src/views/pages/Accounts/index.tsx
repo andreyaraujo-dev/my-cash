@@ -120,12 +120,14 @@ export function AccountsPageContent() {
           )}
         </div>
 
-        <AccountsStats
-          isLoading={isLoadingAccounts}
-          totalCheckingAccount={totalCheckingAccount}
-          totalInvestmentAccount={totalInvestmentAccount}
-          totalSavingAccount={totalSavingAccount}
-        />
+        {(isLoadingAccounts || accounts.length > 0) && (
+          <AccountsStats
+            isLoading={isLoadingAccounts}
+            totalCheckingAccount={totalCheckingAccount}
+            totalInvestmentAccount={totalInvestmentAccount}
+            totalSavingAccount={totalSavingAccount}
+          />
+        )}
 
         <AccountsList accounts={accounts} isLoading={isLoadingAccounts} />
       </div>

@@ -13,6 +13,7 @@ import {
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/views/components/ui/form';
 import { TransactionsFilters as Filters } from '@/app/services/transactionsService/getAll';
 import { Transaction } from '@/app/entities/Transaction';
+import { Skeleton } from '@/views/components/ui/skeleton';
 
 interface TransactionsFiltersProps {
   filters: Filters;
@@ -27,12 +28,14 @@ interface TransactionsFiltersProps {
     type?: Transaction['type'];
     title?: string;
   }) => void;
+  isLoading?: boolean;
 }
 
 export function TransactionsFilters({
   filters,
   handleApplyFilters,
   handleChangeFilters,
+  isLoading,
 }: TransactionsFiltersProps) {
   const form = useForm<FilterTransactionsSchema>({
     resolver: zodResolver(filterTransactionsSchema),
@@ -53,6 +56,36 @@ export function TransactionsFilters({
       type: data.type,
       title: data.name,
     });
+  }
+
+  if (isLoading) {
+    return (
+      <Card className="p-4 w-full">
+        <div className="flex flex-col md:flex-row gap-2 items-end w-full">
+          <div className="flex-1 space-y-2 w-full">
+            <Skeleton className="h-4 w-12" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-8" />
+            <Skeleton className="h-12 w-32" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-8" />
+            <Skeleton className="h-12 w-24" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-8" />
+            <Skeleton className="h-12 w-28" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-10" />
+            <Skeleton className="h-12 w-28" />
+          </div>
+          <Skeleton className="h-12 w-12 shrink-0" />
+        </div>
+      </Card>
+    );
   }
 
   return (

@@ -10,19 +10,26 @@ import { Form, FormControl, FormField, FormItem, FormLabel } from '@/views/compo
 import { GoalsFilters as Filters } from '@/app/services/goalsService/getAll';
 import { useCategories } from '@/app/hooks/useCategories';
 import { useMemo } from 'react';
+import { Skeleton } from '@/views/components/ui/skeleton';
 
 interface GoalsFiltersProps {
   filters: Filters;
   handleChangeFilters: <TFilter extends keyof Filters>(
+    // eslint-disable-next-line no-unused-vars
     filter: TFilter,
-  ) => (value: Filters[TFilter]) => void;
+  ) => (
+    // eslint-disable-next-line no-unused-vars
+    value: Filters[TFilter],
+  ) => void;
   handleClearFilters: () => void;
+  isLoading?: boolean;
 }
 
 export function GoalsFilters({
   filters,
   handleChangeFilters,
   handleClearFilters,
+  isLoading,
 }: GoalsFiltersProps) {
   const { categories } = useCategories();
 
@@ -74,6 +81,36 @@ export function GoalsFilters({
       })),
     [categories],
   );
+
+  if (isLoading) {
+    return (
+      <Card className="p-4 w-full">
+        <div className="flex flex-col md:flex-row gap-2 items-end w-full">
+          <div className="flex-1 space-y-2 w-full">
+            <Skeleton className="h-4 w-12" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-10" />
+            <Skeleton className="h-12 w-[150px]" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-16" />
+            <Skeleton className="h-12 w-[150px]" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-20" />
+            <Skeleton className="h-12 w-[150px]" />
+          </div>
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-16" />
+            <Skeleton className="h-12 w-[150px]" />
+          </div>
+          <Skeleton className="h-12 w-24 shrink-0" />
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card className="p-4 w-full">

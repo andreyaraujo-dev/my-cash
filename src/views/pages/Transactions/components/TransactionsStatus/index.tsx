@@ -1,11 +1,13 @@
 import { Transaction } from '@/app/entities/Transaction';
 import { Card } from '@/views/components/ui/card';
+import { Skeleton } from '@/views/components/ui/skeleton';
 
 interface TransactionStatusProps {
   transactions: Transaction[];
+  isLoading?: boolean;
 }
 
-export function TransactionStatus({ transactions }: TransactionStatusProps) {
+export function TransactionStatus({ transactions, isLoading }: TransactionStatusProps) {
   const totalPaid = transactions
     .filter((t) => t.isPaid && t.type === 'EXPENSE')
     .reduce((sum, t) => sum + t.value, 0);
@@ -13,6 +15,21 @@ export function TransactionStatus({ transactions }: TransactionStatusProps) {
   const totalPending = transactions
     .filter((t) => !t.isPaid && t.type === 'EXPENSE')
     .reduce((sum, t) => sum + t.value, 0);
+
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-3 gap-4 w-full">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <Card key={i} className="p-4">
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-28" />
+              <Skeleton className="h-8 w-36" />
+            </div>
+          </Card>
+        ))}
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-3 gap-4 w-full">

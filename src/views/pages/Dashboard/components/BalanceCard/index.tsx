@@ -6,9 +6,23 @@ import { useAccountsController } from '../Accounts/useAccountsController';
 import { formatCurrency } from '@/app/utils/formatCurrency';
 import { EyeIcon } from '@/views/components/icons/EyeIcon';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '@/views/components/ui/skeleton';
 
 export function BalanceCard() {
-  const { currentBalance, toggleValuesVisibility, areValuesVisible } = useAccountsController();
+  const { currentBalance, toggleValuesVisibility, areValuesVisible, isLoading } =
+    useAccountsController();
+
+  if (isLoading) {
+    return (
+      <Card className="p-6 bg-card/50 border border-border">
+        <div className="flex items-start justify-between mb-2">
+          <Skeleton className="h-4 w-24" />
+          <Skeleton className="h-6 w-6" />
+        </div>
+        <Skeleton className="h-8 w-40" />
+      </Card>
+    );
+  }
 
   return (
     <Card className="p-6 bg-card/50 border border-border">

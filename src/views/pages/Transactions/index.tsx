@@ -6,6 +6,7 @@ import { EditTransactionModal } from './components/EditTransactionModal';
 import { TransactionsFab } from './components/TransactionsFab';
 import { NewTransactionModal } from './components/NewTransactionModal';
 import { TransactionsProvider } from '@/app/context/TransactionsContext';
+import { Skeleton } from '@/views/components/ui/skeleton';
 
 export function TransactionsPage() {
   const {
@@ -29,16 +30,21 @@ export function TransactionsPage() {
     <TransactionsProvider>
       <div className="h-full flex flex-col gap-4 items-center">
         <div className="flex justify-end w-full">
-          <TransactionsFab className="w-max px-3 h-10 text-base" buttonText="Nova Transação" />
+          {isInitialLoading ? (
+            <Skeleton className="h-10 w-40 rounded-md" />
+          ) : (
+            <TransactionsFab className="w-max px-3 h-10 text-base" buttonText="Nova Transação" />
+          )}
         </div>
 
         <TransactionsFilters
           filters={filters}
           handleChangeFilters={handleChangeFilters}
           handleApplyFilters={handleApplyFilters}
+          isLoading={isInitialLoading}
         />
 
-        <TransactionStatus transactions={transactions} />
+        <TransactionStatus transactions={transactions} isLoading={isInitialLoading} />
 
         <TransactionsList
           transactions={transactions}
