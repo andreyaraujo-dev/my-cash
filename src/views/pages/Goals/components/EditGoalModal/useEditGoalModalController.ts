@@ -74,11 +74,11 @@ export function useEditGoalModalController({
     }
   });
 
-  const handleDelete = async () => {
+  const handleDelete = async (deleteTransactions?: boolean) => {
     if (!goal) return;
 
     try {
-      await deleteGoal(goal.id);
+      await deleteGoal({ goalId: goal.id, deleteTransactions });
 
       queryClient.invalidateQueries({ queryKey: ['goals'] });
 

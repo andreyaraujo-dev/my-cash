@@ -33,6 +33,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const queryClient = useQueryClient();
 
+  const [minTimePassed, setMinTimePassed] = useState(!signedIn);
+
+  useEffect(() => {
+    if (!signedIn) {
+      setMinTimePassed(true);
+      return;
+    }
+
+    const timer = setTimeout(() => setMinTimePassed(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const showLaunchScreen = isFetching || !minTimePassed;
+
   const signin = useCallback((accessToken: string) => {
     localStorage.setItem(localStorageKeys.ACCESS_TOKEN, accessToken);
 
@@ -57,8 +71,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider value={{ signedIn: isSuccess && signedIn, signin, signout, user: data }}>
-      <LaunchScreen isLoading={isFetching} />
-      {!isFetching && children}
+      <LaunchScreen isLoading={showLaunchScreen} />
+      {!showLaunchScreen && children}
     </AuthContext.Provider>
   );
 }

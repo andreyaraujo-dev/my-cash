@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Goal } from '@/app/entities/Goal';
 import { Modal } from '@/views/components/Modal';
-import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
+import { ConfirmDeleteGoalModal } from '../ConfirmDeleteGoalModal';
 import {
   Form,
   FormControl,
@@ -43,10 +43,9 @@ export function EditGoalModal({ open, onClose, goal }: EditGoalModalProps) {
 
   if (isDeleteModalOpen) {
     return (
-      <ConfirmDeleteModal
+      <ConfirmDeleteGoalModal
         open={isDeleteModalOpen}
-        title={`Tem certeza que deseja excluir a meta "${goal.name}"?`}
-        description="Esta ação não pode ser desfeita."
+        goalName={goal.name}
         isLoading={isDeleting}
         onClose={() => setIsDeleteModalOpen(false)}
         onConfirm={handleDelete}

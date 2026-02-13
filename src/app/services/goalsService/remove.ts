@@ -1,5 +1,12 @@
 import { httpClient } from '../httpClient';
 
-export async function remove(goalId: string) {
-  await httpClient.delete(`/goals/${goalId}`);
+interface RemoveGoalParams {
+  goalId: string;
+  deleteTransactions?: boolean;
+}
+
+export async function remove({ goalId, deleteTransactions }: RemoveGoalParams) {
+  await httpClient.delete(`/goals/${goalId}`, {
+    data: { deleteTransactions },
+  });
 }

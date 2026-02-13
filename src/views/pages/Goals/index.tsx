@@ -7,7 +7,7 @@ import { NewGoalModal } from './components/NewGoalModal';
 import { EditGoalModal } from './components/EditGoalModal';
 import { GoalDetailsModal } from './components/GoalDetailsModal';
 import { GoalOperationModal } from './components/GoalOperationModal';
-import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
+import { ConfirmDeleteGoalModal } from './components/ConfirmDeleteGoalModal';
 import { Skeleton } from '@/views/components/ui/skeleton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { goalsService } from '@/app/services/goalsService';
@@ -48,13 +48,14 @@ export function GoalsPage() {
     mutationFn: goalsService.remove,
   });
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = async (deleteTransactions?: boolean) => {
     if (!goalToDelete) return;
 
     try {
-      await deleteGoal(goalToDelete.id);
+      await deleteGoal({ goalId: goalToDelete.id, deleteTransactions });
 
-      queryClient.invalidateQueries({ queryKey: ['goals'] });
+      await queryClient.invalidateQueries({ queryKey: ['goals'] });
+      await queryClient.invalidateQueries({ queryKey: ['transactions'] });
 
       toast({
         title: 'Sucesso!',
@@ -118,13 +119,12 @@ export function GoalsPage() {
         goal={goalForOperation}
       />
 
-      <ConfirmDeleteModal
+      <ConfirmDeleteGoalModal
         open={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}
         onConfirm={handleConfirmDelete}
         isLoading={isDeleting}
-        title="Deletar Meta"
-        description={`Tem certeza que deseja deletar a meta "${goalToDelete?.name}"? Esta ação não pode ser desfeita.`}
+        goalName={goalToDelete?.name ?? ''}
       />
     </div>
   );
