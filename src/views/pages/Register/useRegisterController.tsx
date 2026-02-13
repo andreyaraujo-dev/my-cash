@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { SignupParams } from '@/app/services/authService/signup.ts';
 import { useToast } from '@/app/hooks/useToast.ts';
 import { useAuth } from '@/app/hooks/useAuth.ts';
+import { useNavigate } from 'react-router-dom';
 
 const schema = z.object({
   name: z.string().nonempty('Nome é obrigatório'),
@@ -38,11 +39,15 @@ export function useRegisterController() {
 
   const { signin } = useAuth();
 
+  const navigate = useNavigate();
+
   const handleSubmit = hookFormHandleSubmit(async (data) => {
     try {
       const { accessToken } = await mutateAsync(data);
 
       signin(accessToken);
+
+      navigate('/welcome', { replace: true });
 
       toast({ title: 'Sucesso', description: 'Cadastro realizado com sucesso!' });
     } catch {

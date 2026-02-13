@@ -12,6 +12,7 @@ import { ReportsPage } from '@/views/pages/Reports/index.tsx';
 import { GoalsPage } from '@/views/pages/Goals/index.tsx';
 import { Profile } from '@/views/pages/Profile';
 import { SubscriptionPage } from '@/views/pages/Subscription';
+import { Welcome } from '@/views/pages/Welcome';
 
 export function Router() {
   return (
@@ -25,6 +26,7 @@ export function Router() {
         </Route>
 
         <Route element={<AuthGuard isPrivate />}>
+          <Route path="/welcome" element={<Welcome />} />
           <Route element={<DashboardLayout />}>
             <Route path="/" element={<Dashboard />} />
             <Route path="/accounts" element={<AccountsPage />} />
