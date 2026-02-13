@@ -14,7 +14,6 @@ import { DatePickerInput } from '@/views/components/DatePickerInput';
 import { Button } from '@/views/components/ui/button.tsx';
 import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
 import { useEditTransactionModalController } from '@/views/pages/Transactions/components/EditTransactionModal/useEditTransactionModalController';
-import { TrashIcon } from 'lucide-react';
 import { Transaction } from '@/app/entities/Transaction.ts';
 import { Checkbox } from '@/views/components/ui/checkbox';
 
@@ -55,15 +54,6 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
       open={open}
       title={isExpense ? 'Editar Despesa' : 'Editar Receita'}
       onClose={onClose}
-      rightAction={
-        <button
-          type="button"
-          onClick={handleOpenDeleteModal}
-          className="rounded-full hover:bg-zinc-900 w-max h-max flex items-center justify-center p-2 transition-colors"
-        >
-          <TrashIcon className="w-6 h-6 text-red-900" />
-        </button>
-      }
     >
       <Form {...form}>
         <form onSubmit={handleSubmit}>
@@ -198,6 +188,15 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
 
             <Button type="submit" className="w-full mt-6" isLoading={isLoading}>
               Salvar
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full mt-2 text-red-500 hover:text-red-600 border-red-500/30 hover:border-red-500/50 hover:bg-red-500/10"
+              onClick={handleOpenDeleteModal}
+            >
+              Excluir {isExpense ? 'despesa' : 'receita'}
             </Button>
           </div>
         </form>

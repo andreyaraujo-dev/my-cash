@@ -13,7 +13,6 @@ import { Input } from '@/views/components/ui/input.tsx';
 import { Select } from '@/views/components/Select';
 import { ColorsDropdownInput } from '@/views/components/ColorsDropdownInput';
 import { Button } from '@/views/components/ui/button.tsx';
-import { TrashIcon } from 'lucide-react';
 
 export function EditAccountModal() {
   const {
@@ -46,15 +45,6 @@ export function EditAccountModal() {
       open={isEditAccountModalOpen}
       title="Editar Conta"
       onClose={closeEditAccountModal}
-      rightAction={
-        <button
-          type="button"
-          onClick={handleOpenDeleteModal}
-          className="rounded-full hover:bg-zinc-900 w-max h-max flex items-center justify-center p-2 transition-colors"
-        >
-          <TrashIcon className="w-6 h-6 text-red-900" />
-        </button>
-      }
     >
       <Form {...form}>
         <form onSubmit={handleSubmit}>
@@ -158,6 +148,15 @@ export function EditAccountModal() {
 
             <Button type="submit" className="w-full mt-6" isLoading={isLoading}>
               Salvar
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full mt-2 text-red-500 hover:text-red-600 border-red-500/30 hover:border-red-500/50 hover:bg-red-500/10"
+              onClick={handleOpenDeleteModal}
+            >
+              Excluir conta
             </Button>
           </div>
         </form>
