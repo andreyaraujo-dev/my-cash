@@ -1,8 +1,10 @@
 import { useTransactions } from '@/app/hooks/useTransactions';
+import { useDashboard } from '@/app/hooks/useDashboard';
 import { formatCurrency } from '@/app/utils/formatCurrency';
 import { Avatar, AvatarFallback } from '@/views/components/ui/avatar';
 import { Card, CardContent, CardHeader, CardTitle } from '@/views/components/ui/card';
 import { Skeleton } from '@/views/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { ArrowRight, Check, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -17,6 +19,8 @@ export function RecentTransactions() {
     month,
     year,
   });
+
+  const { areValuesVisible } = useDashboard();
 
   // Pega apenas as 5 últimas transações
   const recentTransactions = transactions.slice(0, 5);
@@ -109,7 +113,12 @@ export function RecentTransactions() {
 
                     <div className="text-right">
                       <p
-                        className={`font-semibold ${amountColor} ${transaction.isPaid ? 'opacity-60' : ''}`}
+                        className={cn(
+                          'font-semibold',
+                          amountColor,
+                          transaction.isPaid && 'opacity-60',
+                          !areValuesVisible && 'blur-md select-none',
+                        )}
                       >
                         {prefix} {formatCurrency(transaction.value)}
                       </p>

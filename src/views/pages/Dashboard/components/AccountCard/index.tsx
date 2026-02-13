@@ -3,6 +3,7 @@ import { useDashboard } from '@/app/hooks/useDashboard';
 import { formatCurrency } from '@/app/utils/formatCurrency';
 import { Button } from '@/views/components/ui/button';
 import { Card } from '@/views/components/ui/card';
+import { cn } from '@/lib/utils';
 import { MoreHorizontal } from 'lucide-react';
 
 interface AccountCardProps {
@@ -11,7 +12,7 @@ interface AccountCardProps {
 
 export function AccountCard({ data }: AccountCardProps) {
   const { name, color, currentBalance } = data;
-  const { openEditAccountModal } = useDashboard();
+  const { openEditAccountModal, areValuesVisible } = useDashboard();
 
   return (
     <Card className={`p-6 bg-card/50 border-2 min-w-[200px]`} style={{ borderColor: color }}>
@@ -31,7 +32,14 @@ export function AccountCard({ data }: AccountCardProps) {
 
       <div className="space-y-1">
         <h3 className="font-medium text-foreground">{name}</h3>
-        <p className="text-2xl font-semibold text-foreground">{formatCurrency(currentBalance)}</p>
+        <p
+          className={cn(
+            'text-2xl font-semibold text-foreground',
+            !areValuesVisible && 'blur-md select-none',
+          )}
+        >
+          {formatCurrency(currentBalance)}
+        </p>
         <p className="text-sm text-muted-foreground">Saldo atual</p>
       </div>
     </Card>
