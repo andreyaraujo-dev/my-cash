@@ -25,7 +25,7 @@ export function ReportsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Relatórios</h1>
-        <DateRangePickerInput value={dateRange} onChange={handleDateRangeChange} />
+        <DateRangePickerInput value={dateRange} onChange={handleDateRangeChange} showApplyButton />
       </div>
 
       {/* Metric Cards */}
