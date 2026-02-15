@@ -11,6 +11,8 @@ import { NewAccountModal } from '../Dashboard/components/Modals/NewAccountModal'
 import { DashboardContext, DashboardProvider } from '@/app/context/DashboardContext';
 import { EditAccountModal } from '../Dashboard/components/Modals/EditAccountModal';
 import { Skeleton } from '@/views/components/ui/skeleton';
+import { PageTour } from '@/views/components/Tour/PageTour';
+import { accountsTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
 
 export function AccountsPage() {
   return (
@@ -109,7 +111,7 @@ export function AccountsPageContent() {
   return (
     <div className="flex flex-col justify-between gap-4 h-full">
       <div>
-        <div className="w-full flex justify-end">
+        <div className="w-full flex justify-end" data-tour="new-account-btn">
           {isLoadingAccounts ? (
             <Skeleton className="w-32 h-10 rounded-md" />
           ) : (
@@ -121,24 +123,30 @@ export function AccountsPageContent() {
         </div>
 
         {(isLoadingAccounts || accounts.length > 0) && (
-          <AccountsStats
-            isLoading={isLoadingAccounts}
-            totalCheckingAccount={totalCheckingAccount}
-            totalInvestmentAccount={totalInvestmentAccount}
-            totalSavingAccount={totalSavingAccount}
-          />
+          <div data-tour="accounts-stats">
+            <AccountsStats
+              isLoading={isLoadingAccounts}
+              totalCheckingAccount={totalCheckingAccount}
+              totalInvestmentAccount={totalInvestmentAccount}
+              totalSavingAccount={totalSavingAccount}
+            />
+          </div>
         )}
 
         <AccountsList accounts={accounts} isLoading={isLoadingAccounts} />
       </div>
 
-      <PatrimonyCard
-        isLoading={isLoadingCalculations}
-        percentage={monthlyVariation.percentage}
-        isPositive={monthlyVariation.isPositive}
-        totalPatrimony={totalPatrimony}
-        value={monthlyVariation.value}
-      />
+      <div data-tour="patrimony-card">
+        <PatrimonyCard
+          isLoading={isLoadingCalculations}
+          percentage={monthlyVariation.percentage}
+          isPositive={monthlyVariation.isPositive}
+          totalPatrimony={totalPatrimony}
+          value={monthlyVariation.value}
+        />
+      </div>
+
+      <PageTour tourId={TOUR_IDS.ACCOUNTS} steps={accountsTourSteps} />
     </div>
   );
 }

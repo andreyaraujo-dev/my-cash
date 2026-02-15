@@ -6,6 +6,8 @@ import { ExpensesByCategoryChart } from './components/ExpensesByCategoryChart';
 import { BalanceEvolutionChart } from './components/BalanceEvolutionChart';
 import { useReportsController } from './hooks/useReportsController';
 import { formatCurrency } from '@/app/utils/formatCurrency';
+import { PageTour } from '@/views/components/Tour/PageTour';
+import { reportsTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
 
 export function ReportsPage() {
   const {
@@ -25,11 +27,13 @@ export function ReportsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold">Relatórios</h1>
-        <DateRangePickerInput value={dateRange} onChange={handleDateRangeChange} showApplyButton />
+        <div data-tour="reports-date-range">
+          <DateRangePickerInput value={dateRange} onChange={handleDateRangeChange} showApplyButton />
+        </div>
       </div>
 
       {/* Metric Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" data-tour="reports-metrics">
         <MetricCard
           title="Receitas"
           value={formatCurrency(incomeExpensesData?.currentPeriod.income || 0)}
@@ -73,22 +77,26 @@ export function ReportsPage() {
       </div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Income vs Expenses Chart - 2 columns */}
-        <div className="lg:col-span-2">
-          <IncomeExpensesChart />
+      <div data-tour="reports-charts">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          {/* Income vs Expenses Chart - 2 columns */}
+          <div className="lg:col-span-2">
+            <IncomeExpensesChart />
+          </div>
+
+          {/* Expenses by Category Chart - 1 column */}
+          <div className="lg:col-span-1">
+            <ExpensesByCategoryChart filters={filters} />
+          </div>
         </div>
 
-        {/* Expenses by Category Chart - 1 column */}
-        <div className="lg:col-span-1">
-          <ExpensesByCategoryChart filters={filters} />
+        {/* Balance Evolution Chart - Full Width */}
+        <div className="w-full mt-4">
+          <BalanceEvolutionChart />
         </div>
       </div>
 
-      {/* Balance Evolution Chart - Full Width */}
-      <div className="w-full">
-        <BalanceEvolutionChart />
-      </div>
+      <PageTour tourId={TOUR_IDS.REPORTS} steps={reportsTourSteps} />
     </div>
   );
 }

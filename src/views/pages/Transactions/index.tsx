@@ -7,6 +7,8 @@ import { TransactionsFab } from './components/TransactionsFab';
 import { NewTransactionModal } from './components/NewTransactionModal';
 import { TransactionsProvider } from '@/app/context/TransactionsContext';
 import { Skeleton } from '@/views/components/ui/skeleton';
+import { PageTour } from '@/views/components/Tour/PageTour';
+import { transactionsTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
 
 export function TransactionsPage() {
   const {
@@ -29,7 +31,7 @@ export function TransactionsPage() {
   return (
     <TransactionsProvider>
       <div className="h-full flex flex-col gap-4 items-center">
-        <div className="flex justify-end w-full">
+        <div className="flex justify-end w-full" data-tour="new-transaction-btn">
           {isInitialLoading ? (
             <Skeleton className="h-10 w-40 rounded-md" />
           ) : (
@@ -37,14 +39,18 @@ export function TransactionsPage() {
           )}
         </div>
 
-        <TransactionsFilters
-          filters={filters}
-          handleChangeFilters={handleChangeFilters}
-          handleApplyFilters={handleApplyFilters}
-          isLoading={isInitialLoading}
-        />
+        <div className="w-full" data-tour="transactions-filters">
+          <TransactionsFilters
+            filters={filters}
+            handleChangeFilters={handleChangeFilters}
+            handleApplyFilters={handleApplyFilters}
+            isLoading={isInitialLoading}
+          />
+        </div>
 
-        <TransactionStatus transactions={transactions} isLoading={isInitialLoading} />
+        <div className="w-full" data-tour="transactions-status">
+          <TransactionStatus transactions={transactions} isLoading={isInitialLoading} />
+        </div>
 
         <TransactionsList
           transactions={transactions}
@@ -67,6 +73,8 @@ export function TransactionsPage() {
         )}
 
         <NewTransactionModal />
+
+        <PageTour tourId={TOUR_IDS.TRANSACTIONS} steps={transactionsTourSteps} />
       </div>
     </TransactionsProvider>
   );

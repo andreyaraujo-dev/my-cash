@@ -9,6 +9,8 @@ import { NewCategoryModal } from './components/NewCategoryModal';
 import { CategoriesSkeleton } from './components/CategoriesSkeleton';
 import { EditCategoryModal } from './components/EditCategoryModal';
 import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
+import { PageTour } from '@/views/components/Tour/PageTour';
+import { categoriesTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
 
 export function CategoriesPage() {
   const {
@@ -49,10 +51,12 @@ export function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Categorias</h1>
-        <Button className="gap-2 w-max text-base" onClick={openNewCategoryModal}>
-          <Plus size={16} />
-          Nova Categoria
-        </Button>
+        <div data-tour="new-category-btn">
+          <Button className="gap-2 w-max text-base" onClick={openNewCategoryModal}>
+            <Plus size={16} />
+            Nova Categoria
+          </Button>
+        </div>
       </div>
 
       <NewCategoryModal
@@ -84,7 +88,7 @@ export function CategoriesPage() {
       )}
 
       {/* Resumo Geral */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4" data-tour="categories-summary">
         <Card className="p-4 bg-card/50">
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">Total de Categorias</p>
@@ -112,7 +116,7 @@ export function CategoriesPage() {
       </div>
 
       {/* Lista de Categorias */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" data-tour="categories-list">
         {categories.map((category) => {
           const budgetStatus = getBudgetStatus(category.percentageUsed);
           const percentageUsed = category.percentageUsed;
@@ -216,6 +220,8 @@ export function CategoriesPage() {
           </p>
         </div>
       </Card>
+
+      <PageTour tourId={TOUR_IDS.CATEGORIES} steps={categoriesTourSteps} />
     </div>
   );
 }

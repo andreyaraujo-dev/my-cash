@@ -12,6 +12,8 @@ import { Skeleton } from '@/views/components/ui/skeleton';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { goalsService } from '@/app/services/goalsService';
 import { useToast } from '@/app/hooks/useToast';
+import { PageTour } from '@/views/components/Tour/PageTour';
+import { goalsTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
 
 export function GoalsPage() {
   const {
@@ -77,31 +79,37 @@ export function GoalsPage() {
     <div className="h-full flex flex-col gap-4">
       <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Minhas Metas</h1>
-        {isLoading ? (
-          <Skeleton className="h-10 w-32 rounded-md" />
-        ) : (
-          <Button onClick={handleOpenNewModal} className="w-max">
-            <Plus className="w-4 h-4 mr-2" />
-            Nova Meta
-          </Button>
-        )}
+        <div data-tour="new-goal-btn">
+          {isLoading ? (
+            <Skeleton className="h-10 w-32 rounded-md" />
+          ) : (
+            <Button onClick={handleOpenNewModal} className="w-max">
+              <Plus className="w-4 h-4 mr-2" />
+              Nova Meta
+            </Button>
+          )}
+        </div>
       </header>
 
-      <GoalsFilters
-        filters={filters}
-        handleChangeFilters={handleChangeFilters}
-        handleClearFilters={handleClearFilters}
-        isLoading={isLoading}
-      />
+      <div data-tour="goals-filters">
+        <GoalsFilters
+          filters={filters}
+          handleChangeFilters={handleChangeFilters}
+          handleClearFilters={handleClearFilters}
+          isLoading={isLoading}
+        />
+      </div>
 
-      <GoalsList
-        goals={goals}
-        isLoading={isLoading}
-        onEdit={handleOpenEditModal}
-        onDelete={handleOpenDeleteModal}
-        onDetails={handleOpenDetailsModal}
-        onAddValue={handleOpenOperationModal}
-      />
+      <div data-tour="goals-list">
+        <GoalsList
+          goals={goals}
+          isLoading={isLoading}
+          onEdit={handleOpenEditModal}
+          onDelete={handleOpenDeleteModal}
+          onDetails={handleOpenDetailsModal}
+          onAddValue={handleOpenOperationModal}
+        />
+      </div>
 
       <NewGoalModal open={isNewModalOpen} onClose={handleCloseNewModal} />
 
@@ -126,6 +134,8 @@ export function GoalsPage() {
         isLoading={isDeleting}
         goalName={goalToDelete?.name ?? ''}
       />
+
+      <PageTour tourId={TOUR_IDS.GOALS} steps={goalsTourSteps} />
     </div>
   );
 }

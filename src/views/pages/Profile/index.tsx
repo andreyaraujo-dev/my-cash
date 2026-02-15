@@ -32,6 +32,9 @@ import {
   DialogTitle,
   DialogFooter,
 } from '@/views/components/ui/dialog';
+import { PageTour } from '@/views/components/Tour/PageTour';
+import { profileTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
+
 export function Profile() {
   const { user, signout } = useAuth();
   const navigate = useNavigate();
@@ -143,7 +146,7 @@ export function Profile() {
   return (
     <div className="flex flex-col gap-8 w-full max-w-2xl">
       {/* Seção 1 – Dados pessoais */}
-      <Card>
+      <Card data-tour="profile-personal">
         <CardHeader className="flex flex-row items-center gap-2">
           <User className="h-5 w-5 text-muted-foreground" />
           <div>
@@ -205,7 +208,7 @@ export function Profile() {
       </Card>
 
       {/* Seção 2 – Segurança */}
-      <Card>
+      <Card data-tour="profile-security">
         <CardHeader className="flex flex-row items-center gap-2">
           <KeyRound className="h-5 w-5 text-muted-foreground" />
           <div>
@@ -221,7 +224,7 @@ export function Profile() {
       </Card>
 
       {/* Seção – Assinatura */}
-      <Card>
+      <Card data-tour="profile-subscription">
         <CardHeader className="flex flex-row items-center gap-2">
           <Receipt className="h-5 w-5 text-muted-foreground" />
           <div>
@@ -446,6 +449,8 @@ export function Profile() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <PageTour tourId={TOUR_IDS.PROFILE} steps={profileTourSteps} />
     </div>
   );
 }
