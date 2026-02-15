@@ -13,11 +13,14 @@ import { GoalsPage } from '@/views/pages/Goals/index.tsx';
 import { Profile } from '@/views/pages/Profile';
 import { SubscriptionPage } from '@/views/pages/Subscription';
 import { Welcome } from '@/views/pages/Welcome';
+import { LandingPage } from '@/views/pages/Landing';
 
 export function Router() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<LandingPage />} />
+
         <Route element={<AuthGuard isPrivate={false} />}>
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
@@ -28,7 +31,7 @@ export function Router() {
         <Route element={<AuthGuard isPrivate />}>
           <Route path="/welcome" element={<Welcome />} />
           <Route element={<DashboardLayout />}>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/home" element={<Dashboard />} />
             <Route path="/accounts" element={<AccountsPage />} />
             <Route path="/transactions" element={<TransactionsPage />} />
             <Route path="/categories" element={<CategoriesPage />} />

@@ -193,7 +193,7 @@ export function Welcome() {
             transition={{ duration: 0.4, delay: 1.0 }}
           >
             <Button
-              onClick={() => navigate('/', { replace: true })}
+              onClick={() => navigate('/home', { replace: true })}
               className="bg-blue-800 hover:bg-blue-900 text-white"
             >
               Ir para o Dashboard

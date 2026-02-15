@@ -13,7 +13,7 @@ export function AuthGuard({ isPrivate }: AuthGuardProps) {
   }
 
   if (signedIn && !isPrivate) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   return <Outlet />;

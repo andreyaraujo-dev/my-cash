@@ -33,26 +33,43 @@ function CustomTooltip({ active, payload }: any) {
 export function IncomeExpensesChart() {
   // Buscar dados dos últimos 3 meses
   const currentDate = new Date();
-  const currentMonth = currentDate.getMonth() + 1;
+  const currentMonth = currentDate.getMonth();
   const currentYear = currentDate.getFullYear();
 
-  // Calcular os 3 meses anteriores
+  // Calcular os 3 meses anteriores com startDate/endDate
   const months = useMemo(() => {
     const result = [];
     for (let i = 2; i >= 0; i--) {
-      const date = new Date(currentYear, currentMonth - 1 - i, 1);
+      const firstDay = new Date(currentYear, currentMonth - i, 1);
+      const lastDay = new Date(currentYear, currentMonth - i + 1, 0);
+
+      const pad = (n: number) => String(n).padStart(2, '0');
+      const startDate = `${firstDay.getFullYear()}-${pad(firstDay.getMonth() + 1)}-${pad(firstDay.getDate())}`;
+      const endDate = `${lastDay.getFullYear()}-${pad(lastDay.getMonth() + 1)}-${pad(lastDay.getDate())}`;
+
       result.push({
-        month: date.getMonth() + 1,
-        year: date.getFullYear(),
+        month: firstDay.getMonth() + 1,
+        year: firstDay.getFullYear(),
+        startDate,
+        endDate,
       });
     }
     return result;
   }, [currentMonth, currentYear]);
 
   // Buscar dados para cada mês
-  const month1Data = useIncomeExpenses({ month: months[0].month, year: months[0].year });
-  const month2Data = useIncomeExpenses({ month: months[1].month, year: months[1].year });
-  const month3Data = useIncomeExpenses({ month: months[2].month, year: months[2].year });
+  const month1Data = useIncomeExpenses({
+    startDate: months[0].startDate,
+    endDate: months[0].endDate,
+  });
+  const month2Data = useIncomeExpenses({
+    startDate: months[1].startDate,
+    endDate: months[1].endDate,
+  });
+  const month3Data = useIncomeExpenses({
+    startDate: months[2].startDate,
+    endDate: months[2].endDate,
+  });
 
   const isLoading =
     month1Data.isLoadingIncomeExpenses ||
