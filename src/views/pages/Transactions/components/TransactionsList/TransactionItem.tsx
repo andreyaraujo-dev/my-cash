@@ -3,7 +3,7 @@ import { formatCurrency } from '@/app/utils/formatCurrency';
 import { Avatar, AvatarFallback } from '@/views/components/ui/avatar';
 import { Button } from '@/views/components/ui/button';
 import { format } from 'date-fns';
-import { Check, Clock } from 'lucide-react';
+import { Check, Clock, Repeat } from 'lucide-react';
 
 interface TransactionItemProps {
   transaction: Transaction;
@@ -12,7 +12,7 @@ interface TransactionItemProps {
 }
 
 export function TransactionItem({
-  transaction: { type, date, name, value, isPaid },
+  transaction: { type, date, name, value, isPaid, recurrenceGroupId },
   onTogglePaid,
   onClick,
 }: TransactionItemProps) {
@@ -61,11 +61,14 @@ export function TransactionItem({
         <div className="flex flex-col gap-1">
           <button
             type="button"
-            className={`font-medium text-left bg-transparent border-none p-0 m-0 cursor-pointer hover:underline ${!isPaid ? 'text-foreground' : 'text-muted-foreground'}`}
+            className={`font-medium text-left bg-transparent border-none p-0 m-0 cursor-pointer hover:underline flex items-center gap-1 ${!isPaid ? 'text-foreground' : 'text-muted-foreground'}`}
             onClick={onClick}
             tabIndex={0}
           >
             {name}
+            {recurrenceGroupId && (
+              <Repeat size={14} className="text-muted-foreground" />
+            )}
           </button>
           <p className="text-sm text-muted-foreground">{format(date, 'dd/MM/yyyy')}</p>
         </div>

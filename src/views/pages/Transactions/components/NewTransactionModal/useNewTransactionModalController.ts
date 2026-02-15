@@ -9,6 +9,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCategories } from '@/app/hooks/useCategories.ts';
 import { transactionsService } from '@/app/services/transactionsService';
 import { currencyStringToNumber } from '@/app/utils/currencyStringToNumber.ts';
+import { RecurrenceFrequency } from '@/app/entities/Transaction';
 
 const schema = z.object({
   value: z.union([z.string().nonempty('Informe o valor'), z.number()]).transform((val, ctx) => {
@@ -27,6 +28,8 @@ const schema = z.object({
   bankAccountId: z.string().nonempty('Informe a conta'),
   date: z.date(),
   isPaid: z.boolean().optional().default(false),
+  recurrenceFrequency: z.nativeEnum(RecurrenceFrequency).optional(),
+  recurrenceEndDate: z.date().optional(),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -61,6 +64,8 @@ export function useNewTransactionModalController() {
         value: currencyStringToNumber(data.value),
         type: newTransactionType!,
         date: data.date.toISOString(),
+        recurrenceFrequency: data.recurrenceFrequency || undefined,
+        recurrenceEndDate: data.recurrenceEndDate?.toISOString(),
       });
 
       queryClient.invalidateQueries({ queryKey: ['transactions'], exact: false });

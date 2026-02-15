@@ -1,3 +1,11 @@
+/* eslint-disable no-unused-vars */
+export enum RecurrenceFrequency {
+  DAILY = 'DAILY',
+  WEEKLY = 'WEEKLY',
+  MONTHLY = 'MONTHLY',
+  YEARLY = 'YEARLY',
+}
+
 export interface Transaction {
   id: string;
   name: string;
@@ -12,4 +20,7 @@ export interface Transaction {
     icon: string;
   };
   isPaid?: boolean;
+  recurrenceFrequency?: RecurrenceFrequency;
+  recurrenceEndDate?: string;
+  recurrenceGroupId?: string;
 }

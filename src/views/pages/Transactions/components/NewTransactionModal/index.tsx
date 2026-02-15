@@ -14,6 +14,14 @@ import { Select } from '@/views/components/Select';
 import { useNewTransactionModalController } from './useNewTransactionModalController';
 import { DatePickerInput } from '@/views/components/DatePickerInput';
 import { Checkbox } from '@/views/components/ui/checkbox';
+import { RecurrenceFrequency } from '@/app/entities/Transaction';
+
+const recurrenceOptions = [
+  { value: RecurrenceFrequency.DAILY, label: 'Diária' },
+  { value: RecurrenceFrequency.WEEKLY, label: 'Semanal' },
+  { value: RecurrenceFrequency.MONTHLY, label: 'Mensal' },
+  { value: RecurrenceFrequency.YEARLY, label: 'Anual' },
+];
 
 export function NewTransactionModal() {
   const {
@@ -28,6 +36,7 @@ export function NewTransactionModal() {
   } = useNewTransactionModalController();
 
   const isExpense = newTransactionType === 'EXPENSE';
+  const isRecurring = !!form.watch('recurrenceFrequency');
 
   return (
     <Modal
@@ -169,6 +178,77 @@ export function NewTransactionModal() {
                 </FormItem>
               )}
             />
+
+            <FormField
+              control={form.control}
+              name="recurrenceFrequency"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center gap-2">
+                    <FormControl>
+                      <Checkbox
+                        checked={isRecurring}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            field.onChange(RecurrenceFrequency.MONTHLY);
+                          } else {
+                            field.onChange(undefined);
+                            form.setValue('recurrenceEndDate', undefined);
+                          }
+                        }}
+                        className="mr-2"
+                      />
+                    </FormControl>
+                    <FormLabel className="text-zinc-100">
+                      Transação recorrente
+                    </FormLabel>
+                  </div>
+                </FormItem>
+              )}
+            />
+
+            {isRecurring && (
+              <>
+                <FormField
+                  control={form.control}
+                  name="recurrenceFrequency"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <Select
+                          placeholder="Frequência"
+                          {...field}
+                          onChange={field.onChange}
+                          value={field.value}
+                          options={recurrenceOptions}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="recurrenceEndDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-zinc-400 text-xs">
+                        Data final (opcional - padrão: 12 meses)
+                      </FormLabel>
+                      <FormControl>
+                        <DatePickerInput
+                          value={field.value}
+                          onChange={field.onChange}
+                          error={form.formState.errors.recurrenceEndDate?.message}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
 
             <Button type="submit" className="w-full mt-6" isLoading={isLoading}>
               Criar

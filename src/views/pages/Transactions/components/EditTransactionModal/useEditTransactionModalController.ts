@@ -6,7 +6,7 @@ import { useBankAccounts } from '@/app/hooks/useBankAccounts.ts';
 import { useCategories } from '@/app/hooks/useCategories.ts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { transactionsService } from '@/app/services/transactionsService';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { useToast } from '@/app/hooks/useToast.ts';
 import { currencyStringToNumber } from '@/app/utils/currencyStringToNumber.ts';
 
@@ -53,6 +53,7 @@ export function useEditTransactionModalController(
   const { accounts } = useBankAccounts();
   const { categories: categoriesList } = useCategories();
   const queryClient = useQueryClient();
+
   const { isPending, mutateAsync: updateTransaction } = useMutation({
     mutationKey: ['updateTransaction'],
     mutationFn: transactionsService.update,
@@ -61,15 +62,41 @@ export function useEditTransactionModalController(
     mutationKey: ['deleteTransaction'],
     mutationFn: transactionsService.remove,
   });
+  const { isPending: isLoadingRecurringUpdate, mutateAsync: updateRecurringTransaction } =
+    useMutation({
+      mutationKey: ['updateRecurringTransaction'],
+      mutationFn: transactionsService.updateRecurring,
+    });
+  const { isPending: isLoadingRecurringDelete, mutateAsync: removeRecurringTransaction } =
+    useMutation({
+      mutationKey: ['deleteRecurringTransaction'],
+      mutationFn: ({
+        transactionId,
+        scope,
+      }: {
+        transactionId: string;
+        scope: 'single' | 'future';
+      }) => transactionsService.removeRecurring(transactionId, scope),
+    });
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [scopeDialogOpen, setScopeDialogOpen] = useState(false);
+  const [pendingAction, setPendingAction] = useState<'edit' | 'delete' | null>(null);
+  const pendingFormData = useRef<FormData | null>(null);
+
+  const isRecurring = !!transaction?.recurrenceGroupId;
+
+  const invalidateQueries = useCallback(() => {
+    queryClient.invalidateQueries({ queryKey: ['transactions'] });
+    queryClient.invalidateQueries({ queryKey: ['bankAccounts'] });
+  }, [queryClient]);
+
+  // --- Delete logic ---
 
   async function handleDeleteTransaction() {
     try {
       await removeTransaction(transaction!.id);
-
-      queryClient.invalidateQueries({ queryKey: ['transactions'] });
-      queryClient.invalidateQueries({ queryKey: ['bankAccounts'] });
+      invalidateQueries();
       toast({ title: 'Sucesso!', description: 'Transação deletada com sucesso!', duration: 3000 });
       onClose();
     } catch {
@@ -78,14 +105,28 @@ export function useEditTransactionModalController(
   }
 
   function handleOpenDeleteModal() {
-    setIsDeleteModalOpen(true);
+    if (isRecurring) {
+      setPendingAction('delete');
+      setScopeDialogOpen(true);
+    } else {
+      setIsDeleteModalOpen(true);
+    }
   }
 
   function handleCloseDeleteModal() {
     setIsDeleteModalOpen(false);
   }
 
+  // --- Edit logic ---
+
   const handleSubmit = hookFormSubmit(async (data) => {
+    if (isRecurring) {
+      pendingFormData.current = data;
+      setPendingAction('edit');
+      setScopeDialogOpen(true);
+      return;
+    }
+
     try {
       await updateTransaction({
         ...data,
@@ -95,8 +136,7 @@ export function useEditTransactionModalController(
         date: data.date.toISOString(),
       });
 
-      queryClient.invalidateQueries({ queryKey: ['transactions'] });
-      queryClient.invalidateQueries({ queryKey: ['bankAccounts'] });
+      invalidateQueries();
 
       toast({
         title: 'Sucesso!',
@@ -117,6 +157,70 @@ export function useEditTransactionModalController(
     }
   });
 
+  // --- Scope dialog logic ---
+
+  function handleCloseScopeDialog() {
+    setScopeDialogOpen(false);
+    setPendingAction(null);
+    pendingFormData.current = null;
+  }
+
+  async function handleScopeSelect(scope: 'single' | 'future') {
+    try {
+      if (pendingAction === 'edit' && pendingFormData.current) {
+        const data = pendingFormData.current;
+        await updateRecurringTransaction({
+          id: transaction!.id,
+          scope,
+          name: data.name,
+          bankAccountId: data.bankAccountId,
+          categoryId: data.categoryId,
+          value: currencyStringToNumber(data.value),
+          type: transaction!.type,
+          date: data.date.toISOString(),
+          isPaid: data.isPaid,
+        });
+
+        invalidateQueries();
+        toast({
+          title: 'Sucesso!',
+          description:
+            scope === 'single'
+              ? 'Transação editada com sucesso!'
+              : 'Transações recorrentes editadas com sucesso!',
+          duration: 3000,
+        });
+      } else if (pendingAction === 'delete') {
+        await removeRecurringTransaction({
+          transactionId: transaction!.id,
+          scope,
+        });
+
+        invalidateQueries();
+        toast({
+          title: 'Sucesso!',
+          description:
+            scope === 'single'
+              ? 'Transação deletada com sucesso!'
+              : 'Transações recorrentes deletadas com sucesso!',
+          duration: 3000,
+        });
+      }
+
+      handleCloseScopeDialog();
+      onClose();
+    } catch {
+      toast({
+        title: 'Erro!',
+        description:
+          pendingAction === 'edit'
+            ? 'Erro ao editar transação recorrente!'
+            : 'Erro ao deletar transação recorrente!',
+        duration: 3000,
+      });
+    }
+  }
+
   const categories = useMemo(
     () => categoriesList.filter((category) => category.type === transaction?.type),
     [categoriesList, transaction],
@@ -133,5 +237,11 @@ export function useEditTransactionModalController(
     handleOpenDeleteModal,
     handleCloseDeleteModal,
     handleDeleteTransaction,
+    isRecurring,
+    scopeDialogOpen,
+    pendingAction,
+    handleCloseScopeDialog,
+    handleScopeSelect,
+    isLoadingScopeAction: isLoadingRecurringUpdate || isLoadingRecurringDelete,
   };
 }

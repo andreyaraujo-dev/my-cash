@@ -1,4 +1,5 @@
 import { httpClient } from '@/app/services/httpClient.ts';
+import { RecurrenceFrequency } from '@/app/entities/Transaction';
 
 export interface CreateTransactionParams {
   bankAccountId: string;
@@ -8,6 +9,8 @@ export interface CreateTransactionParams {
   type: 'INCOME' | 'EXPENSE';
   date: string;
   isPaid?: boolean;
+  recurrenceFrequency?: RecurrenceFrequency;
+  recurrenceEndDate?: string;
 }
 
 export async function create(params: CreateTransactionParams) {

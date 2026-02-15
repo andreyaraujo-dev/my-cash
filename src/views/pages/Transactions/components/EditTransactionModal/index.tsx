@@ -16,6 +16,7 @@ import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
 import { useEditTransactionModalController } from '@/views/pages/Transactions/components/EditTransactionModal/useEditTransactionModalController';
 import { Transaction } from '@/app/entities/Transaction.ts';
 import { Checkbox } from '@/views/components/ui/checkbox';
+import { RecurrenceScopeDialog } from '@/views/pages/Transactions/components/RecurrenceScopeDialog';
 
 interface EditTransactionModalProps {
   open: boolean;
@@ -35,9 +36,30 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
     handleDeleteTransaction,
     handleOpenDeleteModal,
     handleCloseDeleteModal,
+    isRecurring,
+    scopeDialogOpen,
+    pendingAction,
+    handleCloseScopeDialog,
+    handleScopeSelect,
+    isLoadingScopeAction,
   } = useEditTransactionModalController(transaction, onClose);
 
   const isExpense = transaction?.type === 'EXPENSE';
+
+  if (scopeDialogOpen)
+    return (
+      <RecurrenceScopeDialog
+        open={scopeDialogOpen}
+        onClose={handleCloseScopeDialog}
+        onSelect={handleScopeSelect}
+        title={
+          pendingAction === 'edit'
+            ? 'Editar transação recorrente'
+            : 'Excluir transação recorrente'
+        }
+        isLoading={isLoadingScopeAction}
+      />
+    );
 
   if (isDeleteModalOpen)
     return (
@@ -185,6 +207,12 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
                 </FormItem>
               )}
             />
+
+            {isRecurring && (
+              <p className="text-xs text-blue-400 flex items-center gap-1">
+                Esta transação faz parte de um grupo recorrente
+              </p>
+            )}
 
             <Button type="submit" className="w-full mt-6" isLoading={isLoading}>
               Salvar

@@ -3,6 +3,8 @@ import { create } from './create';
 import { update } from './update';
 import { remove } from './remove';
 import { updateStatus } from './update-status';
+import { updateRecurring } from './update-recurring';
+import { removeRecurring } from './remove-recurring';
 
 export const transactionsService = {
   getAll,
@@ -10,4 +12,6 @@ export const transactionsService = {
   update,
   remove,
   updateStatus,
+  updateRecurring,
+  removeRecurring,
 };
