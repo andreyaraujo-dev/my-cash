@@ -2,6 +2,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthGuard } from './AuthGuard.tsx';
 import { Login } from '../views/pages/Login';
 import { Register } from '../views/pages/Register';
+import { ForgotPassword } from '../views/pages/ForgotPassword';
+import { ResetPassword } from '../views/pages/ResetPassword';
 import { AuthLayout } from '../views/layouts/AuthLayout.tsx';
 import { Dashboard } from '../views/pages/Dashboard';
 import { DashboardLayout } from '../views/layouts/DashboardLayout';
@@ -25,6 +27,8 @@ export function Router() {
           <Route element={<AuthLayout />}>
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
           </Route>
         </Route>
 
