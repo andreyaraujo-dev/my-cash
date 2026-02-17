@@ -12,7 +12,7 @@ export function Accounts() {
     useAccountsController();
 
   return (
-    <div className="bg-zinc-950 w-full h-max flex flex-col">
+    <div className="bg-background w-full h-max flex flex-col">
       {isLoading && (
         <div className="flex-1 flex flex-col justify-end mt-10 md:mt-0">
           <div className="mb-4">

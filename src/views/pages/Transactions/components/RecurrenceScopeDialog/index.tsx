@@ -24,7 +24,7 @@ export function RecurrenceScopeDialog({
           <Repeat className="w-6 h-6 text-blue-400" />
         </div>
 
-        <p className="text-zinc-300 tracking-[-0.5px]">
+        <p className="text-muted-foreground tracking-[-0.5px]">
           Esta transação faz parte de um grupo recorrente. O que deseja fazer?
         </p>
       </div>

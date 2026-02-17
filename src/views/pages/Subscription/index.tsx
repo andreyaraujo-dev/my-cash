@@ -186,7 +186,7 @@ export function SubscriptionPage() {
       </Card>
 
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
-        <DialogContent className="rounded-2xl max-w-[90%] md:max-w-md bg-zinc-950 border border-zinc-800">
+        <DialogContent className="rounded-2xl max-w-[90%] md:max-w-md bg-background border border-border">
           <DialogHeader>
             <DialogTitle className="text-red-900">Cancelar assinatura?</DialogTitle>
             <p className="text-sm text-muted-foreground">

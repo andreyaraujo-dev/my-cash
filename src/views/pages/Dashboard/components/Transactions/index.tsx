@@ -41,7 +41,7 @@ export function Transactions() {
   function onTogglePaid() {}
 
   return (
-    <div className="border-l border-zinc-800 h-full p-4 pr-0 flex flex-col">
+    <div className="border-l border-border h-full p-4 pr-0 flex flex-col">
       {isInitialLoading && (
         <div className="flex items-center justify-center h-full w-full">
           <Spinner className="w-10 h-10" />
@@ -94,7 +94,7 @@ export function Transactions() {
             {!hasTransactions && !isLoading && (
               <div className="flex flex-col items-center h-full justify-center">
                 <img src={emptyState} alt="empty state ilustration" />
-                <p className="text-zinc-300">Não encontramos nenhuma transação!</p>
+                <p className="text-muted-foreground">Não encontramos nenhuma transação!</p>
               </div>
             )}
 
@@ -113,7 +113,7 @@ export function Transactions() {
                   <div
                     key={transaction.id}
                     className={cn(
-                      'p-4 flex items-center justify-between gap-4 hover:bg-zinc-900 transition-all rounded-sm',
+                      'p-4 flex items-center justify-between gap-4 hover:bg-accent transition-all rounded-sm',
                       transaction.isPaid && 'opacity-60',
                     )}
                     role="button"
@@ -140,10 +140,10 @@ export function Transactions() {
                       </div>
 
                       <div>
-                        <strong className={cn('font-bold tracking-[-0.5px] block text-zinc-100')}>
+                        <strong className={cn('font-bold tracking-[-0.5px] block text-foreground')}>
                           {transaction.name}
                         </strong>
-                        <span className="text-sm text-zinc-300">
+                        <span className="text-sm text-muted-foreground">
                           {formatDate(new Date(transaction.date))}
                         </span>
                       </div>
@@ -159,9 +159,9 @@ export function Transactions() {
                       {transaction.type === 'EXPENSE' ? '- ' : '+ '}
                       {formatCurrency(transaction.value)}
                       {transaction.isPaid ? (
-                        <span className="text-zinc-100 text-xs font-normal">Pago</span>
+                        <span className="text-foreground text-xs font-normal">Pago</span>
                       ) : (
-                        <span className="text-zinc-100 text-xs font-normal">Pendente</span>
+                        <span className="text-foreground text-xs font-normal">Pendente</span>
                       )}
                     </span>
                   </div>

@@ -29,7 +29,7 @@ export const InputCurrency = forwardRef<HTMLInputElement, InputCurrencyProps>(
           onValueChange={(value) => onChange?.(value)}
           transformRawValue={handleTransform}
           className={cn(
-            'w-full text-zinc-100 bg-transparent text-[32px] font-bold tracking-[-1px] outline-none',
+            'w-full text-foreground bg-transparent text-[32px] font-bold tracking-[-1px] outline-none',
             error && 'text-red-900',
             className,
           )}

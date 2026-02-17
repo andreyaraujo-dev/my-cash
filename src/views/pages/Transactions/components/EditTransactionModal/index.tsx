@@ -80,11 +80,11 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
       <Form {...form}>
         <form onSubmit={handleSubmit}>
           <div>
-            <span className="text-gray-600 tracking-[-0.5px] text-xs">
+            <span className="text-muted-foreground tracking-[-0.5px] text-xs">
               Valor da {isExpense ? 'despesa' : 'receita'}
             </span>
             <div className="flex items-center justify-center gap-2">
-              <span className="text-gray-600 tracking-[-0.5px] text-lg">R$</span>
+              <span className="text-muted-foreground tracking-[-0.5px] text-lg">R$</span>
               <FormField
                 control={form.control}
                 name="value"
@@ -201,7 +201,7 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
                       className="mr-2"
                     />
                   </FormControl>
-                  <FormLabel className="text-zinc-100">
+                  <FormLabel className="text-foreground">
                     Já foi {isExpense ? 'Pago?' : 'Recebido?'}
                   </FormLabel>
                 </FormItem>

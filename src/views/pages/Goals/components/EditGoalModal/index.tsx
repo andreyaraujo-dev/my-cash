@@ -79,7 +79,7 @@ export function EditGoalModal({ open, onClose, goal }: EditGoalModalProps) {
                 <FormItem>
                   <FormLabel>Valor Alvo</FormLabel>
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-600">R$</span>
+                    <span className="text-muted-foreground">R$</span>
                     <FormControl>
                       <InputCurrency
                         error={form.formState.errors.targetValue?.message}
@@ -101,7 +101,7 @@ export function EditGoalModal({ open, onClose, goal }: EditGoalModalProps) {
                 <FormItem>
                   <FormLabel>Valor Atual</FormLabel>
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-600">R$</span>
+                    <span className="text-muted-foreground">R$</span>
                     <FormControl>
                       <InputCurrency
                         error={form.formState.errors.currentValue?.message}

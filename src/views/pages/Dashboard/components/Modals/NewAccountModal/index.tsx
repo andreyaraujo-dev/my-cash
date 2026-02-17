@@ -22,9 +22,9 @@ export function NewAccountModal() {
       <Form {...form}>
         <form onSubmit={handleSubmit}>
           <div>
-            <span className="text-gray-600 tracking-[-0.5px] text-xs">Saldo inicial</span>
+            <span className="text-muted-foreground tracking-[-0.5px] text-xs">Saldo inicial</span>
             <div className="flex items-center justify-center gap-2">
-              <span className="text-gray-600 tracking-[-0.5px] text-lg">R$</span>
+              <span className="text-muted-foreground tracking-[-0.5px] text-lg">R$</span>
               <FormField
                 control={form.control}
                 name="initialBalance"

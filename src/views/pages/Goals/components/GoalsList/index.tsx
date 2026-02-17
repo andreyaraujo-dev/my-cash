@@ -33,11 +33,11 @@ export function GoalsList({
   if (goals.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
-        <div className="rounded-full bg-zinc-800 p-6 mb-4">
-          <Target className="w-12 h-12 text-zinc-400" />
+        <div className="rounded-full bg-muted p-6 mb-4">
+          <Target className="w-12 h-12 text-muted-foreground" />
         </div>
         <h3 className="text-xl font-semibold mb-2">Nenhuma meta encontrada</h3>
-        <p className="text-zinc-400 max-w-md">
+        <p className="text-muted-foreground max-w-md">
           Você ainda não criou nenhuma meta. Comece criando uma nova meta para organizar seus
           objetivos financeiros!
         </p>

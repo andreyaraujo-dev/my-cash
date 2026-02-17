@@ -15,7 +15,7 @@ export function TotalTransactions({
   totalIncome,
 }: TotalTransactionsProps) {
   return (
-    <div className="p-2 flex items-center justify-start md:justify-end gap-2 border-t border-zinc-700">
+    <div className="p-2 flex items-center justify-start md:justify-end gap-2 border-t border-border">
       {!filtersType ? (
         <div
           className={cn(

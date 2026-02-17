@@ -30,7 +30,7 @@ export function TransactionsFab({ className, buttonText }: TransactionsFabProps)
     <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger
         className={cn(
-          'rounded-md text-zinc-800 bg-white w-full h-12 flex items-center justify-center transition-all outline-none',
+          'rounded-md text-primary-foreground bg-primary w-full h-12 flex items-center justify-center transition-all outline-none',
           className,
         )}
       >

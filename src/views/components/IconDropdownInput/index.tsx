@@ -52,13 +52,13 @@ export function IconDropdownInput({
           <button
             type="button"
             className={cn(
-              'bg-transparent rounded-lg w-full border border-zinc-800 px-3 h-[52px] text-zinc-100 placeholder-shown:pt-0 focus:border-zinc-700 transition-all outline-none text-left relative flex items-center justify-between',
+              'bg-transparent rounded-lg w-full border border-border px-3 h-[52px] text-foreground placeholder-shown:pt-0 focus:border-muted-foreground transition-all outline-none text-left relative flex items-center justify-between',
               error && '!border-red-900',
               className,
             )}
           >
-            <span className="text-zinc-100">Ícone</span>
-            <div className="text-zinc-100 flex items-center">
+            <span className="text-foreground">Ícone</span>
+            <div className="text-foreground flex items-center">
               {!selectedIcon && <ChevronDownIcon className="h-4 w-4 opacity-50" />}
               {selectedIcon && type && (
                 <div className="w-8 h-8 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full">
@@ -69,7 +69,7 @@ export function IconDropdownInput({
           </button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="grid grid-cols-4 border-zinc-800 w-64 p-2">
+        <DropdownMenuContent className="grid grid-cols-4 border-border w-64 p-2">
           {availableIcons.map((iconKey) => (
             <DropdownMenuItem
               key={iconKey}

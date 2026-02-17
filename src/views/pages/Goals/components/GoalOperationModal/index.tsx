@@ -31,10 +31,10 @@ export function GoalOperationModal({ open, onClose, goal }: GoalOperationModalPr
       <Form {...form}>
         <form onSubmit={handleSubmit}>
           <div className="space-y-4">
-            <div className="bg-zinc-800 p-3 rounded-lg">
-              <p className="text-sm text-zinc-400">Meta</p>
+            <div className="bg-muted p-3 rounded-lg">
+              <p className="text-sm text-muted-foreground">Meta</p>
               <p className="font-semibold">{goal.name}</p>
-              <p className="text-sm text-zinc-400 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Valor atual:{' '}
                 {new Intl.NumberFormat('pt-BR', {
                   style: 'currency',
@@ -71,7 +71,7 @@ export function GoalOperationModal({ open, onClose, goal }: GoalOperationModalPr
                 <FormItem>
                   <FormLabel>Valor</FormLabel>
                   <div className="flex items-center gap-2">
-                    <span className="text-gray-600">R$</span>
+                    <span className="text-muted-foreground">R$</span>
                     <FormControl>
                       <InputCurrency
                         error={form.formState.errors.value?.message}
@@ -83,7 +83,7 @@ export function GoalOperationModal({ open, onClose, goal }: GoalOperationModalPr
                   </div>
                   <FormMessage />
                   {operationType === 'WITHDRAW' && (
-                    <p className="text-xs text-zinc-400 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       Máximo disponível para retirada:{' '}
                       {new Intl.NumberFormat('pt-BR', {
                         style: 'currency',
@@ -112,7 +112,7 @@ export function GoalOperationModal({ open, onClose, goal }: GoalOperationModalPr
                     />
                   </FormControl>
                   <FormMessage />
-                  <p className="text-xs text-zinc-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {operationType === 'DEPOSIT'
                       ? 'Conta de onde o dinheiro será retirado'
                       : 'Conta para onde o dinheiro será devolvido'}

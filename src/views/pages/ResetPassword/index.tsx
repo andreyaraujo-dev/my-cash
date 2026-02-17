@@ -10,13 +10,13 @@ export function ResetPassword() {
   const { handleSubmit, register, errors, isPending, hasToken } = useResetPasswordController();
 
   return (
-    <div className="min-h-screen w-full bg-[#0a0a0a] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen w-full bg-background flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, hsl(var(--foreground)) 1px, transparent 0)',
             backgroundSize: '40px 40px',
           }}
         />
@@ -33,7 +33,7 @@ export function ResetPassword() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute top-20 left-10 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl"
+        className="absolute top-20 left-10 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl"
       />
       <motion.div
         animate={{
@@ -45,7 +45,7 @@ export function ResetPassword() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute bottom-20 right-10 w-80 h-80 bg-orange-600/5 rounded-full blur-3xl"
+        className="absolute bottom-20 right-10 w-80 h-80 bg-orange-600/10 rounded-full blur-3xl"
       />
       <motion.div
         animate={{
@@ -56,7 +56,7 @@ export function ResetPassword() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl"
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"
       />
 
       {/* Floating Cards - Desktop */}
@@ -71,8 +71,8 @@ export function ResetPassword() {
             <KeyRound className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">Nova senha</p>
-            <p className="text-xs text-gray-400">Defina com segurança</p>
+            <p className="text-sm font-semibold text-foreground">Nova senha</p>
+            <p className="text-xs text-muted-foreground">Defina com segurança</p>
           </div>
         </div>
       </motion.div>
@@ -88,8 +88,8 @@ export function ResetPassword() {
             <ShieldCheck className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">Protegido</p>
-            <p className="text-xs text-gray-400">Criptografia forte</p>
+            <p className="text-sm font-semibold text-foreground">Protegido</p>
+            <p className="text-xs text-muted-foreground">Criptografia forte</p>
           </div>
         </div>
       </motion.div>
@@ -105,8 +105,8 @@ export function ResetPassword() {
             <Lock className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">Privacidade</p>
-            <p className="text-xs text-gray-400">Seus dados protegidos</p>
+            <p className="text-sm font-semibold text-foreground">Privacidade</p>
+            <p className="text-xs text-muted-foreground">Seus dados protegidos</p>
           </div>
         </div>
       </motion.div>
@@ -145,16 +145,16 @@ export function ResetPassword() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-[#1a1a1a] rounded-2xl p-8 border border-[#2a2a2a] shadow-2xl shadow-black/50"
+          className="bg-card rounded-2xl p-8 border border-border shadow-2xl"
         >
           {hasToken ? (
             <>
-              <h2 className="text-2xl font-semibold text-white mb-2">Redefinir senha</h2>
-              <p className="text-gray-400 mb-8">Crie uma nova senha para sua conta.</p>
+              <h2 className="text-2xl font-semibold text-foreground mb-2">Redefinir senha</h2>
+              <p className="text-muted-foreground mb-8">Crie uma nova senha para sua conta.</p>
 
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-gray-200">
+                  <Label htmlFor="password" className="text-foreground">
                     Nova senha
                   </Label>
                   <Input
@@ -163,16 +163,16 @@ export function ResetPassword() {
                     placeholder="••••••••"
                     {...register('newPassword')}
                     required
-                    className="bg-[#0a0a0a] border-[#2a2a2a] text-white placeholder:text-gray-500 focus:border-blue-500"
+                    className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-blue-500"
                   />
                   {errors.newPassword && (
                     <p className="text-sm text-red-500">{errors.newPassword.message}</p>
                   )}
-                  <p className="text-xs text-gray-500">Mínimo de 8 caracteres</p>
+                  <p className="text-xs text-muted-foreground">Mínimo de 8 caracteres</p>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="confirmPassword" className="text-gray-200">
+                  <Label htmlFor="confirmPassword" className="text-foreground">
                     Confirmar nova senha
                   </Label>
                   <Input
@@ -181,7 +181,7 @@ export function ResetPassword() {
                     placeholder="••••••••"
                     {...register('confirmNewPassword')}
                     required
-                    className="bg-[#0a0a0a] border-[#2a2a2a] text-white placeholder:text-gray-500 focus:border-blue-500"
+                    className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-blue-500"
                   />
                   {errors.confirmNewPassword && (
                     <p className="text-sm text-red-500">{errors.confirmNewPassword.message}</p>
@@ -190,7 +190,6 @@ export function ResetPassword() {
 
                 <Button
                   type="submit"
-                  className="bg-blue-800 hover:bg-blue-900 text-white"
                   isLoading={isPending}
                 >
                   Redefinir senha
@@ -202,8 +201,8 @@ export function ResetPassword() {
               <div className="w-16 h-16 bg-red-600/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <AlertTriangle className="w-8 h-8 text-red-500" />
               </div>
-              <h2 className="text-2xl font-semibold text-white mb-2">Link inválido</h2>
-              <p className="text-gray-400">
+              <h2 className="text-2xl font-semibold text-foreground mb-2">Link inválido</h2>
+              <p className="text-muted-foreground">
                 Este link de recuperação é inválido ou expirou. Solicite um novo link de
                 recuperação.
               </p>

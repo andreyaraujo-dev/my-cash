@@ -121,11 +121,11 @@ export function EditCategoryModal({
               render={({ field }) => (
                 <FormItem>
                   <div>
-                    <span className="text-gray-600 tracking-[-0.5px] text-xs">
+                    <span className="text-muted-foreground tracking-[-0.5px] text-xs">
                       Orçamento (opcional)
                     </span>
                     <div className="flex items-center justify-center gap-2 mt-2">
-                      <span className="text-gray-600 tracking-[-0.5px] text-lg">R$</span>
+                      <span className="text-muted-foreground tracking-[-0.5px] text-lg">R$</span>
                       <FormControl>
                         <InputCurrency
                           error={form.formState.errors.budget?.message}

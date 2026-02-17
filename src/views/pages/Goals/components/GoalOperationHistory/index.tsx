@@ -53,11 +53,11 @@ export function GoalOperationHistory({ goalId }: GoalOperationHistoryProps) {
     return (
       <div className="space-y-3">
         <h3 className="font-semibold text-lg">Histórico de Operações</h3>
-        <div className="flex flex-col items-center justify-center py-8 text-center bg-zinc-800/50 rounded-lg">
-          <div className="rounded-full bg-zinc-800 p-4 mb-3">
-            <History className="w-6 h-6 text-zinc-400" />
+        <div className="flex flex-col items-center justify-center py-8 text-center bg-muted/50 rounded-lg">
+          <div className="rounded-full bg-muted p-4 mb-3">
+            <History className="w-6 h-6 text-muted-foreground" />
           </div>
-          <p className="text-sm text-zinc-400">Nenhuma operação realizada ainda</p>
+          <p className="text-sm text-muted-foreground">Nenhuma operação realizada ainda</p>
         </div>
       </div>
     );
@@ -70,7 +70,7 @@ export function GoalOperationHistory({ goalId }: GoalOperationHistoryProps) {
         {operations.map((operation) => (
           <div
             key={operation.id}
-            className="flex items-start gap-3 p-3 bg-zinc-800/50 rounded-lg hover:bg-zinc-800 transition-colors"
+            className="flex items-start gap-3 p-3 bg-muted/50 rounded-lg hover:bg-muted transition-colors"
           >
             <div className="mt-1">{getOperationIcon(operation.type)}</div>
             <div className="flex-1 min-w-0">
@@ -78,10 +78,10 @@ export function GoalOperationHistory({ goalId }: GoalOperationHistoryProps) {
                 <div className="flex-1 min-w-0">
                   <p className="font-medium">{getOperationLabel(operation.type)}</p>
                   {operation.bankAccount && (
-                    <p className="text-sm text-zinc-400 truncate">{operation.bankAccount.name}</p>
+                    <p className="text-sm text-muted-foreground truncate">{operation.bankAccount.name}</p>
                   )}
                   {operation.description && (
-                    <p className="text-xs text-zinc-500 mt-1 truncate">{operation.description}</p>
+                    <p className="text-xs text-muted-foreground mt-1 truncate">{operation.description}</p>
                   )}
                 </div>
                 <div className="text-right">
@@ -92,7 +92,7 @@ export function GoalOperationHistory({ goalId }: GoalOperationHistoryProps) {
                   >
                     {operation.type === 'DEPOSIT' ? '+' : '-'} {formatCurrency(operation.value)}
                   </p>
-                  <p className="text-xs text-zinc-500 whitespace-nowrap">
+                  <p className="text-xs text-muted-foreground whitespace-nowrap">
                     {formatDate(operation.createdAt)}
                   </p>
                 </div>

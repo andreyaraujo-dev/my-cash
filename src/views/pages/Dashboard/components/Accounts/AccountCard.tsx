@@ -15,7 +15,7 @@ export function AccountCard({ data }: AccountCardProps) {
   return (
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events,jsx-a11y/interactive-supports-focus
     <div
-      className="p-4 bg-zinc-800 text-white rounded-2xl h-[200px] flex flex-col justify-between border-b-4"
+      className="p-4 bg-card text-card-foreground rounded-2xl h-[200px] flex flex-col justify-between border-b-4 border border-border"
       style={{ borderColor: color }}
       role="button"
       onClick={() => openEditAccountModal(data)}
@@ -23,7 +23,7 @@ export function AccountCard({ data }: AccountCardProps) {
       <div className="flex justify-between items-start">
         <div>
           <BankAccountType type={type} />
-          <span className="text-zinc-100 font-medium tracking-[-0.5px] mt-4 block">{name}</span>
+          <span className="text-foreground font-medium tracking-[-0.5px] mt-4 block">{name}</span>
         </div>
 
         <InfoAccountsTooltip />
@@ -32,13 +32,13 @@ export function AccountCard({ data }: AccountCardProps) {
       <div>
         <span
           className={cn(
-            'text-zinc-100 font-medium tracking-[-0.5px] block',
+            'text-foreground font-medium tracking-[-0.5px] block',
             !areValuesVisible && 'blur-sm',
           )}
         >
           {formatCurrency(currentBalance)}
         </span>
-        <small className="text-zinc-300 text-sm">Saldo atual</small>
+        <small className="text-muted-foreground text-sm">Saldo atual</small>
       </div>
     </div>
   );

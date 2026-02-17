@@ -102,7 +102,7 @@ export function GoalDetailsModal({ open, onClose, goal }: GoalDetailsModalProps)
         <div>
           <h2 className="text-2xl font-bold mb-2">{goal.name}</h2>
           {goal.category && (
-            <div className="flex items-center gap-2 text-zinc-400">
+            <div className="flex items-center gap-2 text-muted-foreground">
               <span>{goal.category.icon}</span>
               <span>{goal.category.name}</span>
             </div>
@@ -110,9 +110,9 @@ export function GoalDetailsModal({ open, onClose, goal }: GoalDetailsModalProps)
         </div>
 
         {/* Progresso */}
-        <div className="space-y-3 bg-zinc-800/50 p-4 rounded-lg">
+        <div className="space-y-3 bg-muted/50 p-4 rounded-lg">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-zinc-400">Progresso da Meta</span>
+            <span className="text-sm text-muted-foreground">Progresso da Meta</span>
             <span className="font-semibold text-lg">{progress.toFixed(1)}%</span>
           </div>
           <Progress
@@ -123,16 +123,16 @@ export function GoalDetailsModal({ open, onClose, goal }: GoalDetailsModalProps)
           />
           <div className="flex items-center justify-between text-sm">
             <div>
-              <p className="text-zinc-400">Valor Atual</p>
+              <p className="text-muted-foreground">Valor Atual</p>
               <p className="font-semibold text-lg">{formatCurrency(currentValue)}</p>
             </div>
             <div className="text-right">
-              <p className="text-zinc-400">Valor Alvo</p>
+              <p className="text-muted-foreground">Valor Alvo</p>
               <p className="font-semibold text-lg">{formatCurrency(targetValue)}</p>
             </div>
           </div>
-          <div className="pt-2 border-t border-zinc-700">
-            <p className="text-zinc-400 text-sm">Falta alcançar</p>
+          <div className="pt-2 border-t border-border">
+            <p className="text-muted-foreground text-sm">Falta alcançar</p>
             <p className="font-semibold text-lg">
               {formatCurrency(Math.max(0, targetValue - currentValue))}
             </p>
@@ -140,17 +140,17 @@ export function GoalDetailsModal({ open, onClose, goal }: GoalDetailsModalProps)
         </div>
 
         {/* Data de vencimento */}
-        <div className="flex items-center gap-2 text-zinc-400 bg-zinc-800/50 p-3 rounded-lg">
+        <div className="flex items-center gap-2 text-muted-foreground bg-muted/50 p-3 rounded-lg">
           <Calendar className="w-5 h-5" />
           <div>
-            <p className="text-xs text-zinc-500">Vencimento</p>
-            <p className="font-medium text-white">{formatDate(goal.dueDate)}</p>
+            <p className="text-xs text-muted-foreground">Vencimento</p>
+            <p className="font-medium text-foreground">{formatDate(goal.dueDate)}</p>
           </div>
         </div>
 
         {/* Badges */}
         <div>
-          <p className="text-sm text-zinc-400 mb-2">Status e Prioridades</p>
+          <p className="text-sm text-muted-foreground mb-2">Status e Prioridades</p>
           <div className="flex flex-wrap gap-2">
             <Badge variant={getStatusVariant(goal.status)}>{getStatusLabel(goal.status)}</Badge>
             <Badge variant="outline">Importância: {getImportanceLabel(goal.importance)}</Badge>
@@ -163,13 +163,13 @@ export function GoalDetailsModal({ open, onClose, goal }: GoalDetailsModalProps)
         {/* Descrição */}
         {goal.description && (
           <div>
-            <p className="text-sm text-zinc-400 mb-2">Descrição</p>
-            <p className="text-zinc-300 bg-zinc-800/50 p-3 rounded-lg">{goal.description}</p>
+            <p className="text-sm text-muted-foreground mb-2">Descrição</p>
+            <p className="text-muted-foreground bg-muted/50 p-3 rounded-lg">{goal.description}</p>
           </div>
         )}
 
         {/* Histórico de operações */}
-        <div className="border-t border-zinc-800 pt-4">
+        <div className="border-t border-border pt-4">
           <GoalOperationHistory goalId={goal.id} />
         </div>
       </div>

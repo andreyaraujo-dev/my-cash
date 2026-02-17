@@ -26,17 +26,17 @@ export function TransactionTypeDropdown({ onSelect, selectedType }: TransactionT
         {selectedType === 'INCOME' && <IncomeIcon />}
         {selectedType === undefined && <TransactionsIcon />}
 
-        <span className="text-sm text-zinc-100 tracking-[-0.5px] font-medium">
+        <span className="text-sm text-foreground tracking-[-0.5px] font-medium">
           {selectedType === 'EXPENSE' && 'Despesas'}
           {selectedType === 'INCOME' && 'Receitas'}
           {selectedType === undefined && 'Transações'}
         </span>
         <ChevronDownIcon
-          className={cn('text-zinc-100 transition-all h-4 w-4', open && 'rotate-180')}
+          className={cn('text-foreground transition-all h-4 w-4', open && 'rotate-180')}
         />
       </DropdownMenuTrigger>
 
-      <DropdownMenuContent className="w-[279px] p-2 border-zinc-800 space-y-2" align="start">
+      <DropdownMenuContent className="w-[279px] p-2 border-border space-y-2" align="start">
         <DropdownMenuItem onSelect={() => onSelect('INCOME')}>
           <IncomeIcon />
           Receitas

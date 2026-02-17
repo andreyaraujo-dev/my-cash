@@ -17,7 +17,7 @@ export function SliderNavigation({ isBeginning, isEnd }: AccountsSliderNavigatio
         onClick={() => swiper.slidePrev()}
         disabled={isBeginning}
       >
-        <ChevronLeftIcon className="text-white w-6 h-6" />
+        <ChevronLeftIcon className="w-6 h-6" />
       </button>
       <button
         type="button"
@@ -25,7 +25,7 @@ export function SliderNavigation({ isBeginning, isEnd }: AccountsSliderNavigatio
         onClick={() => swiper.slideNext()}
         disabled={isEnd}
       >
-        <ChevronRightIcon className="text-white w-6 h-6" />
+        <ChevronRightIcon className="w-6 h-6" />
       </button>
     </div>
   );

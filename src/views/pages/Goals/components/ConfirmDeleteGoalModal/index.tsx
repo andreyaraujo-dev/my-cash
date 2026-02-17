@@ -34,14 +34,14 @@ export function ConfirmDeleteGoalModal({
           <TrashIcon className="w-6 h-6 text-red-900" />
         </div>
 
-        <p className="w-[180px] text-zinc-100 font-bold tracking-[-0.5px]">
+        <p className="w-[180px] text-foreground font-bold tracking-[-0.5px]">
           Tem certeza que deseja excluir a meta &quot;{goalName}&quot;?
         </p>
 
-        <p className="tracking-[-0.5px] text-zinc-300 text-sm">Esta ação não pode ser desfeita.</p>
+        <p className="tracking-[-0.5px] text-muted-foreground text-sm">Esta ação não pode ser desfeita.</p>
       </div>
 
-      <div className="mt-6 flex items-start gap-3 bg-zinc-900 rounded-lg p-4 border border-zinc-800">
+      <div className="mt-6 flex items-start gap-3 bg-muted rounded-lg p-4 border border-border">
         <Checkbox
           id="deleteTransactions"
           checked={deleteTransactions}
@@ -50,7 +50,7 @@ export function ConfirmDeleteGoalModal({
         />
         <label
           htmlFor="deleteTransactions"
-          className="text-sm text-zinc-300 cursor-pointer text-left"
+          className="text-sm text-muted-foreground cursor-pointer text-left"
         >
           Excluir também as transações relacionadas a esta meta
         </label>

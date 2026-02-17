@@ -270,7 +270,7 @@ export function Profile() {
       </Card>
 
       <Dialog open={changePasswordOpen} onOpenChange={setChangePasswordOpen}>
-        <DialogContent className="rounded-2xl max-w-[90%] md:max-w-md bg-zinc-950 border border-zinc-800">
+        <DialogContent className="rounded-2xl max-w-[90%] md:max-w-md bg-background border border-border">
           <DialogHeader>
             <DialogTitle>Alterar senha</DialogTitle>
           </DialogHeader>
@@ -408,7 +408,7 @@ export function Profile() {
         open={deleteAccountOpen}
         onOpenChange={(open) => !open && handleCloseDeleteAccountModal()}
       >
-        <DialogContent className="rounded-2xl max-w-[90%] md:max-w-md bg-zinc-950 border border-zinc-800">
+        <DialogContent className="rounded-2xl max-w-[90%] md:max-w-md bg-background border border-border">
           <DialogHeader>
             <DialogTitle className="text-red-900">Excluir conta?</DialogTitle>
             <p className="text-sm text-muted-foreground">

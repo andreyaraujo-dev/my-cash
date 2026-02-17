@@ -26,9 +26,9 @@ export function ConfirmDeleteModal({
           <TrashIcon className="w-6 h-6 text-red-900" />
         </div>
 
-        <p className="w-[180px] text-zinc-100 font-bold tracking-[-0.5px]">{title}</p>
+        <p className="w-[180px] text-foreground font-bold tracking-[-0.5px]">{title}</p>
 
-        {description && <p className="tracking-[-0.5px] text-zinc-300">{description}</p>}
+        {description && <p className="tracking-[-0.5px] text-muted-foreground">{description}</p>}
       </div>
 
       <div className="mt-10 space-y-4">

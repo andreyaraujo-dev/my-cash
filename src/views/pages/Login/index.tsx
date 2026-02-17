@@ -10,13 +10,13 @@ export function Login() {
   const { handleSubmit, register, isPending } = useLoginController();
 
   return (
-    <div className="min-h-screen w-full bg-[#0a0a0a] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen w-full bg-background flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, hsl(var(--foreground)) 1px, transparent 0)',
             backgroundSize: '40px 40px',
           }}
         />
@@ -33,7 +33,7 @@ export function Login() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute top-20 left-10 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl"
+        className="absolute top-20 left-10 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl"
       />
       <motion.div
         animate={{
@@ -45,7 +45,7 @@ export function Login() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute bottom-20 right-10 w-80 h-80 bg-orange-600/5 rounded-full blur-3xl"
+        className="absolute bottom-20 right-10 w-80 h-80 bg-orange-600/10 rounded-full blur-3xl"
       />
       <motion.div
         animate={{
@@ -56,7 +56,7 @@ export function Login() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/5 rounded-full blur-3xl"
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl"
       />
 
       {/* Floating Stats Cards */}
@@ -71,11 +71,11 @@ export function Login() {
             <TrendingUp className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-xs text-gray-400">Crescimento</p>
-            <p className="text-lg font-bold text-white">+32%</p>
+            <p className="text-xs text-muted-foreground">Crescimento</p>
+            <p className="text-lg font-bold text-foreground">+32%</p>
           </div>
         </div>
-        <p className="text-xs text-gray-400">Este mês</p>
+        <p className="text-xs text-muted-foreground">Este mês</p>
       </motion.div>
 
       <motion.div
@@ -89,11 +89,11 @@ export function Login() {
             <LineChart className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-xs text-gray-400">Investimentos</p>
-            <p className="text-lg font-bold text-white">R$ 48k</p>
+            <p className="text-xs text-muted-foreground">Investimentos</p>
+            <p className="text-lg font-bold text-foreground">R$ 48k</p>
           </div>
         </div>
-        <p className="text-xs text-gray-400">Total investido</p>
+        <p className="text-xs text-muted-foreground">Total investido</p>
       </motion.div>
 
       <motion.div
@@ -107,11 +107,11 @@ export function Login() {
             <Wallet className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-xs text-gray-400">Carteiras</p>
-            <p className="text-lg font-bold text-white">3</p>
+            <p className="text-xs text-muted-foreground">Carteiras</p>
+            <p className="text-lg font-bold text-foreground">3</p>
           </div>
         </div>
-        <p className="text-xs text-gray-400">Ativas agora</p>
+        <p className="text-xs text-muted-foreground">Ativas agora</p>
       </motion.div>
 
       <motion.div
@@ -125,11 +125,11 @@ export function Login() {
             <CreditCard className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-xs text-gray-400">Transações</p>
-            <p className="text-lg font-bold text-white">142</p>
+            <p className="text-xs text-muted-foreground">Transações</p>
+            <p className="text-lg font-bold text-foreground">142</p>
           </div>
         </div>
-        <p className="text-xs text-gray-400">Este mês</p>
+        <p className="text-xs text-muted-foreground">Este mês</p>
       </motion.div>
 
       <motion.div
@@ -143,11 +143,11 @@ export function Login() {
             <PieChart className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-xs text-gray-400">Economia</p>
-            <p className="text-lg font-bold text-white">R$ 2.4k</p>
+            <p className="text-xs text-muted-foreground">Economia</p>
+            <p className="text-lg font-bold text-foreground">R$ 2.4k</p>
           </div>
         </div>
-        <p className="text-xs text-gray-400">Poupado este mês</p>
+        <p className="text-xs text-muted-foreground">Poupado este mês</p>
       </motion.div>
 
       <motion.div
@@ -161,11 +161,11 @@ export function Login() {
             <DollarSign className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-xs text-gray-400">Receitas</p>
-            <p className="text-lg font-bold text-white">R$ 12.8k</p>
+            <p className="text-xs text-muted-foreground">Receitas</p>
+            <p className="text-lg font-bold text-foreground">R$ 12.8k</p>
           </div>
         </div>
-        <p className="text-xs text-gray-400">Este mês</p>
+        <p className="text-xs text-muted-foreground">Este mês</p>
       </motion.div>
 
       {/* Floating Icons - Mobile */}
@@ -228,14 +228,14 @@ export function Login() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-[#1a1a1a] rounded-2xl p-8 border border-[#2a2a2a] shadow-2xl shadow-black/50"
+          className="bg-card rounded-2xl p-8 border border-border shadow-2xl"
         >
-          <h2 className="text-2xl font-semibold text-white mb-2">Bem-vindo de volta</h2>
-          <p className="text-gray-400 mb-8">Faça login para acessar sua conta</p>
+          <h2 className="text-2xl font-semibold text-foreground mb-2">Bem-vindo de volta</h2>
+          <p className="text-muted-foreground mb-8">Faça login para acessar sua conta</p>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-200">
+              <Label htmlFor="email" className="text-foreground">
                 Email
               </Label>
               <Input
@@ -244,13 +244,13 @@ export function Login() {
                 placeholder="seu@email.com"
                 {...register('email')}
                 required
-                className="bg-[#0a0a0a] border-[#2a2a2a] text-white placeholder:text-gray-500 focus:border-blue-500"
+                className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-blue-500"
               />
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password" className="text-gray-200">
+                <Label htmlFor="password" className="text-foreground">
                   Senha
                 </Label>
                 <Link
@@ -266,13 +266,12 @@ export function Login() {
                 placeholder="••••••••"
                 {...register('password')}
                 required
-                className="bg-[#0a0a0a] border-[#2a2a2a] text-white placeholder:text-gray-500 focus:border-blue-500"
+                className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-blue-500"
               />
             </div>
 
             <Button
               type="submit"
-              className="bg-blue-800 hover:bg-blue-900 text-white"
               isLoading={isPending}
             >
               Entrar
@@ -280,7 +279,7 @@ export function Login() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-400">
+            <p className="text-muted-foreground">
               Não tem uma conta?{' '}
               <Link to="/register" className="text-blue-800 hover:text-blue-900 font-medium">
                 Criar conta
@@ -298,15 +297,15 @@ export function Login() {
         >
           <div className="bg-blue-600/10 border border-blue-500/30 rounded-xl p-3 text-center backdrop-blur-sm">
             <p className="text-2xl font-bold text-blue-500">+32%</p>
-            <p className="text-xs text-gray-400 mt-1">Crescimento</p>
+            <p className="text-xs text-muted-foreground mt-1">Crescimento</p>
           </div>
           <div className="bg-orange-600/10 border border-orange-500/30 rounded-xl p-3 text-center backdrop-blur-sm">
             <p className="text-2xl font-bold text-orange-500">3</p>
-            <p className="text-xs text-gray-400 mt-1">Carteiras</p>
+            <p className="text-xs text-muted-foreground mt-1">Carteiras</p>
           </div>
           <div className="bg-green-600/10 border border-green-500/30 rounded-xl p-3 text-center backdrop-blur-sm">
             <p className="text-2xl font-bold text-green-500">48k</p>
-            <p className="text-xs text-gray-400 mt-1">Investido</p>
+            <p className="text-xs text-muted-foreground mt-1">Investido</p>
           </div>
         </motion.div>
       </motion.div>

@@ -97,13 +97,13 @@ export function GoalCard({ goal, onEdit, onDelete, onDetails, onAddValue }: Goal
   };
 
   return (
-    <Card className="hover:border-zinc-700 transition-colors">
+    <Card className="hover:border-muted-foreground/30 transition-colors">
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-lg truncate">{goal.name}</h3>
             {goal.category && (
-              <div className="flex items-center gap-1 text-sm text-zinc-400 mt-1">
+              <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
                 <span>{goal.category.icon}</span>
                 <span>{goal.category.name}</span>
               </div>
@@ -154,7 +154,7 @@ export function GoalCard({ goal, onEdit, onDelete, onDetails, onAddValue }: Goal
         {/* Progresso */}
         <div className="space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-zinc-400">Progresso</span>
+            <span className="text-muted-foreground">Progresso</span>
             <span className="font-semibold">
               {formatCurrency(currentValue)} / {formatCurrency(targetValue)}
             </span>
@@ -164,11 +164,11 @@ export function GoalCard({ goal, onEdit, onDelete, onDetails, onAddValue }: Goal
             max={targetValue || 1}
             indicatorClassName={getProgressColor(progress)}
           />
-          <div className="text-right text-xs text-zinc-500">{progress.toFixed(1)}% atingido</div>
+          <div className="text-right text-xs text-muted-foreground">{progress.toFixed(1)}% atingido</div>
         </div>
 
         {/* Data de vencimento */}
-        <div className="flex items-center gap-2 text-sm text-zinc-400">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Calendar className="w-4 h-4" />
           <span>Vence em {formatDate(goal.dueDate)}</span>
         </div>

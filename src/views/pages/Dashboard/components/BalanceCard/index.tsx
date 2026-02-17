@@ -1,10 +1,10 @@
 import { Button } from '@/views/components/ui/button';
 import { Card } from '@/views/components/ui/card';
-import { TrendingUp } from 'lucide-react';
+import { Eye, EyeOff, TrendingUp } from 'lucide-react';
 import { InfoAccountsTooltip } from '../Accounts/InfoAccountsTooltip';
 import { useAccountsController } from '../Accounts/useAccountsController';
 import { formatCurrency } from '@/app/utils/formatCurrency';
-import { EyeIcon } from '@/views/components/icons/EyeIcon';
+// import { EyeIcon } from '@/views/components/icons/EyeIcon';
 import { cn } from '@/lib/utils';
 import { Skeleton } from '@/views/components/ui/skeleton';
 
@@ -38,10 +38,7 @@ export function BalanceCard() {
 
       <div className="flex">
         <strong
-          className={cn(
-            'text-2xl tracking-[-1px] text-white',
-            !areValuesVisible && 'blur-md select-none',
-          )}
+          className={cn('text-2xl tracking-[-1px', !areValuesVisible && 'blur-md select-none')}
         >
           {formatCurrency(currentBalance)}
         </strong>
@@ -50,7 +47,7 @@ export function BalanceCard() {
           className="w-8 h-8 flex items-center justify-center"
           onClick={toggleValuesVisibility}
         >
-          <EyeIcon open={!areValuesVisible} />
+          {!areValuesVisible ? <Eye size={16} /> : <EyeOff size={16} />}
         </button>
       </div>
     </Card>

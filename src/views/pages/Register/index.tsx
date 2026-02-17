@@ -10,13 +10,13 @@ export function Register() {
   const { register, handleSubmit, isPending } = useRegisterController();
 
   return (
-    <div className="min-h-screen w-full bg-[#0a0a0a] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen w-full bg-background flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+            backgroundImage: 'radial-gradient(circle at 2px 2px, hsl(var(--foreground)) 1px, transparent 0)',
             backgroundSize: '40px 40px',
           }}
         />
@@ -33,7 +33,7 @@ export function Register() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute top-20 right-10 w-64 h-64 bg-blue-600/5 rounded-full blur-3xl"
+        className="absolute top-20 right-10 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl"
       />
       <motion.div
         animate={{
@@ -45,7 +45,7 @@ export function Register() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute bottom-20 left-10 w-80 h-80 bg-purple-600/5 rounded-full blur-3xl"
+        className="absolute bottom-20 left-10 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl"
       />
       <motion.div
         animate={{
@@ -56,7 +56,7 @@ export function Register() {
           repeat: Infinity,
           ease: 'easeInOut',
         }}
-        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-600/5 rounded-full blur-3xl"
+        className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl"
       />
 
       {/* Floating Feature Cards - Desktop */}
@@ -71,8 +71,8 @@ export function Register() {
             <Shield className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">Segurança</p>
-            <p className="text-xs text-gray-400">Nível bancário</p>
+            <p className="text-sm font-semibold text-foreground">Segurança</p>
+            <p className="text-xs text-muted-foreground">Nível bancário</p>
           </div>
         </div>
       </motion.div>
@@ -88,8 +88,8 @@ export function Register() {
             <BarChart3 className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">Análises</p>
-            <p className="text-xs text-gray-400">Relatórios detalhados</p>
+            <p className="text-sm font-semibold text-foreground">Análises</p>
+            <p className="text-xs text-muted-foreground">Relatórios detalhados</p>
           </div>
         </div>
       </motion.div>
@@ -105,8 +105,8 @@ export function Register() {
             <Zap className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">Rapidez</p>
-            <p className="text-xs text-gray-400">Configure em 2 min</p>
+            <p className="text-sm font-semibold text-foreground">Rapidez</p>
+            <p className="text-xs text-muted-foreground">Configure em 2 min</p>
           </div>
         </div>
       </motion.div>
@@ -122,8 +122,8 @@ export function Register() {
             <Users className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">Comunidade</p>
-            <p className="text-xs text-gray-400">+50k usuários</p>
+            <p className="text-sm font-semibold text-foreground">Comunidade</p>
+            <p className="text-xs text-muted-foreground">+50k usuários</p>
           </div>
         </div>
       </motion.div>
@@ -139,8 +139,8 @@ export function Register() {
             <Award className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">Confiável</p>
-            <p className="text-xs text-gray-400">Reconhecido no mercado</p>
+            <p className="text-sm font-semibold text-foreground">Confiável</p>
+            <p className="text-xs text-muted-foreground">Reconhecido no mercado</p>
           </div>
         </div>
       </motion.div>
@@ -156,8 +156,8 @@ export function Register() {
             <Target className="w-5 h-5 text-white" />
           </div>
           <div>
-            <p className="text-sm font-semibold text-white">Objetivos</p>
-            <p className="text-xs text-gray-400">Alcance suas metas</p>
+            <p className="text-sm font-semibold text-foreground">Objetivos</p>
+            <p className="text-xs text-muted-foreground">Alcance suas metas</p>
           </div>
         </div>
       </motion.div>
@@ -231,7 +231,7 @@ export function Register() {
           <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg shadow-white/20">
             <span className="text-2xl font-bold text-black">S</span>
           </div>
-          <h1 className="text-3xl font-bold text-white">myCash</h1>
+          <h1 className="text-3xl font-bold text-foreground">myCash</h1>
         </div>
 
         {/* Card de Cadastro */}
@@ -239,14 +239,14 @@ export function Register() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="bg-[#1a1a1a] rounded-2xl p-8 border border-[#2a2a2a] shadow-2xl shadow-black/50"
+          className="bg-card rounded-2xl p-8 border border-border shadow-2xl"
         >
-          <h2 className="text-2xl font-semibold text-white mb-2">Criar sua conta</h2>
-          <p className="text-gray-400 mb-8">Comece a gerenciar suas finanças hoje</p>
+          <h2 className="text-2xl font-semibold text-foreground mb-2">Criar sua conta</h2>
+          <p className="text-muted-foreground mb-8">Comece a gerenciar suas finanças hoje</p>
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-gray-200">
+              <Label htmlFor="name" className="text-foreground">
                 Nome completo
               </Label>
               <Input
@@ -256,12 +256,12 @@ export function Register() {
                 {...register('name')}
                 required
                 autoComplete="off"
-                className="bg-[#0a0a0a] border-[#2a2a2a] text-white placeholder:text-gray-500 focus:border-blue-500"
+                className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-blue-500"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-200">
+              <Label htmlFor="email" className="text-foreground">
                 Email
               </Label>
               <Input
@@ -271,12 +271,12 @@ export function Register() {
                 {...register('email')}
                 required
                 autoComplete="off"
-                className="bg-[#0a0a0a] border-[#2a2a2a] text-white placeholder:text-gray-500 focus:border-blue-500"
+                className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-blue-500"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-200">
+              <Label htmlFor="password" className="text-foreground">
                 Senha
               </Label>
               <Input
@@ -286,14 +286,13 @@ export function Register() {
                 {...register('password')}
                 required
                 minLength={6}
-                className="bg-[#0a0a0a] border-[#2a2a2a] text-white placeholder:text-gray-500 focus:border-blue-500"
+                className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-blue-500"
               />
-              <p className="text-xs text-gray-500">Mínimo de 6 caracteres</p>
+              <p className="text-xs text-muted-foreground">Mínimo de 6 caracteres</p>
             </div>
 
             <Button
               type="submit"
-              className=" bg-blue-800 hover:bg-blue-900 text-white"
               isLoading={isPending}
             >
               Criar conta
@@ -301,7 +300,7 @@ export function Register() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-400">
+            <p className="text-muted-foreground">
               Já tem uma conta?{' '}
               <Link to="/login" className="text-blue-800 hover:text-blue-900 font-medium">
                 Fazer login
@@ -320,18 +319,18 @@ export function Register() {
           <div className="flex items-center gap-3 bg-blue-600/10 border border-blue-500/30 rounded-xl p-3 backdrop-blur-sm">
             <Shield className="w-5 h-5 text-blue-500" />
             <div>
-              <p className="text-sm text-white font-medium">Seguro</p>
-              <p className="text-xs text-gray-400">Proteção de nível bancário</p>
+              <p className="text-sm text-foreground font-medium">Seguro</p>
+              <p className="text-xs text-muted-foreground">Proteção de nível bancário</p>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-orange-600/10 border border-orange-500/30 rounded-xl p-3 text-center backdrop-blur-sm">
               <Award className="w-5 h-5 text-orange-500 mx-auto mb-1" />
-              <p className="text-xs text-gray-400">+50k usuários</p>
+              <p className="text-xs text-muted-foreground">+50k usuários</p>
             </div>
             <div className="bg-green-600/10 border border-green-500/30 rounded-xl p-3 text-center backdrop-blur-sm">
               <Zap className="w-5 h-5 text-green-500 mx-auto mb-1" />
-              <p className="text-xs text-gray-400">Setup em 2 min</p>
+              <p className="text-xs text-muted-foreground">Setup em 2 min</p>
             </div>
           </div>
         </motion.div>

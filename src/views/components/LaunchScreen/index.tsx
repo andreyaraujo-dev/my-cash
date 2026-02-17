@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react';
+import { MyCashIcon } from '@/views/components/icons/MyCashIcon';
 
 interface LaunchScreenProps {
   isLoading: boolean;
@@ -13,14 +14,15 @@ export function LaunchScreen({ isLoading }: LaunchScreenProps) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.4 }}
-          className="fixed inset-0 z-50 bg-[#0a0a0a] grid place-items-center"
+          className="fixed inset-0 z-50 bg-background grid place-items-center"
         >
           {/* Background subtle pattern */}
           <div className="absolute inset-0 opacity-[0.03]">
             <div
               className="absolute inset-0"
               style={{
-                backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+                backgroundImage:
+                  'radial-gradient(circle at 2px 2px, hsl(var(--foreground)) 1px, transparent 0)',
                 backgroundSize: '40px 40px',
               }}
             />
@@ -50,14 +52,14 @@ export function LaunchScreen({ isLoading }: LaunchScreenProps) {
                 }}
                 style={{ perspective: 600 }}
               >
-                <img src="/mycash-icon.svg" alt="myCash" className="w-14 h-14" />
+                <MyCashIcon className="w-14 h-14" />
               </motion.div>
 
               <motion.h1
                 initial={{ x: -10, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.3 }}
-                className="text-4xl font-bold text-white"
+                className="text-4xl font-bold text-foreground"
               >
                 myCash
               </motion.h1>
@@ -85,7 +87,7 @@ export function LaunchScreen({ isLoading }: LaunchScreenProps) {
                       ease: 'easeInOut',
                       delay: i * 0.2,
                     }}
-                    className="w-2 h-2 bg-white rounded-full"
+                    className="w-2 h-2 bg-foreground rounded-full"
                   />
                 ))}
               </div>

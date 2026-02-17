@@ -92,10 +92,10 @@ export function NotificationCenter() {
       <PopoverTrigger asChild>
         <button
           type="button"
-          className="relative flex items-center justify-center h-8 w-8 rounded-full border border-zinc-700 bg-zinc-800 outline-none hover:bg-zinc-700 transition-colors"
+          className="relative flex items-center justify-center h-8 w-8 rounded-full border border-border bg-muted outline-none hover:bg-accent transition-colors"
         >
           <NotificationBadge label={unreadCount > 0 ? unreadCount : undefined}>
-            <Bell className="h-4 w-4 text-zinc-300" />
+            <Bell className="h-4 w-4 text-muted-foreground" />
           </NotificationBadge>
         </button>
       </PopoverTrigger>
@@ -126,7 +126,7 @@ export function NotificationCenter() {
               type="checkbox"
               checked={unreadOnly}
               onChange={handleToggleUnreadOnly}
-              className="h-3.5 w-3.5 rounded border-zinc-600 accent-blue-500"
+              className="h-3.5 w-3.5 rounded border-border accent-blue-500"
             />
             <span className="text-xs text-muted-foreground">Apenas não lidas</span>
           </label>
@@ -135,7 +135,7 @@ export function NotificationCenter() {
         <div className="max-h-[340px] overflow-y-auto">
           {isLoading && notifications.length === 0 ? (
             <div className="flex items-center justify-center py-10">
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-600 border-t-zinc-300" />
+              <div className="h-5 w-5 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-muted-foreground" />
             </div>
           ) : notifications.length === 0 ? (
             <EmptyState />
