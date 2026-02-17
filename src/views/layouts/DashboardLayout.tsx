@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from 'react-router-dom';
 import { AppSidebar } from '../components/AppSidebar';
 import { SidebarTrigger, SidebarInset } from '../components/ui/sidebar';
+import { NotificationCenter } from '../components/NotificationCenter';
 import { UserMenu } from '../components/UserMenu';
 
 const TITLES = [
@@ -29,7 +30,10 @@ export function DashboardLayout() {
             <h1 className="text-lg font-semibold">{currentTitle}</h1>
           </div>
 
-          <UserMenu />
+          <div className="flex items-center gap-2">
+            <NotificationCenter />
+            <UserMenu />
+          </div>
         </div>
 
         <div className="flex-1 overflow-auto p-4 lg:px-8 lg:pt-6 lg:pb-8">
