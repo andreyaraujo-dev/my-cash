@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { Input } from '@/views/components/ui/input.tsx';
 import { Button } from '@/views/components/ui/button.tsx';
 import { useRegisterController } from '@/views/pages/Register/useRegisterController.tsx';
 import { motion } from 'motion/react';
-import { Shield, BarChart3, Zap, Users, Award, Target } from 'lucide-react';
+import { Shield, BarChart3, Zap, Users, Award, Target, Eye, EyeOff } from 'lucide-react';
 import { Label } from '@/views/components/ui/label';
 
 export function Register() {
   const { register, handleSubmit, isPending } = useRegisterController();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="min-h-screen w-full bg-background flex items-center justify-center p-4 relative overflow-hidden">
@@ -281,12 +283,22 @@ export function Register() {
               </Label>
               <Input
                 id="password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="••••••••"
                 {...register('password')}
                 required
                 minLength={6}
                 className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-blue-500"
+                endAdornment={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={showPassword ? 'Ocultar senha' : 'Visualizar senha'}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                }
               />
               <p className="text-xs text-muted-foreground">Mínimo de 6 caracteres</p>
             </div>

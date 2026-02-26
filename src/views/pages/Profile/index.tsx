@@ -1,6 +1,17 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, KeyRound, Trash2, Wallet, CreditCard, PieChart, Target, Receipt } from 'lucide-react';
+import {
+  User,
+  KeyRound,
+  Trash2,
+  Wallet,
+  CreditCard,
+  PieChart,
+  Target,
+  Receipt,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
 import { useAuth } from '@/app/hooks/useAuth';
 import { useBankAccounts } from '@/app/hooks/useBankAccounts';
 import { useTransactions } from '@/app/hooks/useTransactions';
@@ -43,6 +54,10 @@ export function Profile() {
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
   const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
   const [deleteAccountPassword, setDeleteAccountPassword] = useState('');
+  const [showDeleteAccountPassword, setShowDeleteAccountPassword] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
   const [isEditingName, setIsEditingName] = useState(false);
   const [nameValue, setNameValue] = useState(user?.name ?? '');
 
@@ -279,9 +294,23 @@ export function Profile() {
               <Label htmlFor="currentPassword">Senha atual</Label>
               <Input
                 id="currentPassword"
-                type="password"
+                type={showCurrentPassword ? 'text' : 'password'}
                 placeholder="Senha atual"
                 {...changePasswordForm.register('currentPassword')}
+                endAdornment={
+                  <button
+                    type="button"
+                    onClick={() => setShowCurrentPassword((prev) => !prev)}
+                    className="inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={showCurrentPassword ? 'Ocultar senha' : 'Visualizar senha'}
+                  >
+                    {showCurrentPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                }
               />
               {changePasswordForm.formState.errors.currentPassword && (
                 <p className="text-sm text-destructive">
@@ -293,9 +322,23 @@ export function Profile() {
               <Label htmlFor="newPassword">Nova senha</Label>
               <Input
                 id="newPassword"
-                type="password"
+                type={showNewPassword ? 'text' : 'password'}
                 placeholder="Nova senha"
                 {...changePasswordForm.register('newPassword')}
+                endAdornment={
+                  <button
+                    type="button"
+                    onClick={() => setShowNewPassword((prev) => !prev)}
+                    className="inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={showNewPassword ? 'Ocultar senha' : 'Visualizar senha'}
+                  >
+                    {showNewPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                }
               />
               {changePasswordForm.formState.errors.newPassword && (
                 <p className="text-sm text-destructive">
@@ -307,9 +350,23 @@ export function Profile() {
               <Label htmlFor="confirmNewPassword">Confirmar nova senha</Label>
               <Input
                 id="confirmNewPassword"
-                type="password"
+                type={showConfirmNewPassword ? 'text' : 'password'}
                 placeholder="Confirmar nova senha"
                 {...changePasswordForm.register('confirmNewPassword')}
+                endAdornment={
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmNewPassword((prev) => !prev)}
+                    className="inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={showConfirmNewPassword ? 'Ocultar senha' : 'Visualizar senha'}
+                  >
+                    {showConfirmNewPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                }
               />
               {changePasswordForm.formState.errors.confirmNewPassword && (
                 <p className="text-sm text-destructive">
@@ -421,11 +478,25 @@ export function Profile() {
               <Label htmlFor="deleteAccountPassword">Senha atual</Label>
               <Input
                 id="deleteAccountPassword"
-                type="password"
+                type={showDeleteAccountPassword ? 'text' : 'password'}
                 placeholder="Sua senha"
                 value={deleteAccountPassword}
                 onChange={(e) => setDeleteAccountPassword(e.target.value)}
                 disabled={deleteAccountMutation.isPending}
+                endAdornment={
+                  <button
+                    type="button"
+                    onClick={() => setShowDeleteAccountPassword((prev) => !prev)}
+                    className="inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={showDeleteAccountPassword ? 'Ocultar senha' : 'Visualizar senha'}
+                  >
+                    {showDeleteAccountPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </button>
+                }
               />
             </div>
             <div className="flex gap-2">

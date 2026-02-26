@@ -1,13 +1,16 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { Input } from '@/views/components/ui/input';
 import { Button } from '@/views/components/ui/button';
 import { Label } from '@/views/components/ui/label';
 import { useResetPasswordController } from './useResetPasswordController';
 import { motion } from 'motion/react';
-import { ArrowLeft, KeyRound, ShieldCheck, Lock, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, KeyRound, ShieldCheck, Lock, AlertTriangle, Eye, EyeOff } from 'lucide-react';
 
 export function ResetPassword() {
   const { handleSubmit, register, errors, isPending, hasToken } = useResetPasswordController();
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   return (
     <div className="min-h-screen w-full bg-background flex items-center justify-center p-4 relative overflow-hidden">
@@ -16,7 +19,8 @@ export function ResetPassword() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, hsl(var(--foreground)) 1px, transparent 0)',
+            backgroundImage:
+              'radial-gradient(circle at 2px 2px, hsl(var(--foreground)) 1px, transparent 0)',
             backgroundSize: '40px 40px',
           }}
         />
@@ -159,11 +163,25 @@ export function ResetPassword() {
                   </Label>
                   <Input
                     id="password"
-                    type="password"
+                    type={showNewPassword ? 'text' : 'password'}
                     placeholder="••••••••"
                     {...register('newPassword')}
                     required
                     className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-blue-500"
+                    endAdornment={
+                      <button
+                        type="button"
+                        onClick={() => setShowNewPassword((prev) => !prev)}
+                        className="inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors"
+                        aria-label={showNewPassword ? 'Ocultar senha' : 'Visualizar senha'}
+                      >
+                        {showNewPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    }
                   />
                   {errors.newPassword && (
                     <p className="text-sm text-red-500">{errors.newPassword.message}</p>
@@ -177,21 +195,32 @@ export function ResetPassword() {
                   </Label>
                   <Input
                     id="confirmNewPassword"
-                    type="password"
+                    type={showConfirmPassword ? 'text' : 'password'}
                     placeholder="••••••••"
                     {...register('confirmNewPassword')}
                     required
                     className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-blue-500"
+                    endAdornment={
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword((prev) => !prev)}
+                        className="inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors"
+                        aria-label={showConfirmPassword ? 'Ocultar senha' : 'Visualizar senha'}
+                      >
+                        {showConfirmPassword ? (
+                          <EyeOff className="h-4 w-4" />
+                        ) : (
+                          <Eye className="h-4 w-4" />
+                        )}
+                      </button>
+                    }
                   />
                   {errors.confirmNewPassword && (
                     <p className="text-sm text-red-500">{errors.confirmNewPassword.message}</p>
                   )}
                 </div>
 
-                <Button
-                  type="submit"
-                  isLoading={isPending}
-                >
+                <Button type="submit" isLoading={isPending}>
                   Redefinir senha
                 </Button>
               </form>

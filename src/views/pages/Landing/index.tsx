@@ -19,11 +19,12 @@ import {
   X,
   Zap,
 } from 'lucide-react';
+import { MyCashIcon } from '@/views/components/icons/MyCashIcon';
 
 export function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
-  const navBg = useTransform(scrollYProgress, [0, 0.05], [0, 1]);
+  const navBg = useTransform(scrollYProgress, [0, 0.05], [0.92, 1]);
 
   const scrollTo = (id: string) => {
     setMobileMenuOpen(false);
@@ -37,11 +38,11 @@ export function LandingPage() {
       <nav className="fixed top-0 inset-x-0 z-50 border-b border-border/50">
         <motion.div
           style={{ opacity: navBg }}
-          className="absolute inset-0 bg-background/80 backdrop-blur-xl"
+          className="absolute inset-0 bg-background/95 backdrop-blur-xl"
         />
         <div className="relative max-w-7xl mx-auto flex items-center justify-between px-6 h-16 lg:h-20">
-          <Link to="/" className="flex items-center gap-2 shrink-0">
-            <img src="/mycash-icon.svg" alt="myCash" className="w-8 h-8" />
+          <Link to="/" className="flex items-center gap-2 shrink-0 text-foreground">
+            <MyCashIcon className="w-8 h-8 text-foreground" />
             <span className="text-xl font-bold">myCash</span>
           </Link>
 
@@ -72,7 +73,7 @@ export function LandingPage() {
           <div className="hidden md:flex items-center gap-3">
             <Link
               to="/login"
-              className="text-sm text-muted-foreground hover:text-foreground transition-colors px-4 py-2"
+              className="text-sm text-foreground hover:text-foreground transition-colors px-5 py-2.5 border border-border bg-card/90 hover:bg-accent rounded-lg font-medium"
             >
               Entrar
             </Link>
@@ -125,7 +126,7 @@ export function LandingPage() {
             <div className="flex flex-col gap-3 pt-2">
               <Link
                 to="/login"
-                className="text-center text-muted-foreground border border-border rounded-lg py-2.5 hover:bg-accent transition-colors"
+                className="text-center text-foreground border border-border bg-card rounded-lg py-2.5 hover:bg-accent transition-colors font-medium"
               >
                 Entrar
               </Link>
@@ -705,7 +706,7 @@ export function LandingPage() {
       <footer className="border-t border-border py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <img src="/mycash-icon.svg" alt="myCash" className="w-7 h-7" />
+            <MyCashIcon className="w-7 h-7 text-foreground" />
             <span className="text-lg font-bold">myCash</span>
           </div>
 

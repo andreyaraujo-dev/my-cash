@@ -81,7 +81,7 @@ export function Welcome() {
       >
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <MyCashIcon className="h-10 w-10" />
+          <MyCashIcon className="h-10 w-10 text-foreground" />
           <h1 className="text-3xl font-bold text-foreground">myCash</h1>
         </div>
 

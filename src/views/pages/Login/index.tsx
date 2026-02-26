@@ -1,13 +1,24 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { Input } from '@/views/components/ui/input.tsx';
 import { Button } from '@/views/components/ui/button.tsx';
 import { useLoginController } from '@/views/pages/Login/useLoginController.tsx';
 import { motion } from 'motion/react';
-import { TrendingUp, LineChart, Wallet, CreditCard, PieChart, DollarSign } from 'lucide-react';
+import {
+  TrendingUp,
+  LineChart,
+  Wallet,
+  CreditCard,
+  PieChart,
+  DollarSign,
+  Eye,
+  EyeOff,
+} from 'lucide-react';
 import { Label } from '@/views/components/ui/label';
 
 export function Login() {
   const { handleSubmit, register, isPending } = useLoginController();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <div className="min-h-screen w-full bg-background flex items-center justify-center p-4 relative overflow-hidden">
@@ -16,7 +27,8 @@ export function Login() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, hsl(var(--foreground)) 1px, transparent 0)',
+            backgroundImage:
+              'radial-gradient(circle at 2px 2px, hsl(var(--foreground)) 1px, transparent 0)',
             backgroundSize: '40px 40px',
           }}
         />
@@ -262,18 +274,25 @@ export function Login() {
               </div>
               <Input
                 id="password"
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="••••••••"
                 {...register('password')}
                 required
                 className="bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-blue-500"
+                endAdornment={
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className="inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors"
+                    aria-label={showPassword ? 'Ocultar senha' : 'Visualizar senha'}
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                }
               />
             </div>
 
-            <Button
-              type="submit"
-              isLoading={isPending}
-            >
+            <Button type="submit" isLoading={isPending}>
               Entrar
             </Button>
           </form>
