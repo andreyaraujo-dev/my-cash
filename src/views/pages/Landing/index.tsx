@@ -66,7 +66,7 @@ export function LandingPage() {
               onClick={() => scrollTo('pricing')}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
-              Precos
+              Preços
             </button>
           </div>
 
