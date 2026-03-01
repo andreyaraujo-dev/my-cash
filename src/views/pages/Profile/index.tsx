@@ -276,8 +276,11 @@ export function Profile() {
               )}
             </div>
           ) : (
-            <p className="text-sm text-muted-foreground">Você ainda não possui uma assinatura ativa.</p>
+            <p className="text-sm text-muted-foreground">
+              Você ainda não possui uma assinatura ativa.
+            </p>
           )}
+          {subscription?.isTrial && <Button onClick={() => undefined}>Assinar</Button>}
           <Button variant="outline" onClick={() => navigate('/profile/subscription')}>
             Gerenciar assinatura
           </Button>
@@ -332,11 +335,7 @@ export function Profile() {
                     className="inline-flex items-center justify-center rounded text-muted-foreground hover:text-foreground transition-colors"
                     aria-label={showNewPassword ? 'Ocultar senha' : 'Visualizar senha'}
                   >
-                    {showNewPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
+                    {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                   </button>
                 }
               />
