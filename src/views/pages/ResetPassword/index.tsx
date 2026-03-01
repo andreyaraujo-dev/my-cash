@@ -6,6 +6,7 @@ import { Label } from '@/views/components/ui/label';
 import { useResetPasswordController } from './useResetPasswordController';
 import { motion } from 'motion/react';
 import { ArrowLeft, KeyRound, ShieldCheck, Lock, AlertTriangle, Eye, EyeOff } from 'lucide-react';
+import { MyCashIcon } from '@/views/components/icons/MyCashIcon';
 
 export function ResetPassword() {
   const { handleSubmit, register, errors, isPending, hasToken } = useResetPasswordController();
@@ -140,8 +141,9 @@ export function ResetPassword() {
         className="w-full max-w-md relative z-10"
       >
         {/* Logo */}
-        <div className="flex items-center justify-center gap-3">
-          <img src="/cash-logo.svg" alt="myCash" className="w-44 h-44" />
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <MyCashIcon className="w-8 h-8 text-foreground" />
+          <span className="text-xl font-bold text-foreground">myCash</span>
         </div>
 
         {/* Card */}

@@ -5,6 +5,7 @@ import { Label } from '@/views/components/ui/label';
 import { useForgotPasswordController } from './useForgotPasswordController';
 import { motion } from 'motion/react';
 import { Mail, ArrowLeft, KeyRound, ShieldCheck, Lock } from 'lucide-react';
+import { MyCashIcon } from '@/views/components/icons/MyCashIcon';
 
 export function ForgotPassword() {
   const { handleSubmit, register, isPending, isEmailSent } = useForgotPasswordController();
@@ -136,8 +137,9 @@ export function ForgotPassword() {
         className="w-full max-w-md relative z-10"
       >
         {/* Logo */}
-        <div className="flex items-center justify-center gap-3">
-          <img src="/cash-logo.svg" alt="myCash" className="w-44 h-44" />
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <MyCashIcon className="w-8 h-8 text-foreground" />
+          <span className="text-xl font-bold text-foreground">myCash</span>
         </div>
 
         {/* Card */}
