@@ -6,6 +6,7 @@ import { useRegisterController } from '@/views/pages/Register/useRegisterControl
 import { motion } from 'motion/react';
 import { Shield, BarChart3, Zap, Users, Award, Target, Eye, EyeOff } from 'lucide-react';
 import { Label } from '@/views/components/ui/label';
+import { MyCashIcon } from '@/views/components/icons/MyCashIcon';
 
 export function Register() {
   const { register, handleSubmit, isPending } = useRegisterController();
@@ -18,7 +19,8 @@ export function Register() {
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: 'radial-gradient(circle at 2px 2px, hsl(var(--foreground)) 1px, transparent 0)',
+            backgroundImage:
+              'radial-gradient(circle at 2px 2px, hsl(var(--foreground)) 1px, transparent 0)',
             backgroundSize: '40px 40px',
           }}
         />
@@ -230,10 +232,8 @@ export function Register() {
       >
         {/* Logo */}
         <div className="flex items-center justify-center gap-3 mb-8">
-          <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg shadow-white/20">
-            <span className="text-2xl font-bold text-black">S</span>
-          </div>
-          <h1 className="text-3xl font-bold text-foreground">myCash</h1>
+          <MyCashIcon className="w-8 h-8 text-foreground" />
+          <span className="text-xl font-bold text-foreground">myCash</span>
         </div>
 
         {/* Card de Cadastro */}
@@ -303,10 +303,7 @@ export function Register() {
               <p className="text-xs text-muted-foreground">Mínimo de 6 caracteres</p>
             </div>
 
-            <Button
-              type="submit"
-              isLoading={isPending}
-            >
+            <Button type="submit" isLoading={isPending}>
               Criar conta
             </Button>
           </form>
