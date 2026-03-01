@@ -6,6 +6,7 @@ import { AuthProvider } from '@/app/context/AuthContext.tsx';
 // import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from '@/views/ThemeProvider';
 import { SidebarProvider } from './views/components/ui/sidebar';
+import { InitializeClarity } from './app/metrics/clarity';
 
 export function App() {
   return (
@@ -16,6 +17,7 @@ export function App() {
             <Router />
           </SidebarProvider>
           <Toaster />
+          <InitializeClarity />
         </AuthProvider>
       </ThemeProvider>
       {/* <ReactQueryDevtools buttonPosition="bottom-left" /> */}
