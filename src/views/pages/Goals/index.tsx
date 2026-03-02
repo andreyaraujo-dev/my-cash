@@ -14,13 +14,14 @@ import { goalsService } from '@/app/services/goalsService';
 import { useToast } from '@/app/hooks/useToast';
 import { PageTour } from '@/views/components/Tour/PageTour';
 import { goalsTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
+import { useEffect, useState } from 'react';
 
 export function GoalsPage() {
   const {
     goals,
     isLoading,
     filters,
-    handleChangeFilters,
+    handleApplyFilters,
     handleClearFilters,
     isNewModalOpen,
     handleOpenNewModal,
@@ -42,9 +43,16 @@ export function GoalsPage() {
     handleCloseDeleteModal,
     goalToDelete,
   } = useGoalsController();
+  const [hasLoadedFiltersOnce, setHasLoadedFiltersOnce] = useState(false);
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (!isLoading) {
+      setHasLoadedFiltersOnce(true);
+    }
+  }, [isLoading]);
 
   const { isPending: isDeleting, mutateAsync: deleteGoal } = useMutation({
     mutationFn: goalsService.remove,
@@ -77,7 +85,7 @@ export function GoalsPage() {
 
   return (
     <div className="h-full flex flex-col gap-4">
-      <header className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <header className="flex flex-row items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Minhas Metas</h1>
         <div data-tour="new-goal-btn">
           {isLoading ? (
@@ -94,9 +102,9 @@ export function GoalsPage() {
       <div data-tour="goals-filters">
         <GoalsFilters
           filters={filters}
-          handleChangeFilters={handleChangeFilters}
+          handleChangeFilters={handleApplyFilters}
           handleClearFilters={handleClearFilters}
-          isLoading={isLoading}
+          isLoading={isLoading && !hasLoadedFiltersOnce}
         />
       </div>
 

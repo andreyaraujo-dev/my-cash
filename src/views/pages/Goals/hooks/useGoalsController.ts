@@ -18,15 +18,11 @@ export function useGoalsController() {
 
   const { goals, isLoading } = useGoals(filters);
 
-  function handleChangeFilters<TFilter extends keyof GoalsFilters>(filter: TFilter) {
-    return (value: GoalsFilters[TFilter]) => {
-      if (value === filters[filter]) return;
-
-      setFilters((prevState) => ({
-        ...prevState,
-        [filter]: value,
-      }));
-    };
+  function handleApplyFilters(nextFilters: GoalsFilters) {
+    setFilters((prevState) => ({
+      ...prevState,
+      ...nextFilters,
+    }));
   }
 
   function handleClearFilters() {
@@ -88,7 +84,7 @@ export function useGoalsController() {
     isLoading,
     hasGoals,
     filters,
-    handleChangeFilters,
+    handleApplyFilters,
     handleClearFilters,
     isNewModalOpen,
     handleOpenNewModal,

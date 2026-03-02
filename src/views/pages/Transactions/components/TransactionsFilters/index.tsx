@@ -13,7 +13,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Filter } from 'lucide-react';
 import { useForm } from 'react-hook-form';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   filterTransactionsSchema,
   FilterTransactionsSchema,
@@ -42,7 +42,7 @@ export function TransactionsFilters({
   handleApplyFilters,
   isLoading,
 }: TransactionsFiltersProps) {
-  const [accordionValue, setAccordionValue] = useState('');
+  const [accordionValue, setAccordionValue] = useState<string>('');
   const form = useForm<FilterTransactionsSchema>({
     resolver: zodResolver(filterTransactionsSchema),
     defaultValues: {
@@ -55,6 +55,12 @@ export function TransactionsFilters({
   });
 
   const isMobile = useIsMobile();
+
+  useEffect(() => {
+    if (!accordionValue && !isMobile) {
+      setAccordionValue('transactions-filters');
+    }
+  }, [isMobile, accordionValue]);
   const appliedFiltersCount = useMemo(() => {
     const currentDate = new Date();
     const defaultMonth = currentDate.getMonth() + 1;
@@ -82,7 +88,10 @@ export function TransactionsFilters({
         title: data.name,
       }),
     );
-    setAccordionValue('');
+
+    if (isMobile) {
+      setAccordionValue('');
+    }
   }
 
   if (isLoading) {
@@ -284,7 +293,6 @@ export function TransactionsFilters({
 
                 <Button
                   type="submit"
-                  variant="outline"
                   className="h-12 w-max"
                   isLoading={form.formState.isSubmitting}
                 >
