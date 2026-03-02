@@ -35,6 +35,7 @@ export function EditAccountModal() {
         description="Ao excluir a conta, também serão excluídos todos os registros de
         receitas e despesas relacionados."
         isLoading={isLoadingDelete}
+        open={isDeleteModalOpen}
         onClose={handleCloseDeleteModal}
         onConfirm={handleDeleteAccount}
       />

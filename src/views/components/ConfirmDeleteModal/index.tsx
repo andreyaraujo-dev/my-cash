@@ -17,7 +17,7 @@ export function ConfirmDeleteModal({
   title,
   description,
   isLoading,
-  open = false,
+  open = true,
 }: ConfirmDeleteModalProps) {
   return (
     <Modal open={open} title="Excluir" onClose={onClose}>

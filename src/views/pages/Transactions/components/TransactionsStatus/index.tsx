@@ -18,7 +18,7 @@ export function TransactionStatus({ transactions, isLoading }: TransactionStatus
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-3 gap-4 w-full">
+      <div className="grid md:grid-cols-3 grid-cols-1 gap-4 w-full">
         {Array.from({ length: 3 }).map((_, i) => (
           <Card key={i} className="p-4">
             <div className="space-y-2">
@@ -32,7 +32,7 @@ export function TransactionStatus({ transactions, isLoading }: TransactionStatus
   }
 
   return (
-    <div className="grid grid-cols-3 gap-4 w-full">
+    <div className="grid md:grid-cols-3 grid-cols-1 gap-4 w-full">
       <Card className="p-4 bg-green-500/10 border-green-500/20">
         <div className="space-y-1">
           <p className="text-sm text-green-600">Despesas Pagas</p>

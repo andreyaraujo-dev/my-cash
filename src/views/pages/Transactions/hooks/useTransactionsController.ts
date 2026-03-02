@@ -34,17 +34,6 @@ export function useTransactionsController() {
 
   const { transactions, isLoading, isInitialLoading } = useTransactions(filters);
 
-  function handleChangeFilters<TFilter extends keyof TransactionsFilters>(filter: TFilter) {
-    return (value: TransactionsFilters[TFilter]) => {
-      if (value === filters[filter]) return;
-
-      setFilters((prevState) => ({
-        ...prevState,
-        [filter]: value,
-      }));
-    };
-  }
-
   function handleApplyFilters({
     bankAccountId,
     year,
@@ -60,12 +49,16 @@ export function useTransactionsController() {
     type?: Transaction['type'];
     title?: string;
   }) {
-    handleChangeFilters('bankAccountId')(bankAccountId);
-    handleChangeFilters('year')(year);
-    handleChangeFilters('isPaid')(isPaid);
-    handleChangeFilters('title')(title);
-    if (month) handleChangeFilters('month')(month);
-    if (type) handleChangeFilters('type')(type);
+    setFilters((prevState) => ({
+      ...prevState,
+      bankAccountId,
+      year,
+      isPaid,
+      title,
+      month: month ?? prevState.month,
+      type,
+    }));
+
     handleCloseFiltersModal();
   }
 
@@ -121,7 +114,6 @@ export function useTransactionsController() {
     isInitialLoading,
     isLoading,
     transactions,
-    handleChangeFilters,
     filters,
     isFiltersModalOpen,
     handleOpenFiltersModal,

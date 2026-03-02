@@ -17,7 +17,7 @@ export function AccountsStats({
   if (isLoading) return <AccountStatsSkeleton />;
 
   return (
-    <div className="w-full grid grid-cols-3 gap-3 items-center justify-between mt-4">
+    <div className="w-full grid md:grid-cols-3 grid-cols-1 gap-3 items-center justify-between mt-4">
       <div className="border border-border rounded-md p-4 flex gap-2 flex-1">
         <div className="w-10 h-10 bg-muted rounded-lg flex items-center justify-center">
           <BankAccountType type="CHECKING" />

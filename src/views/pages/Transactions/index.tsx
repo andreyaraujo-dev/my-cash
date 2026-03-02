@@ -9,6 +9,7 @@ import { TransactionsProvider } from '@/app/context/TransactionsContext';
 import { Skeleton } from '@/views/components/ui/skeleton';
 import { PageTour } from '@/views/components/Tour/PageTour';
 import { transactionsTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
+import { useEffect, useState } from 'react';
 
 export function TransactionsPage() {
   const {
@@ -16,7 +17,6 @@ export function TransactionsPage() {
     isLoading,
     isInitialLoading,
     transactions,
-    handleChangeFilters,
     handleApplyFilters,
     isEditModalOpen,
     handleCloseEditModal,
@@ -27,6 +27,13 @@ export function TransactionsPage() {
     setIsOpenUpdateTransactionStatusDialog,
     isOpenUpdateTransactionStatusDialog,
   } = useTransactionsController();
+  const [hasLoadedFiltersOnce, setHasLoadedFiltersOnce] = useState(false);
+
+  useEffect(() => {
+    if (!isInitialLoading) {
+      setHasLoadedFiltersOnce(true);
+    }
+  }, [isInitialLoading]);
 
   return (
     <TransactionsProvider>
@@ -39,17 +46,16 @@ export function TransactionsPage() {
           )}
         </div>
 
+        <div className="w-full" data-tour="transactions-status">
+          <TransactionStatus transactions={transactions} isLoading={isInitialLoading} />
+        </div>
+
         <div className="w-full" data-tour="transactions-filters">
           <TransactionsFilters
             filters={filters}
-            handleChangeFilters={handleChangeFilters}
             handleApplyFilters={handleApplyFilters}
-            isLoading={isInitialLoading}
+            isLoading={isInitialLoading && !hasLoadedFiltersOnce}
           />
-        </div>
-
-        <div className="w-full" data-tour="transactions-status">
-          <TransactionStatus transactions={transactions} isLoading={isInitialLoading} />
         </div>
 
         <TransactionsList
