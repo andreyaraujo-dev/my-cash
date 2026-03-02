@@ -19,6 +19,8 @@ import {
 import { Modal } from '@/views/components/Modal';
 import { Button } from '@/views/components/ui/button';
 import { cn } from '@/lib/utils';
+import { isPremiumRoute } from '@/app/config/accessPolicy';
+import { useAccessPolicy } from '@/app/hooks/useAccessPolicy';
 
 // Menu items para o app de finanças
 const items = [
@@ -67,10 +69,15 @@ const footerItems = [
   },
 ];
 
-export function AppSidebar() {
+interface AppSidebarProps {
+  onBlockedAreaAttempt?: () => void;
+}
+
+export function AppSidebar({ onBlockedAreaAttempt }: AppSidebarProps) {
   const location = useLocation();
   const { open } = useSidebar();
   const { signout } = useAuth();
+  const { isRestricted } = useAccessPolicy();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   return (
@@ -97,17 +104,40 @@ export function AppSidebar() {
               <SidebarMenu>
                 {items.map((item) => {
                   const isActive = location.pathname === item.url;
+                  const isBlocked = isRestricted && isPremiumRoute(item.url);
+                  const buttonClassName = `w-full justify-start gap-3 h-12 ${
+                    isBlocked
+                      ? 'text-muted-foreground opacity-60 cursor-not-allowed'
+                      : isActive
+                        ? 'bg-secondary text-secondary-foreground'
+                        : 'text-muted-foreground hover:text-foreground'
+                  }`;
+
+                  if (isBlocked) {
+                    return (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton
+                          tooltip={`${item.title} (Premium)`}
+                          className={buttonClassName}
+                          onClick={onBlockedAreaAttempt}
+                        >
+                          <item.icon />
+                          <span>{item.title}</span>
+                          <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-primary/15 text-primary">
+                            Premium
+                          </span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  }
+
                   return (
                     <SidebarMenuItem key={item.title}>
                       <SidebarMenuButton
                         asChild
                         isActive={isActive}
                         tooltip={item.title}
-                        className={`w-full justify-start gap-3 h-12 ${
-                          isActive
-                            ? 'bg-secondary text-secondary-foreground'
-                            : 'text-muted-foreground hover:text-foreground'
-                        }`}
+                        className={buttonClassName}
                       >
                         <Link to={item.url}>
                           <item.icon />

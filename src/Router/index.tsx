@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthGuard } from './AuthGuard.tsx';
+import { PremiumAccessGuard } from './PremiumAccessGuard.tsx';
 
 const AuthLayout = lazy(() =>
   import('../views/layouts/AuthLayout.tsx').then((module) => ({ default: module.AuthLayout })),
@@ -79,13 +80,15 @@ export function Router() {
             <Route path="/welcome" element={<Welcome />} />
             <Route element={<DashboardLayout />}>
               <Route path="/home" element={<Dashboard />} />
-              <Route path="/accounts" element={<AccountsPage />} />
-              <Route path="/transactions" element={<TransactionsPage />} />
-              <Route path="/categories" element={<CategoriesPage />} />
-              <Route path="/reports" element={<ReportsPage />} />
-              <Route path="/goals" element={<GoalsPage />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/subscription" element={<SubscriptionPage />} />
+              <Route element={<PremiumAccessGuard />}>
+                <Route path="/accounts" element={<AccountsPage />} />
+                <Route path="/transactions" element={<TransactionsPage />} />
+                <Route path="/categories" element={<CategoriesPage />} />
+                <Route path="/reports" element={<ReportsPage />} />
+                <Route path="/goals" element={<GoalsPage />} />
+              </Route>
             </Route>
           </Route>
         </Routes>

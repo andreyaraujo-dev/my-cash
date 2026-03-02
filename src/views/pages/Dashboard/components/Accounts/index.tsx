@@ -7,7 +7,11 @@ import { Skeleton } from '@/views/components/ui/skeleton';
 import { PlusIcon } from 'lucide-react';
 import { AccountCard } from '../AccountCard';
 
-export function Accounts() {
+interface AccountsProps {
+  readOnly?: boolean;
+}
+
+export function Accounts({ readOnly = false }: AccountsProps) {
   const { sliderState, setSliderState, windowWidth, isLoading, accounts, openNewAccountModal } =
     useAccountsController();
 
@@ -50,19 +54,28 @@ export function Accounts() {
                   </strong>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={openNewAccountModal}
-                  className="h-52 border-2 border-dashed border-blue-600 rounded-2xl flex flex-col items-center justify-center gap-4 text-white"
-                >
-                  <div className="w-11 h-11 rounded-full border-2 border-dashed border-white flex items-center justify-center">
-                    <PlusIcon className="w-6 h-6" />
+                {readOnly ? (
+                  <div className="h-52 border-2 border-dashed border-muted rounded-2xl flex flex-col items-center justify-center gap-3 text-muted-foreground">
+                    <span className="text-sm font-medium">Conta limitada</span>
+                    <span className="text-xs text-center max-w-[220px]">
+                      Para criar contas, assine o plano e desbloqueie os recursos completos.
+                    </span>
                   </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={openNewAccountModal}
+                    className="h-52 border-2 border-dashed border-blue-600 rounded-2xl flex flex-col items-center justify-center gap-4 text-white"
+                  >
+                    <div className="w-11 h-11 rounded-full border-2 border-dashed border-white flex items-center justify-center">
+                      <PlusIcon className="w-6 h-6" />
+                    </div>
 
-                  <span className="tracking-[-0.5px] font-medium block w-32 text-center">
-                    Cadastre uma nova conta
-                  </span>
-                </button>
+                    <span className="tracking-[-0.5px] font-medium block w-32 text-center">
+                      Cadastre uma nova conta
+                    </span>
+                  </button>
+                )}
               </>
             )}
             {accounts.length > 0 && (
@@ -90,7 +103,7 @@ export function Accounts() {
 
                   {accounts.map((account) => (
                     <SwiperSlide key={account.id}>
-                      <AccountCard data={account} />
+                      <AccountCard data={account} readOnly={readOnly} />
                     </SwiperSlide>
                   ))}
                 </Swiper>

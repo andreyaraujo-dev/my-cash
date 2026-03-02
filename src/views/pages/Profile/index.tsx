@@ -18,6 +18,7 @@ import { useTransactions } from '@/app/hooks/useTransactions';
 import { useGoals } from '@/app/hooks/useGoals';
 import { useCategories } from '@/app/hooks/useCategories';
 import { useSubscription } from '@/app/hooks/useSubscription';
+import { useAccessPolicy } from '@/app/hooks/useAccessPolicy';
 import { useProfileController } from './hooks/useProfileController';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '@/app/services/authService';
@@ -75,6 +76,7 @@ export function Profile() {
   const { goals, isLoading: isLoadingGoals } = useGoals({});
   const { categories, isFetching: isLoadingCategories } = useCategories();
   const { subscription, isLoading: isLoadingSubscription } = useSubscription();
+  const { isRestricted } = useAccessPolicy();
 
   const deleteAccountMutation = useMutation({
     mutationFn: authService.deleteAccount,
@@ -280,7 +282,9 @@ export function Profile() {
               Você ainda não possui uma assinatura ativa.
             </p>
           )}
-          {subscription?.isTrial && <Button onClick={() => undefined}>Assinar</Button>}
+          {(isRestricted || !subscription?.isActive) && (
+            <Button onClick={() => navigate('/profile/subscription')}>Assinar</Button>
+          )}
           <Button variant="outline" onClick={() => navigate('/profile/subscription')}>
             Gerenciar assinatura
           </Button>

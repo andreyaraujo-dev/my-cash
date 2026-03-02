@@ -18,11 +18,13 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/views/compon
 import { Skeleton } from '@/views/components/ui/skeleton';
 import { Receipt, RotateCcw, XCircle } from 'lucide-react';
 import { differenceInCalendarDays } from 'date-fns';
+import { useAccessPolicy } from '@/app/hooks/useAccessPolicy';
 
 export function SubscriptionPage() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const { isRestricted } = useAccessPolicy();
   const { subscription, isLoading } = useSubscription();
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
 
@@ -96,8 +98,8 @@ export function SubscriptionPage() {
       : subscription.nextRenewalAt;
   const daysLeft = differenceInCalendarDays(new Date(referenceDate), new Date());
   const daysLabel = daysLeft <= 0 ? 'Expirado' : `${daysLeft} dias restantes`;
-  const canCancel = subscription.isActive && !subscription.cancelRequestedAt;
-  const canRenew = !subscription.isActive || subscription.cancelRequestedAt != null;
+  const canCancel = !isRestricted && subscription.isActive && !subscription.cancelRequestedAt;
+  const canRenew = isRestricted || !subscription.isActive || subscription.cancelRequestedAt != null;
 
   return (
     <div className="flex flex-col gap-6 w-full max-w-2xl">
@@ -110,6 +112,16 @@ export function SubscriptionPage() {
           </div>
         </CardHeader>
         <CardContent className="space-y-6">
+          {isRestricted && (
+            <div className="rounded-lg border border-amber-900/50 bg-amber-900/10 p-4">
+              <p className="text-sm font-medium text-amber-700">Seu período grátis terminou</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Assine agora para desbloquear novamente transações, contas, categorias, relatórios e
+                metas.
+              </p>
+            </div>
+          )}
+
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="rounded-lg bg-muted/50 p-4">
               <p className="text-xs text-muted-foreground">Status</p>
@@ -168,14 +180,14 @@ export function SubscriptionPage() {
             )}
             {canRenew && (
               <Button
-                variant="outline"
+                variant={isRestricted ? 'default' : 'outline'}
                 className="gap-2"
                 onClick={() => renewMutation.mutate()}
                 disabled={renewMutation.isPending}
                 isLoading={renewMutation.isPending}
               >
                 <RotateCcw className="h-4 w-4" />
-                Renovar assinatura
+                {isRestricted ? 'Assinar agora' : 'Renovar assinatura'}
               </Button>
             )}
             <Button variant="ghost" onClick={() => navigate('/profile')}>
