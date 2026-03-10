@@ -1,10 +1,10 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from 'react';
 import { localStorageKeys } from '@/app/config/localStorageKeys.ts';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { usersService } from '@/app/services/usersService';
+import { useQueryClient } from '@tanstack/react-query';
 import { useToast } from '@/app/hooks/useToast.ts';
 import { LaunchScreen } from '@/views/components/LaunchScreen';
 import { User } from '@/app/entities/User.ts';
+import { useGetMe } from '../hooks/useGetMe';
 
 interface AuthContextValue {
   signedIn: boolean;
@@ -24,12 +24,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const { toast } = useToast();
 
-  const { isError, isFetching, isSuccess, data } = useQuery({
-    queryKey: ['users', 'me'],
-    queryFn: usersService.me,
-    enabled: signedIn,
-    staleTime: Infinity,
-  });
+  const { isError, isFetching, isSuccess, data } = useGetMe(signedIn);
 
   const queryClient = useQueryClient();
 

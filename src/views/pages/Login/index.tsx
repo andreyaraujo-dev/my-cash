@@ -16,9 +16,22 @@ import {
 } from 'lucide-react';
 import { Label } from '@/views/components/ui/label';
 import { MyCashIcon } from '@/views/components/icons/MyCashIcon';
+import { VerifyMfaDialog } from './components/VerifyMfaDialog';
 
 export function Login() {
-  const { handleSubmit, register, isPending } = useLoginController();
+  const {
+    handleSubmit,
+    register,
+    isPending,
+    isMfaModalOpen,
+    handleMfaModalOpenChange,
+    handleMfaSubmit,
+    mfaControl,
+    mfaErrors,
+    trustDevice,
+    setTrustDevice,
+    isVerifyingMfa,
+  } = useLoginController();
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -330,6 +343,17 @@ export function Login() {
           </div>
         </motion.div>
       </motion.div>
+
+      <VerifyMfaDialog
+        isMfaModalOpen={isMfaModalOpen}
+        handleMfaModalOpenChange={handleMfaModalOpenChange}
+        handleMfaSubmit={handleMfaSubmit}
+        mfaControl={mfaControl}
+        mfaErrors={mfaErrors}
+        trustDevice={trustDevice}
+        setTrustDevice={setTrustDevice}
+        isVerifyingMfa={isVerifyingMfa}
+      />
     </div>
   );
 }

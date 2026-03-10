@@ -5,9 +5,16 @@ export interface SigninParams {
   password: string;
 }
 
-export interface SigninResponse {
+export interface SigninSuccessResponse {
   accessToken: string;
 }
+
+export interface SigninMfaRequiredResponse {
+  mfaTempToken: string;
+  mfaRequired?: boolean;
+}
+
+export type SigninResponse = SigninSuccessResponse | SigninMfaRequiredResponse;
 
 export async function signin({ email, password }: SigninParams) {
   const { data } = await httpClient.post<SigninResponse>('/auth/signin', { email, password });
