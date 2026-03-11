@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSubscription } from '@/app/hooks/useSubscription';
 import { subscriptionsService } from '@/app/services/subscriptionsService';
 import { useToast } from '@/app/hooks/useToast';
 import { formatCurrency } from '@/app/utils/formatCurrency';
 import { formatDate } from '@/app/utils/formatDate';
+import { getApiErrorMessage } from '@/app/utils/getApiErrorMessage';
 import {
   Card,
   CardContent,
@@ -16,17 +17,38 @@ import {
 import { Button } from '@/views/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/views/components/ui/dialog';
 import { Skeleton } from '@/views/components/ui/skeleton';
-import { Receipt, RotateCcw, XCircle } from 'lucide-react';
+import { Receipt, RotateCcw, XCircle, CreditCard } from 'lucide-react';
 import { differenceInCalendarDays } from 'date-fns';
 import { useAccessPolicy } from '@/app/hooks/useAccessPolicy';
 
 export function SubscriptionPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const { isRestricted } = useAccessPolicy();
   const { subscription, isLoading } = useSubscription();
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  useEffect(() => {
+    const success = searchParams.get('success');
+    const canceled = searchParams.get('canceled');
+
+    if (success === 'true') {
+      queryClient.invalidateQueries({ queryKey: ['subscription'] });
+      setSearchParams({}, { replace: true });
+      toast({ title: 'Assinatura ativada', description: 'Sua assinatura foi ativada com sucesso.' });
+    } else if (canceled === 'true') {
+      queryClient.invalidateQueries({ queryKey: ['subscription'] });
+      setSearchParams({}, { replace: true });
+      toast({
+        title: 'Checkout cancelado',
+        description: 'Você pode assinar a qualquer momento quando quiser.',
+      });
+    }
+  }, [searchParams, setSearchParams, queryClient, toast]);
 
   const cancelMutation = useMutation({
     mutationFn: subscriptionsService.cancel,
@@ -36,30 +58,44 @@ export function SubscriptionPage() {
       setCancelDialogOpen(false);
       toast({ title: 'Assinatura cancelada', description: 'Sua assinatura foi cancelada.' });
     },
-    onError: () => {
+    onError: (error) => {
       toast({
         variant: 'destructive',
         title: 'Erro',
-        description: 'Não foi possível cancelar a assinatura. Tente novamente.',
+        description: getApiErrorMessage(error) ?? 'Não foi possível cancelar a assinatura. Tente novamente.',
       });
     },
   });
 
-  const renewMutation = useMutation({
-    mutationFn: subscriptionsService.renew,
-    mutationKey: ['subscription', 'renew'],
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['subscription'] });
-      toast({ title: 'Assinatura renovada', description: 'Sua assinatura foi renovada.' });
-    },
-    onError: () => {
+  const handleCheckoutRedirect = async () => {
+    setCheckoutLoading(true);
+    try {
+      const url = await subscriptionsService.createCheckoutSession();
+      window.location.href = url;
+    } catch (error) {
       toast({
         variant: 'destructive',
         title: 'Erro',
-        description: 'Não foi possível renovar a assinatura. Tente novamente.',
+        description: getApiErrorMessage(error) ?? 'Não foi possível iniciar o checkout. Tente novamente.',
       });
-    },
-  });
+      setCheckoutLoading(false);
+    }
+  };
+
+  const handlePortalRedirect = async () => {
+    setPortalLoading(true);
+    try {
+      const url = await subscriptionsService.createPortalSession();
+      window.location.href = url;
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Erro',
+        description: getApiErrorMessage(error) ?? 'Não foi possível abrir o portal. Tente novamente.',
+      });
+      setPortalLoading(false);
+    }
+  };
 
   const handleCancelConfirm = () => {
     cancelMutation.mutate();
@@ -82,7 +118,16 @@ export function SubscriptionPage() {
             <CardTitle>Assinatura</CardTitle>
             <CardDescription>Você ainda não possui uma assinatura ativa.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex flex-wrap gap-2">
+            <Button
+              onClick={handleCheckoutRedirect}
+              disabled={checkoutLoading}
+              isLoading={checkoutLoading}
+              className="gap-2"
+            >
+              <CreditCard className="h-4 w-4" />
+              Assinar agora
+            </Button>
             <Button variant="outline" onClick={() => navigate('/profile')}>
               Voltar ao perfil
             </Button>
@@ -99,7 +144,12 @@ export function SubscriptionPage() {
   const daysLeft = differenceInCalendarDays(new Date(referenceDate), new Date());
   const daysLabel = daysLeft <= 0 ? 'Expirado' : `${daysLeft} dias restantes`;
   const canCancel = !isRestricted && subscription.isActive && !subscription.cancelRequestedAt;
-  const canRenew = isRestricted || !subscription.isActive || subscription.cancelRequestedAt != null;
+  const canRenew =
+    isRestricted ||
+    !subscription.isActive ||
+    subscription.cancelRequestedAt != null ||
+    subscription.isTrial;
+  const hasPaidSubscription = subscription.isActive && !subscription.isTrial;
 
   return (
     <div className="flex flex-col gap-6 w-full max-w-2xl">
@@ -180,14 +230,34 @@ export function SubscriptionPage() {
             )}
             {canRenew && (
               <Button
-                variant={isRestricted ? 'default' : 'outline'}
+                variant={isRestricted || subscription.isTrial ? 'default' : 'outline'}
                 className="gap-2"
-                onClick={() => renewMutation.mutate()}
-                disabled={renewMutation.isPending}
-                isLoading={renewMutation.isPending}
+                onClick={handleCheckoutRedirect}
+                disabled={checkoutLoading}
+                isLoading={checkoutLoading}
               >
-                <RotateCcw className="h-4 w-4" />
-                {isRestricted ? 'Assinar agora' : 'Renovar assinatura'}
+                {subscription.isTrial ? (
+                  <CreditCard className="h-4 w-4" />
+                ) : (
+                  <RotateCcw className="h-4 w-4" />
+                )}
+                {subscription.isTrial
+                  ? 'Assinar plano'
+                  : isRestricted
+                    ? 'Assinar agora'
+                    : 'Renovar assinatura'}
+              </Button>
+            )}
+            {hasPaidSubscription && (
+              <Button
+                variant="outline"
+                className="gap-2"
+                onClick={handlePortalRedirect}
+                disabled={portalLoading}
+                isLoading={portalLoading}
+              >
+                <CreditCard className="h-4 w-4" />
+                Gerenciar no Stripe
               </Button>
             )}
             <Button variant="ghost" onClick={() => navigate('/profile')}>
