@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'motion/react';
-import { MyCashIcon } from '@/views/components/icons/MyCashIcon';
+import { MyCashLogo } from '@/views/components/icons/MyCashLogo';
 
 interface LaunchScreenProps {
   isLoading: boolean;
@@ -52,17 +52,20 @@ export function LaunchScreen({ isLoading }: LaunchScreenProps) {
                 }}
                 style={{ perspective: 600 }}
               >
-                <MyCashIcon className="w-14 h-14" />
+                <MyCashLogo showText={false} iconClassName="w-14 h-14" />
               </motion.div>
 
-              <motion.h1
+              <motion.span
                 initial={{ x: -10, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.4, delay: 0.3 }}
-                className="text-4xl font-bold text-foreground"
+                className="text-4xl font-bold italic"
               >
-                myCash
-              </motion.h1>
+                <span className="text-foreground">my</span>
+                <span className="bg-gradient-to-r from-[#7B3EBF] to-[#3A4CFF] bg-clip-text text-transparent">
+                  Cash
+                </span>
+              </motion.span>
             </motion.div>
 
             {/* Loading indicator */}

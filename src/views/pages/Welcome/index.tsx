@@ -13,7 +13,7 @@ import {
   Shield,
   Zap,
 } from 'lucide-react';
-import { MyCashIcon } from '@/views/components/icons/MyCashIcon';
+import { MyCashLogo } from '@/views/components/icons/MyCashLogo';
 
 export function Welcome() {
   const navigate = useNavigate();
@@ -80,9 +80,8 @@ export function Welcome() {
         className="w-full max-w-lg relative z-10"
       >
         {/* Logo */}
-        <div className="flex items-center justify-center gap-3 mb-8">
-          <MyCashIcon className="h-10 w-10 text-foreground" />
-          <h1 className="text-3xl font-bold text-foreground">myCash</h1>
+        <div className="flex items-center justify-center mb-8">
+          <MyCashLogo iconClassName="h-10 w-10" textClassName="text-3xl font-bold" />
         </div>
 
         {/* Welcome Card */}

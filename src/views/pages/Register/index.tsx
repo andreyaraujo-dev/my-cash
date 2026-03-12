@@ -6,7 +6,7 @@ import { useRegisterController } from '@/views/pages/Register/useRegisterControl
 import { motion } from 'motion/react';
 import { Shield, BarChart3, Zap, Users, Award, Target, Eye, EyeOff } from 'lucide-react';
 import { Label } from '@/views/components/ui/label';
-import { MyCashIcon } from '@/views/components/icons/MyCashIcon';
+import { MyCashLogo } from '@/views/components/icons/MyCashLogo';
 
 export function Register() {
   const { register, handleSubmit, isPending } = useRegisterController();
@@ -231,9 +231,8 @@ export function Register() {
         className="w-full max-w-md relative z-10"
       >
         {/* Logo */}
-        <div className="flex items-center justify-center gap-3 mb-8">
-          <MyCashIcon className="w-8 h-8 text-foreground" />
-          <span className="text-xl font-bold text-foreground">myCash</span>
+        <div className="flex items-center justify-center mb-8">
+          <MyCashLogo iconClassName="w-8 h-8" textClassName="text-xl font-bold" />
         </div>
 
         {/* Card de Cadastro */}

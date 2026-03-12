@@ -19,7 +19,7 @@ import {
   X,
   Zap,
 } from 'lucide-react';
-import { MyCashIcon } from '@/views/components/icons/MyCashIcon';
+import { MyCashLogo } from '@/views/components/icons/MyCashLogo';
 
 export function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -41,9 +41,8 @@ export function LandingPage() {
           className="absolute inset-0 bg-background/95 backdrop-blur-xl"
         />
         <div className="relative max-w-7xl mx-auto flex items-center justify-between px-6 h-16 lg:h-20">
-          <Link to="/" className="flex items-center gap-2 shrink-0 text-foreground">
-            <MyCashIcon className="w-8 h-8 text-foreground" />
-            <span className="text-xl font-bold">myCash</span>
+          <Link to="/" className="shrink-0 text-foreground">
+            <MyCashLogo iconClassName="w-8 h-8" textClassName="text-xl font-bold" />
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
@@ -706,8 +705,7 @@ export function LandingPage() {
       <footer className="border-t border-border py-12 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-2">
-            <MyCashIcon className="w-7 h-7 text-foreground" />
-            <span className="text-lg font-bold">myCash</span>
+            <MyCashLogo iconClassName="w-7 h-7" textClassName="text-lg font-bold" />
           </div>
 
           <div className="flex items-center gap-6 text-sm text-muted-foreground">

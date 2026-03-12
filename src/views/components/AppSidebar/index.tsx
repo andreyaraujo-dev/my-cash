@@ -1,5 +1,5 @@
 import { BarChart3, CreditCard, Home, PieChart, User, Wallet, Target, LogOut } from 'lucide-react';
-import { MyCashIcon } from '@/views/components/icons/MyCashIcon';
+import { MyCashLogo } from '@/views/components/icons/MyCashLogo';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
@@ -90,8 +90,7 @@ export function AppSidebar({ onBlockedAreaAttempt }: AppSidebarProps) {
             <SidebarGroupContent>
               <SidebarMenu>
                 <SidebarMenuItem className="items-center justify-start flex gap-2">
-                  <MyCashIcon className="h-8 w-8" />
-                  {open && <span className="text-xl font-semibold">myCash</span>}
+                  <MyCashLogo showText={open} iconClassName="h-8 w-8" />
                 </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>

@@ -42,7 +42,7 @@ export function VerifyMfaDialog({
   return (
     <Dialog open={isMfaModalOpen} onOpenChange={handleMfaModalOpenChange}>
       <DialogContent className="rounded-2xl max-w-[90%] md:max-w-md bg-background border border-border">
-        <DialogHeader>
+        <DialogHeader className="w-full">
           <DialogTitle>Validação em duas etapas</DialogTitle>
           <DialogDescription>
             Digite o código de 6 dígitos do seu aplicativo autenticador para concluir o login.
@@ -68,17 +68,17 @@ export function VerifyMfaDialog({
                   ref={field.ref}
                 >
                   <InputOTPGroup>
-                    <InputOTPSlot className="w-14 h-14 text-lg" index={0} />
-                    <InputOTPSlot className="w-14 h-14 text-lg" index={1} />
-                    <InputOTPSlot className="w-14 h-14 text-lg" index={2} />
+                    <InputOTPSlot className="md:w-14 md:h-14 w-11 h-11 text-lg" index={0} />
+                    <InputOTPSlot className="md:w-14 md:h-14 w-11 h-11 text-lg" index={1} />
+                    <InputOTPSlot className="md:w-14 md:h-14 w-11 h-11 text-lg" index={2} />
                   </InputOTPGroup>
 
                   <InputOTPSeparator />
 
                   <InputOTPGroup>
-                    <InputOTPSlot className="w-14 h-14 text-lg" index={3} />
-                    <InputOTPSlot className="w-14 h-14 text-lg" index={4} />
-                    <InputOTPSlot className="w-14 h-14 text-lg" index={5} />
+                    <InputOTPSlot className="md:w-14 md:h-14 w-11 h-11 text-lg" index={3} />
+                    <InputOTPSlot className="md:w-14 md:h-14 w-11 h-11 text-lg" index={4} />
+                    <InputOTPSlot className="md:w-14 md:h-14 w-11 h-11 text-lg" index={5} />
                   </InputOTPGroup>
                 </InputOTP>
               )}
@@ -99,7 +99,7 @@ export function VerifyMfaDialog({
             </Label>
           </div>
 
-          <DialogFooter>
+          <DialogFooter className="gap-2">
             <Button
               type="button"
               variant="outline"
