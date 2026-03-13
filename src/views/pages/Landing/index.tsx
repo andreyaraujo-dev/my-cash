@@ -33,7 +33,7 @@ export function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden w-full">
       {/* ========== NAVBAR ========== */}
       <nav className="fixed top-0 inset-x-0 z-50 border-b border-border/50">
         <motion.div
