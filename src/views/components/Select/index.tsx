@@ -40,16 +40,22 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
 
-        <SelectContent className="z-[99] overflow-hidden rounded-2xl border-border shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)]">
-          {options.map((option) => (
-            <SelectItem
-              key={option.value}
-              value={option.value}
-              className="p-2 text-foreground text-sm data-[state=checked]:font-bold data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground outline-none rounded-lg transition-colors"
-            >
-              {option.label}
-            </SelectItem>
-          ))}
+        <SelectContent className="z-[200] overflow-hidden rounded-2xl border-border shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)]">
+          {options.length > 0 ? (
+            options.map((option) => (
+              <SelectItem
+                key={option.value}
+                value={option.value}
+                className="p-2 text-foreground text-sm data-[state=checked]:font-bold hover:bg-muted/80 outline-none rounded-lg transition-colors duration-150 ease-out cursor-pointer"
+              >
+                {option.label}
+              </SelectItem>
+            ))
+          ) : (
+            <div className="px-3 py-4 text-center text-sm text-muted-foreground">
+              Nenhuma opção disponível
+            </div>
+          )}
         </SelectContent>
       </SelectShadcn>
     );

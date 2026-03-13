@@ -199,9 +199,7 @@ export function NewTransactionModal() {
                         className="mr-2"
                       />
                     </FormControl>
-                    <FormLabel className="text-foreground">
-                      Transação recorrente
-                    </FormLabel>
+                    <FormLabel className="text-foreground">Transação recorrente</FormLabel>
                   </div>
                 </FormItem>
               )}
