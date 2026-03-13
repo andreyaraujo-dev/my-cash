@@ -634,7 +634,7 @@ export function LandingPage() {
                   to="/register"
                   className="flex items-center justify-center gap-2 w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3.5 rounded-xl transition-colors font-semibold text-base shadow-lg shadow-primary/30"
                 >
-                  Comece seu trial grátis
+                  Comece seu teste grátis
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
