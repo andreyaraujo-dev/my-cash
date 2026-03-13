@@ -80,7 +80,7 @@ export function LandingPage() {
               to="/register"
               className="text-sm bg-primary hover:bg-primary/90 text-primary-foreground px-5 py-2.5 rounded-lg transition-colors font-medium"
             >
-              Criar conta gratis
+              Criar conta grátis
             </Link>
           </div>
 
@@ -120,7 +120,7 @@ export function LandingPage() {
               onClick={() => scrollTo('pricing')}
               className="block w-full text-left text-muted-foreground hover:text-foreground py-2"
             >
-              Precos
+              Preços
             </button>
             <div className="flex flex-col gap-3 pt-2">
               <Link
@@ -133,7 +133,7 @@ export function LandingPage() {
                 to="/register"
                 className="text-center bg-primary hover:bg-primary/90 text-primary-foreground rounded-lg py-2.5 font-medium transition-colors"
               >
-                Criar conta gratis
+                Criar conta grátis
               </Link>
             </div>
           </motion.div>
@@ -234,7 +234,7 @@ export function LandingPage() {
               <CreditCard className="w-5 h-5 text-white" />
             </div>
             <div>
-              <p className="text-xs text-muted-foreground">Transacoes</p>
+              <p className="text-xs text-muted-foreground">Transações</p>
               <p className="text-lg font-bold text-foreground">142</p>
             </div>
           </div>
@@ -255,7 +255,7 @@ export function LandingPage() {
             >
               <Sparkles className="w-4 h-4 text-blue-400" />
               <span className="text-sm text-blue-600 dark:text-blue-300 font-medium">
-                7 dias gratis para experimentar
+                7 dias grátis para experimentar
               </span>
             </motion.div>
           </motion.div>
@@ -266,7 +266,7 @@ export function LandingPage() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-tight tracking-tight mb-6"
           >
-            Controle suas financas{' '}
+            Controle suas finanças{' '}
             <span className="bg-gradient-to-r from-blue-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">
               de forma inteligente
             </span>
@@ -278,8 +278,8 @@ export function LandingPage() {
             transition={{ duration: 0.7, delay: 0.35 }}
             className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
           >
-            Gerencie receitas, despesas, metas e investimentos em um so lugar. Tenha o controle
-            total da sua vida financeira com dashboards intuitivos e relatorios detalhados.
+            Gerencie receitas, despesas, metas e investimentos em um só lugar. Tenha o controle
+            total da sua vida financeira com dashboards intuitivos e relatórios detalhados.
           </motion.p>
 
           <motion.div
@@ -292,14 +292,14 @@ export function LandingPage() {
               to="/register"
               className="group flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 rounded-xl transition-all font-semibold text-base shadow-lg shadow-primary/30 hover:shadow-primary/50"
             >
-              Comece gratis
+              Comece grátis
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
             <Link
               to="/login"
               className="flex items-center gap-2 border border-border hover:border-muted-foreground text-muted-foreground hover:text-foreground px-8 py-3.5 rounded-xl transition-all font-medium text-base"
             >
-              Ja tenho conta
+              Já tenho conta
             </Link>
           </motion.div>
 
@@ -337,11 +337,11 @@ export function LandingPage() {
             className="text-center mb-16"
           >
             <span className="text-sm text-blue-400 font-semibold tracking-wider uppercase">
-              Simples e rapido
+              Simples e rápido
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4">Como funciona?</h2>
             <p className="text-muted-foreground max-w-xl mx-auto text-lg">
-              Comece a organizar suas financas em apenas 3 passos simples.
+              Comece a organizar suas finanças em apenas 3 passos simples.
             </p>
           </motion.div>
 
@@ -359,14 +359,14 @@ export function LandingPage() {
                 icon: Wallet,
                 color: 'green',
                 title: 'Adicione suas contas',
-                desc: 'Configure suas contas bancarias e categorize receitas e despesas.',
+                desc: 'Configure suas contas bancárias e categorize receitas e despesas.',
               },
               {
                 step: '03',
                 icon: BarChart3,
                 color: 'orange',
                 title: 'Acompanhe tudo',
-                desc: 'Visualize dashboards, relatorios e acompanhe suas metas em tempo real.',
+                desc: 'Visualize dashboards, relatórios e acompanhe suas metas em tempo real.',
               },
             ].map((item, i) => {
               const colorMap: Record<
@@ -437,13 +437,13 @@ export function LandingPage() {
             className="text-center mb-16"
           >
             <span className="text-sm text-blue-400 font-semibold tracking-wider uppercase">
-              Tudo que voce precisa
+              Tudo que você precisa
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4">
               Funcionalidades completas
             </h2>
             <p className="text-muted-foreground max-w-xl mx-auto text-lg">
-              Ferramentas poderosas para voce ter o controle total das suas financas.
+              Ferramentas poderosas para você ter o controle total das suas finanças.
             </p>
           </motion.div>
 
@@ -453,37 +453,37 @@ export function LandingPage() {
                 icon: Home,
                 color: 'blue',
                 title: 'Dashboard completo',
-                desc: 'Visao geral das suas financas com saldo, contas e transacoes recentes.',
+                desc: 'Visão geral das suas finanças com saldo, contas e transações recentes.',
               },
               {
                 icon: CreditCard,
                 color: 'purple',
-                title: 'Controle de transacoes',
-                desc: 'Registre receitas e despesas com categorias, filtros e recorrencias.',
+                title: 'Controle de transações',
+                desc: 'Registre receitas e despesas com categorias, filtros e recorrências.',
               },
               {
                 icon: Layers,
                 color: 'orange',
                 title: 'Categorias personalizadas',
-                desc: 'Organize seus gastos com categorias criadas por voce.',
+                desc: 'Organize seus gastos com categorias criadas por você.',
               },
               {
                 icon: PieChart,
                 color: 'cyan',
-                title: 'Relatorios detalhados',
-                desc: 'Graficos de evolucao do saldo, despesas por categoria e receitas vs despesas.',
+                title: 'Relatórios detalhados',
+                desc: 'Gráficos de evolução do saldo, despesas por categoria e receitas vs despesas.',
               },
               {
                 icon: Target,
                 color: 'green',
                 title: 'Metas financeiras',
-                desc: 'Defina objetivos e acompanhe seu progresso ate alcanca-los.',
+                desc: 'Defina objetivos e acompanhe seu progresso até alcançá-los.',
               },
               {
                 icon: Wallet,
                 color: 'pink',
-                title: 'Multiplas contas',
-                desc: 'Gerencie diversas contas bancarias e veja o patrimonio total.',
+                title: 'Múltiplas contas',
+                desc: 'Gerencie diversas contas bancárias e veja o patrimônio total.',
               },
             ].map((item, i) => {
               const colorMap: Record<
@@ -567,9 +567,9 @@ export function LandingPage() {
             <span className="text-sm text-blue-400 font-semibold tracking-wider uppercase">
               Simples e transparente
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4">Precos</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4">Preços</h2>
             <p className="text-muted-foreground max-w-md mx-auto text-lg">
-              Um unico plano com tudo incluso. Comece gratis, pague so quando quiser continuar.
+              Um único plano com tudo incluso. Comece grátis, pague somente quando quiser continuar.
             </p>
           </motion.div>
 
@@ -596,7 +596,7 @@ export function LandingPage() {
                     <Sparkles className="w-6 h-6 text-blue-400" />
                   </motion.div>
                   <span className="bg-blue-600/15 border border-blue-500/30 text-blue-600 dark:text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">
-                    7 dias gratis
+                    7 dias grátis
                   </span>
                 </div>
 
@@ -609,19 +609,19 @@ export function LandingPage() {
                   <span className="text-sm text-muted-foreground">R$</span>
                   <span className="text-5xl font-black">9</span>
                   <span className="text-2xl font-bold">,90</span>
-                  <span className="text-muted-foreground ml-1">/mes</span>
+                  <span className="text-muted-foreground ml-1">/mês</span>
                 </div>
 
                 <div className="space-y-4 mb-8">
                   {[
-                    'Dashboard completo com visao geral',
-                    'Transacoes ilimitadas',
+                    'Dashboard completo com visão geral',
+                    'Transações ilimitadas',
                     'Categorias personalizadas',
-                    'Relatorios e graficos detalhados',
+                    'Relatórios e gráficos detalhados',
                     'Metas financeiras',
-                    'Multiplas contas bancarias',
-                    'Exportacao de relatorios',
-                    'Suporte prioritario',
+                    'Múltiplas contas bancárias',
+                    'Exportação de relatórios',
+                    'Suporte prioritário',
                   ].map((benefit) => (
                     <div key={benefit} className="flex items-center gap-3">
                       <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
@@ -634,7 +634,7 @@ export function LandingPage() {
                   to="/register"
                   className="flex items-center justify-center gap-2 w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3.5 rounded-xl transition-colors font-semibold text-base shadow-lg shadow-primary/30"
                 >
-                  Comece seu trial gratis
+                  Comece seu trial grátis
                   <ArrowRight className="w-4 h-4" />
                 </Link>
 
@@ -678,8 +678,8 @@ export function LandingPage() {
             </h2>
 
             <p className="text-muted-foreground text-lg mb-10 max-w-xl mx-auto">
-              Junte-se a milhares de pessoas que ja organizam suas financas com o myCash. Comece
-              gratis hoje mesmo.
+              Junte-se a milhares de pessoas que já organizam suas finanças com o myCash. Comece
+              grátis hoje mesmo.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -687,7 +687,7 @@ export function LandingPage() {
                 to="/register"
                 className="group flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3.5 rounded-xl transition-all font-semibold text-base shadow-lg shadow-primary/30 hover:shadow-primary/50"
               >
-                Criar conta gratis
+                Criar conta grátis
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
@@ -721,7 +721,7 @@ export function LandingPage() {
               onClick={() => scrollTo('pricing')}
               className="hover:text-muted-foreground transition-colors"
             >
-              Precos
+              Preços
             </button>
             <Link to="/login" className="hover:text-muted-foreground transition-colors">
               Entrar

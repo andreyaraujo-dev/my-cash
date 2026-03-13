@@ -43,7 +43,7 @@ export function InitializeClarity() {
   return (
     <div className="fixed bottom-4 left-4 right-4 z-50 rounded-md border border-border bg-background p-4 shadow-lg md:left-auto md:max-w-md">
       <p className="text-sm text-foreground">
-        Usamos cookies para melhorar sua experiencia. Ao aceitar, voce concorda com a coleta de
+        Usamos cookies para melhorar sua experiência. Ao aceitar, você concorda com a coleta de
         dados de uso para analytics.
       </p>
 

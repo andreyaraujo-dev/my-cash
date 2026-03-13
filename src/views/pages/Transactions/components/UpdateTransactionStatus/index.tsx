@@ -39,7 +39,7 @@ export function UpdateTransactionStatus({
       if (isErrorUpdateTransactionStatus) {
         toast({
           title: 'Erro',
-          description: 'Não possível atualizar o status da transação.',
+          description: 'Não foi possível atualizar o status da transação.',
           duration: 3000,
         });
       }
