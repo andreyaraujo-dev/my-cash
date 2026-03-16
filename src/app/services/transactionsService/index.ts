@@ -5,6 +5,7 @@ import { remove } from './remove';
 import { updateStatus } from './update-status';
 import { updateRecurring } from './update-recurring';
 import { removeRecurring } from './remove-recurring';
+import { exportTransactions } from './export';
 
 export const transactionsService = {
   getAll,
@@ -14,4 +15,5 @@ export const transactionsService = {
   updateStatus,
   updateRecurring,
   removeRecurring,
+  export: exportTransactions,
 };

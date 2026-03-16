@@ -4,6 +4,9 @@ import { Transaction } from '@/app/entities/Transaction.ts';
 import { useTransactions } from '@/app/hooks/useTransactions.ts';
 import { useMutation } from '@tanstack/react-query';
 import { updateTransactionStatusAction } from '../actions/update-transaction-status';
+import { transactionsService } from '@/app/services/transactionsService';
+import { useToast } from '@/app/hooks/useToast';
+import { downloadBlob } from '@/app/utils/downloadBlob';
 
 export type TransactionsFilters = {
   month: number;
@@ -16,7 +19,9 @@ export type TransactionsFilters = {
 
 export function useTransactionsController() {
   const { areValuesVisible } = useDashboard();
+  const { toast } = useToast();
   const [isFiltersModalOpen, setIsFiltersModalOpen] = useState(false);
+  const [isExporting, setIsExporting] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [transactionBeingEdited, setTransactionBeingEdited] = useState<Transaction | null>(null);
   const [filters, setFilters] = useState<TransactionsFilters>({
@@ -80,6 +85,23 @@ export function useTransactionsController() {
     setTransactionBeingEdited(null);
   }
 
+  async function handleExport() {
+    try {
+      setIsExporting(true);
+      const blob = await transactionsService.export(filters);
+      downloadBlob(blob, `transacoes-${filters.month}-${filters.year}.xlsx`);
+      toast({ title: 'Sucesso', description: 'Transações exportadas com sucesso.' });
+    } catch {
+      toast({
+        variant: 'destructive',
+        title: 'Erro',
+        description: 'Não foi possível exportar as transações.',
+      });
+    } finally {
+      setIsExporting(false);
+    }
+  }
+
   const hasTransactions = transactions.length > 0;
 
   const {
@@ -133,5 +155,7 @@ export function useTransactionsController() {
     updateTransactionStatus,
     isErrorUpdateTransactionStatus,
     isLoadingUpdateTransactionStatus,
+    handleExport,
+    isExporting,
   };
 }
