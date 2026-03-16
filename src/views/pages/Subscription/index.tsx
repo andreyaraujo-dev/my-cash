@@ -17,9 +17,19 @@ import {
 import { Button } from '@/views/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/views/components/ui/dialog';
 import { Skeleton } from '@/views/components/ui/skeleton';
-import { Receipt, RotateCcw, XCircle, CreditCard } from 'lucide-react';
+import {
+  Receipt,
+  RotateCcw,
+  XCircle,
+  CreditCard,
+  ArrowUpCircle,
+  ArrowDownCircle,
+} from 'lucide-react';
+import { ChoosePlanModal } from '@/views/components/ChoosePlanModal';
 import { differenceInCalendarDays } from 'date-fns';
 import { useAccessPolicy } from '@/app/hooks/useAccessPolicy';
+import type { Plan } from '@/app/entities/Plan';
+import { usePlans } from '@/app/hooks/usePlans';
 
 export function SubscriptionPage() {
   const navigate = useNavigate();
@@ -28,7 +38,9 @@ export function SubscriptionPage() {
   const queryClient = useQueryClient();
   const { isRestricted } = useAccessPolicy();
   const { subscription, isLoading } = useSubscription();
+  const { plans } = usePlans();
   const [cancelDialogOpen, setCancelDialogOpen] = useState(false);
+  const [choosePlanModalOpen, setChoosePlanModalOpen] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [portalLoading, setPortalLoading] = useState(false);
 
@@ -67,10 +79,15 @@ export function SubscriptionPage() {
     },
   });
 
-  const handleCheckoutRedirect = async () => {
+  const handleSelectPlan = async (plan: Plan) => {
+    setChoosePlanModalOpen(false);
+    await handleCheckoutRedirect(plan.id);
+  };
+
+  const handleCheckoutRedirect = async (planId?: string) => {
     setCheckoutLoading(true);
     try {
-      const url = await subscriptionsService.createCheckoutSession();
+      const url = await subscriptionsService.createCheckoutSession(planId);
       window.location.href = url;
     } catch (error) {
       toast({
@@ -120,19 +137,25 @@ export function SubscriptionPage() {
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
             <Button
-              onClick={handleCheckoutRedirect}
+              onClick={() => setChoosePlanModalOpen(true)}
               disabled={checkoutLoading}
               isLoading={checkoutLoading}
               className="gap-2"
             >
               <CreditCard className="h-4 w-4" />
-              Assinar agora
+              Assinar
             </Button>
             <Button variant="outline" onClick={() => navigate('/profile')}>
               Voltar ao perfil
             </Button>
           </CardContent>
         </Card>
+        <ChoosePlanModal
+          open={choosePlanModalOpen}
+          onOpenChange={setChoosePlanModalOpen}
+          onSelectPlan={handleSelectPlan}
+          isLoading={checkoutLoading}
+        />
       </div>
     );
   }
@@ -150,6 +173,9 @@ export function SubscriptionPage() {
     subscription.cancelRequestedAt != null ||
     subscription.isTrial;
   const hasPaidSubscription = subscription.isActive && !subscription.isTrial;
+  const currentPlan = subscription.plan ?? 'BASIC';
+  const upgradeParam = searchParams.get('upgrade');
+  const downgradeParam = searchParams.get('downgrade');
 
   return (
     <div className="flex flex-col gap-6 w-full max-w-2xl">
@@ -182,8 +208,16 @@ export function SubscriptionPage() {
               </p>
             </div>
             <div className="rounded-lg bg-muted/50 p-4">
+              <p className="text-xs text-muted-foreground">Plano</p>
+              <p className="font-medium">
+                {currentPlan === 'PREMIUM' ? 'Premium' : 'Basic'}
+              </p>
+            </div>
+            <div className="rounded-lg bg-muted/50 p-4">
               <p className="text-xs text-muted-foreground">Valor</p>
-              <p className="font-medium">{formatCurrency(subscription.value)}/mês</p>
+              <p className="font-medium">
+                {subscription.isTrial ? 'Gratuito' : `${formatCurrency(subscription.value)}/mês`}
+              </p>
             </div>
             <div className="rounded-lg bg-muted/50 p-4">
               <p className="text-xs text-muted-foreground">Início</p>
@@ -217,6 +251,43 @@ export function SubscriptionPage() {
             </div>
           )}
 
+          {(upgradeParam === 'premium' || downgradeParam === 'basic') && hasPaidSubscription && (
+            <div className="rounded-lg border border-primary/30 bg-primary/5 p-4">
+              <p className="text-sm font-medium">
+                {upgradeParam === 'premium'
+                  ? 'Fazer upgrade para Premium'
+                  : 'Voltar para o plano Basic'}
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                {upgradeParam === 'premium'
+                  ? 'O plano Premium inclui compartilhamento de conta com até 4 pessoas.'
+                  : 'Você perderá o acesso ao compartilhamento de conta.'}
+              </p>
+              <Button
+                className="mt-3 gap-2"
+                onClick={() => {
+                  const planName = upgradeParam === 'premium' ? 'Premium' : 'Basic';
+                  const plan = plans.find((p) => p.name.toLowerCase() === planName.toLowerCase());
+                  handleCheckoutRedirect(plan?.id);
+                }}
+                disabled={checkoutLoading}
+                isLoading={checkoutLoading}
+              >
+                {upgradeParam === 'premium' ? (
+                  <>
+                    <ArrowUpCircle className="h-4 w-4" />
+                    Fazer upgrade para Premium
+                  </>
+                ) : (
+                  <>
+                    <ArrowDownCircle className="h-4 w-4" />
+                    Voltar para Basic
+                  </>
+                )}
+              </Button>
+            </div>
+          )}
+
           <div className="flex flex-wrap gap-2 pt-2">
             {canCancel && (
               <Button
@@ -228,11 +299,15 @@ export function SubscriptionPage() {
                 Cancelar assinatura
               </Button>
             )}
-            {canRenew && (
+            {canRenew && !upgradeParam && !downgradeParam && (
               <Button
                 variant={isRestricted || subscription.isTrial ? 'default' : 'outline'}
                 className="gap-2"
-                onClick={handleCheckoutRedirect}
+                onClick={() =>
+                  subscription.isTrial || isRestricted
+                    ? setChoosePlanModalOpen(true)
+                    : handleCheckoutRedirect()
+                }
                 disabled={checkoutLoading}
                 isLoading={checkoutLoading}
               >
@@ -242,10 +317,30 @@ export function SubscriptionPage() {
                   <RotateCcw className="h-4 w-4" />
                 )}
                 {subscription.isTrial
-                  ? 'Assinar plano'
+                  ? 'Assinar'
                   : isRestricted
-                    ? 'Assinar agora'
+                    ? 'Assinar'
                     : 'Renovar assinatura'}
+              </Button>
+            )}
+            {hasPaidSubscription && currentPlan === 'BASIC' && !upgradeParam && (
+              <Button
+                variant="outline"
+                className="gap-2"
+                onClick={() => setSearchParams({ upgrade: 'premium' })}
+              >
+                <ArrowUpCircle className="h-4 w-4" />
+                Fazer upgrade para Premium
+              </Button>
+            )}
+            {hasPaidSubscription && currentPlan === 'PREMIUM' && !downgradeParam && (
+              <Button
+                variant="outline"
+                className="gap-2"
+                onClick={() => setSearchParams({ downgrade: 'basic' })}
+              >
+                <ArrowDownCircle className="h-4 w-4" />
+                Voltar para Basic
               </Button>
             )}
             {hasPaidSubscription && (
@@ -266,6 +361,13 @@ export function SubscriptionPage() {
           </div>
         </CardContent>
       </Card>
+
+      <ChoosePlanModal
+        open={choosePlanModalOpen}
+        onOpenChange={setChoosePlanModalOpen}
+        onSelectPlan={handleSelectPlan}
+        isLoading={checkoutLoading}
+      />
 
       <Dialog open={cancelDialogOpen} onOpenChange={setCancelDialogOpen}>
         <DialogContent className="rounded-2xl max-w-[90%] md:max-w-md bg-background border border-border">

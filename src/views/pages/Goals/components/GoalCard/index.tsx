@@ -5,6 +5,7 @@ import { Button } from '@/views/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/views/components/ui/card';
 import { Progress } from '@/views/components/ui/progress';
 import { Calendar, Edit2, Eye, Plus, Trash2 } from 'lucide-react';
+import { useSharedAccessLevel } from '@/app/hooks/useSharedAccessLevel';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
@@ -22,6 +23,7 @@ function safeNumber(value: unknown): number {
 }
 
 export function GoalCard({ goal, onEdit, onDelete, onDetails, onAddValue }: GoalCardProps) {
+  const { canDelete } = useSharedAccessLevel();
   const targetValue = safeNumber(goal.targetValue);
   const currentValue = safeNumber(goal.currentValue);
   const progress = targetValue === 0 ? 0 : (currentValue / targetValue) * 100;
@@ -137,15 +139,17 @@ export function GoalCard({ goal, onEdit, onDelete, onDetails, onAddValue }: Goal
             >
               <Edit2 className="w-4 h-4" />
             </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => onDelete(goal)}
-              className="h-8 w-8 text-red-500 hover:text-red-600"
-              title="Deletar"
-            >
-              <Trash2 className="w-4 h-4" />
-            </Button>
+            {canDelete && (
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => onDelete(goal)}
+                className="h-8 w-8 text-red-500 hover:text-red-600"
+                title="Deletar"
+              >
+                <Trash2 className="w-4 h-4" />
+              </Button>
+            )}
           </div>
         </div>
       </CardHeader>

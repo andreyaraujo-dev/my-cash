@@ -1,9 +1,21 @@
-import { BarChart3, CreditCard, Home, PieChart, User, Wallet, Target, LogOut } from 'lucide-react';
+import {
+  BarChart3,
+  CreditCard,
+  Home,
+  PieChart,
+  User,
+  Users,
+  Wallet,
+  Target,
+  LogOut,
+  Lock,
+} from 'lucide-react';
 import { MyCashLogo } from '@/views/components/icons/MyCashLogo';
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 
 import { useAuth } from '@/app/hooks/useAuth';
+import { useUserAccessStore } from '@/app/store/useUserAccessStore';
 import {
   Sidebar,
   SidebarContent,
@@ -21,6 +33,8 @@ import { Button } from '@/views/components/ui/button';
 import { cn } from '@/lib/utils';
 import { isPremiumRoute } from '@/app/config/accessPolicy';
 import { useAccessPolicy } from '@/app/hooks/useAccessPolicy';
+import { useSubscription } from '@/app/hooks/useSubscription';
+import { PeoplePremiumRequiredModal } from '@/views/pages/People/components/PeoplePremiumRequiredModal';
 
 // Menu items para o app de finanças
 const items = [
@@ -63,6 +77,11 @@ const footerItems = [
     icon: User,
   },
   {
+    title: 'Pessoas',
+    url: '/profile/people',
+    icon: Users,
+  },
+  {
     title: 'Sair',
     url: '#',
     icon: LogOut,
@@ -77,8 +96,17 @@ export function AppSidebar({ onBlockedAreaAttempt }: AppSidebarProps) {
   const location = useLocation();
   const { open } = useSidebar();
   const { signout } = useAuth();
+  const isAccountOwner = useUserAccessStore((state) => state.isAccountOwner);
   const { isRestricted } = useAccessPolicy();
+  const { subscription } = useSubscription();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isPeoplePremiumModalOpen, setIsPeoplePremiumModalOpen] = useState(false);
+
+  const isPeoplePremium = subscription?.plan === 'PREMIUM' && subscription?.isActive;
+
+  const visibleFooterItems = footerItems.filter(
+    (item) => item.title !== 'Pessoas' || isAccountOwner
+  );
 
   return (
     <>
@@ -155,9 +183,10 @@ export function AppSidebar({ onBlockedAreaAttempt }: AppSidebarProps) {
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
-                {footerItems.map((item) => {
+                {visibleFooterItems.map((item) => {
                   const isActive = location.pathname === item.url;
                   const isSignOut = item.title === 'Sair';
+                  const isPeople = item.title === 'Pessoas';
 
                   if (isSignOut) {
                     return (
@@ -169,6 +198,22 @@ export function AppSidebar({ onBlockedAreaAttempt }: AppSidebarProps) {
                         >
                           <item.icon />
                           <span>{item.title}</span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  }
+
+                  if (isPeople && !isPeoplePremium) {
+                    return (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton
+                          tooltip="Pessoas (Premium)"
+                          className="w-full justify-start gap-3 h-12 text-muted-foreground opacity-60 hover:opacity-80"
+                          onClick={() => setIsPeoplePremiumModalOpen(true)}
+                        >
+                          <item.icon />
+                          <span>{item.title}</span>
+                          <Lock className="ml-auto h-4 w-4" />
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     );
@@ -199,6 +244,11 @@ export function AppSidebar({ onBlockedAreaAttempt }: AppSidebarProps) {
           </SidebarGroup>
         </SidebarFooter>
       </Sidebar>
+
+      <PeoplePremiumRequiredModal
+        open={isPeoplePremiumModalOpen}
+        onClose={() => setIsPeoplePremiumModalOpen(false)}
+      />
 
       <Modal
         open={isLogoutModalOpen}

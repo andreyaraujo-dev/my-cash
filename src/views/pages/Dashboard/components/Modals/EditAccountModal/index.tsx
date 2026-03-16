@@ -1,5 +1,6 @@
 import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
 import { useEditAccountModalController } from '@/views/pages/Dashboard/components/Modals/EditAccountModal/useEditAccountModalController.ts';
+import { useSharedAccessLevel } from '@/app/hooks/useSharedAccessLevel';
 import { Modal } from '@/views/components/Modal';
 import {
   Form,
@@ -27,6 +28,7 @@ export function EditAccountModal() {
     handleDeleteAccount,
     isLoadingDelete,
   } = useEditAccountModalController();
+  const { canDelete } = useSharedAccessLevel();
 
   if (isDeleteModalOpen)
     return (
@@ -151,14 +153,16 @@ export function EditAccountModal() {
               Salvar
             </Button>
 
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full mt-2 text-red-500 hover:text-red-600 border-red-500/30 hover:border-red-500/50 hover:bg-red-500/10"
-              onClick={handleOpenDeleteModal}
-            >
-              Excluir conta
-            </Button>
+            {canDelete && (
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full mt-2 text-red-500 hover:text-red-600 border-red-500/30 hover:border-red-500/50 hover:bg-red-500/10"
+                onClick={handleOpenDeleteModal}
+              >
+                Excluir conta
+              </Button>
+            )}
           </div>
         </form>
       </Form>

@@ -5,6 +5,7 @@ import { useToast } from '@/app/hooks/useToast.ts';
 import { LaunchScreen } from '@/views/components/LaunchScreen';
 import { User } from '@/app/entities/User.ts';
 import { useGetMe } from '../hooks/useGetMe';
+import { useUserAccessStore } from '@/app/store/useUserAccessStore';
 
 interface AuthContextValue {
   signedIn: boolean;
@@ -25,8 +26,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const { toast } = useToast();
 
   const { isError, isFetching, isSuccess, data } = useGetMe(signedIn);
+  const setUserAccess = useUserAccessStore((state) => state.setUserAccess);
+  const resetUserAccess = useUserAccessStore((state) => state.resetUserAccess);
 
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (data) {
+      setUserAccess({
+        isAccountOwner: data.isAccountOwner ?? true,
+        sharedAccessLevel: data.sharedAccessLevel ?? null,
+        name: data.name,
+        email: data.email,
+      });
+    }
+  }, [data, setUserAccess]);
 
   const [minTimePassed, setMinTimePassed] = useState(!signedIn);
 
@@ -50,12 +64,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signout = useCallback(() => {
     localStorage.removeItem(localStorageKeys.ACCESS_TOKEN);
+    resetUserAccess();
     queryClient.removeQueries();
-
     queryClient.clear();
-
     setSignedIn(false);
-  }, []);
+  }, [queryClient, resetUserAccess]);
 
   useEffect(() => {
     if (isError) {

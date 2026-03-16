@@ -21,6 +21,8 @@ import { useProfileController } from './hooks/useProfileController';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '@/app/services/authService';
 import { usersService } from '@/app/services/usersService';
+import { subscriptionsService } from '@/app/services/subscriptionsService';
+import type { Plan } from '@/app/entities/Plan';
 import { useToast } from '@/app/hooks/useToast';
 import { formatCurrency } from '@/app/utils/formatCurrency';
 import { formatDate } from '@/app/utils/formatDate';
@@ -43,6 +45,7 @@ import { MfaSetupDialog } from './components/MfaSetupDialog';
 import { MfaDisableDialog } from './components/MfaDisableDialog';
 import { ConfirmDeleteAccountDialog } from './components/ConfirmDeleteAccountDialog';
 import { ChangePasswordDialog } from './components/ChangePasswordDialog';
+import { ChoosePlanModal } from '@/views/components/ChoosePlanModal';
 
 export function Profile() {
   const { user, signout } = useAuth();
@@ -61,6 +64,8 @@ export function Profile() {
   const [nameValue, setNameValue] = useState(user?.name ?? '');
   const [mfaSetupOpen, setMfaSetupOpen] = useState(false);
   const [mfaDisableOpen, setMfaDisableOpen] = useState(false);
+  const [choosePlanModalOpen, setChoosePlanModalOpen] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
   const [mfaQrCodeDataUrl, setMfaQrCodeDataUrl] = useState('');
   const [mfaSetupToken, setMfaSetupToken] = useState('');
   const [mfaDisablePassword, setMfaDisablePassword] = useState('');
@@ -140,6 +145,21 @@ export function Profile() {
   const handleCancelEditName = () => {
     setNameValue(user?.name ?? '');
     setIsEditingName(false);
+  };
+
+  const handleSelectPlan = async (plan: Plan) => {
+    setCheckoutLoading(true);
+    try {
+      const url = await subscriptionsService.createCheckoutSession(plan.id);
+      window.location.href = url;
+    } catch (error) {
+      toast({
+        variant: 'destructive',
+        title: 'Erro',
+        description: getApiErrorMessage(error) ?? 'Não foi possível iniciar o checkout. Tente novamente.',
+      });
+      setCheckoutLoading(false);
+    }
   };
 
   const totalPatrimony = useMemo(
@@ -406,7 +426,13 @@ export function Profile() {
                   {subscription.isTrial ? 'Trial' : subscription.isActive ? 'Ativa' : 'Cancelada'}
                 </span>
                 <span className="text-muted-foreground">·</span>
-                <span className="text-sm">{formatCurrency(subscription.value)}/mês</span>
+                <span className="text-sm font-medium">
+                  Plano {subscription.plan === 'PREMIUM' ? 'Premium' : 'Basic'}
+                </span>
+                <span className="text-muted-foreground">·</span>
+                <span className="text-sm">
+                  {subscription.isTrial ? 'Gratuito' : `${formatCurrency(subscription.value)}/mês`}
+                </span>
               </div>
               {subscription.isTrial && subscription.trialEndsAt ? (
                 <p className="text-sm text-muted-foreground">
@@ -427,12 +453,37 @@ export function Profile() {
               Você ainda não possui uma assinatura ativa.
             </p>
           )}
-          {(isRestricted || !subscription?.isActive) && (
-            <Button onClick={() => navigate('/profile/subscription')}>Assinar</Button>
-          )}
-          <Button variant="outline" onClick={() => navigate('/profile/subscription')}>
-            Gerenciar assinatura
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            {(isRestricted || !subscription?.isActive) && (
+              <Button
+                onClick={() => setChoosePlanModalOpen(true)}
+                disabled={checkoutLoading}
+                isLoading={checkoutLoading}
+              >
+                Assinar
+              </Button>
+            )}
+            {subscription?.isActive && !subscription.isTrial && (
+              <>
+                {subscription.plan === 'BASIC' && (
+                  <Button onClick={() => navigate('/profile/subscription?upgrade=premium')}>
+                    Fazer upgrade para Premium
+                  </Button>
+                )}
+                {subscription.plan === 'PREMIUM' && (
+                  <Button
+                    variant="outline"
+                    onClick={() => navigate('/profile/subscription?downgrade=basic')}
+                  >
+                    Voltar para Basic
+                  </Button>
+                )}
+              </>
+            )}
+            <Button variant="outline" onClick={() => navigate('/profile/subscription')}>
+              Gerenciar assinatura
+            </Button>
+          </div>
         </CardContent>
       </Card>
 
@@ -471,6 +522,13 @@ export function Profile() {
         setShowMfaDisablePassword={setShowMfaDisablePassword}
         isDisablingMfa={mfaDisableMutation.isPending}
         onDisableMfa={handleDisableMfa}
+      />
+
+      <ChoosePlanModal
+        open={choosePlanModalOpen}
+        onOpenChange={setChoosePlanModalOpen}
+        onSelectPlan={handleSelectPlan}
+        isLoading={checkoutLoading}
       />
 
       {/* Seção 3 – Conta */}

@@ -25,6 +25,11 @@ const ForgotPassword = lazy(() =>
 const ResetPassword = lazy(() =>
   import('../views/pages/ResetPassword').then((module) => ({ default: module.ResetPassword })),
 );
+const ActivateAccount = lazy(() =>
+  import('../views/pages/ActivateAccount').then((module) => ({
+    default: module.ActivateAccount,
+  })),
+);
 const Welcome = lazy(() =>
   import('../views/pages/Welcome').then((module) => ({ default: module.Welcome })),
 );
@@ -55,6 +60,9 @@ const Profile = lazy(() =>
 const SubscriptionPage = lazy(() =>
   import('@/views/pages/Subscription').then((module) => ({ default: module.SubscriptionPage })),
 );
+const PeoplePage = lazy(() =>
+  import('@/views/pages/People').then((module) => ({ default: module.PeoplePage })),
+);
 
 function RouterFallback() {
   return <div className="min-h-screen w-full bg-background" />;
@@ -73,6 +81,7 @@ export function Router() {
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password" element={<ResetPassword />} />
+              <Route path="/activate-account" element={<ActivateAccount />} />
             </Route>
           </Route>
 
@@ -82,6 +91,7 @@ export function Router() {
               <Route path="/home" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/profile/subscription" element={<SubscriptionPage />} />
+              <Route path="/profile/people" element={<PeoplePage />} />
               <Route element={<PremiumAccessGuard />}>
                 <Route path="/accounts" element={<AccountsPage />} />
                 <Route path="/transactions" element={<TransactionsPage />} />

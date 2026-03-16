@@ -4,6 +4,7 @@ import { Badge } from '@/views/components/ui/badge';
 import { Avatar, AvatarFallback } from '@/views/components/ui/avatar';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import { useCategoriesController } from './hooks/useCategoriesController';
+import { useSharedAccessLevel } from '@/app/hooks/useSharedAccessLevel';
 import { CategoryIcon } from '@/views/components/icons/Categories/CategoryIcon';
 import { NewCategoryModal } from './components/NewCategoryModal';
 import { CategoriesSkeleton } from './components/CategoriesSkeleton';
@@ -36,6 +37,7 @@ export function CategoriesPage() {
     handleDeleteConfirm,
     isLoadingDeleteCategory,
   } = useCategoriesController();
+  const { canDelete } = useSharedAccessLevel();
 
   const getBudgetStatus = (usage: number) => {
     if (usage >= 90) return { color: 'text-red-500', status: 'Crítico' };
@@ -149,14 +151,16 @@ export function CategoriesPage() {
                     >
                       <Edit size={14} />
                     </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8 text-red-500 hover:text-red-600"
-                      onClick={() => openDeleteModal(category)}
-                    >
-                      <Trash2 size={14} />
-                    </Button>
+                    {canDelete && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 text-red-500 hover:text-red-600"
+                        onClick={() => openDeleteModal(category)}
+                      >
+                        <Trash2 size={14} />
+                      </Button>
+                    )}
                   </div>
                 </div>
 

@@ -1,3 +1,5 @@
+export type SubscriptionPlan = 'BASIC' | 'PREMIUM';
+
 export interface Subscription {
   id: string;
   userId: string;
@@ -9,6 +11,7 @@ export interface Subscription {
   reactivatedAt: string | null;
   isTrial: boolean;
   trialEndsAt: string | null;
+  plan?: SubscriptionPlan;
   createdAt: string;
   updatedAt: string;
 }

@@ -24,4 +24,13 @@ httpClient.interceptors.response.use(async (data) => {
   return data;
 });
 
-export { httpClient };
+const httpClientPublic = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+});
+
+httpClientPublic.interceptors.response.use(async (data) => {
+  await sleep(2000);
+  return data;
+});
+
+export { httpClient, httpClientPublic };

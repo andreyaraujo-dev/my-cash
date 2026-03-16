@@ -15,6 +15,7 @@ import { Button } from '@/views/components/ui/button';
 import { Input } from '@/views/components/ui/input';
 import { Select } from '@/views/components/Select';
 import { useEditGoalModalController } from './useEditGoalModalController';
+import { useSharedAccessLevel } from '@/app/hooks/useSharedAccessLevel';
 import { Textarea } from '@/views/components/ui/textarea';
 import { DatePickerInput } from '@/views/components/DatePickerInput';
 
@@ -36,6 +37,7 @@ export function EditGoalModal({ open, onClose, goal }: EditGoalModalProps) {
     priorityOptions,
     categoryOptions,
   } = useEditGoalModalController({ isOpen: open, onClose, goal });
+  const { canDelete } = useSharedAccessLevel();
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -238,14 +240,16 @@ export function EditGoalModal({ open, onClose, goal }: EditGoalModalProps) {
               Salvar Alterações
             </Button>
 
-            <Button
-              type="button"
-              variant="outline"
-              className="w-full mt-2 text-red-500 hover:text-red-600 border-red-500/30 hover:border-red-500/50 hover:bg-red-500/10"
-              onClick={() => setIsDeleteModalOpen(true)}
-            >
-              Excluir meta
-            </Button>
+            {canDelete && (
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full mt-2 text-red-500 hover:text-red-600 border-red-500/30 hover:border-red-500/50 hover:bg-red-500/10"
+                onClick={() => setIsDeleteModalOpen(true)}
+              >
+                Excluir meta
+              </Button>
+            )}
           </div>
         </form>
       </Form>

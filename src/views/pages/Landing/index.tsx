@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'motion/react';
 import { useState } from 'react';
+import { usePlans } from '@/app/hooks/usePlans';
+import { formatCurrency } from '@/app/utils/formatCurrency';
 import {
   ArrowRight,
   BarChart3,
@@ -24,6 +26,7 @@ import { MyCashLogo } from '@/views/components/icons/MyCashLogo';
 export function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { scrollYProgress } = useScroll();
+  const { plans, isLoading: isPlansLoading } = usePlans();
   const navBg = useTransform(scrollYProgress, [0, 0.05], [0.92, 1]);
 
   const scrollTo = (id: string) => {
@@ -556,7 +559,7 @@ export function LandingPage() {
 
       {/* ========== PRICING ========== */}
       <section id="pricing" className="relative py-24 lg:py-32 px-6">
-        <div className="max-w-lg mx-auto">
+        <div className="max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -569,81 +572,101 @@ export function LandingPage() {
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mt-3 mb-4">Preços</h2>
             <p className="text-muted-foreground max-w-md mx-auto text-lg">
-              Um único plano com tudo incluso. Comece grátis, pague somente quando quiser continuar.
+              Planos que cabem no seu bolso. Comece grátis, pague somente quando quiser continuar.
             </p>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7 }}
-            className="relative"
-          >
-            {/* Glow effect behind card */}
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-blue-600/20 rounded-3xl blur-xl opacity-60" />
-
-            <div className="relative bg-card border border-border rounded-2xl p-8 sm:p-10 overflow-hidden">
-              {/* Corner glow */}
-              <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
-
-              <div className="relative">
-                <div className="flex items-center gap-3 mb-6">
-                  <motion.div
-                    animate={{ rotate: [0, 10, -10, 0] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                  >
-                    <Sparkles className="w-6 h-6 text-blue-400" />
-                  </motion.div>
-                  <span className="bg-blue-600/15 border border-blue-500/30 text-blue-600 dark:text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">
-                    7 dias grátis
-                  </span>
-                </div>
-
-                <div className="mb-6">
-                  <h3 className="text-2xl font-bold mb-1">Plano Completo</h3>
-                  <p className="text-muted-foreground text-sm">Acesso a todas as funcionalidades</p>
-                </div>
-
-                <div className="flex items-baseline gap-1 mb-8">
-                  <span className="text-sm text-muted-foreground">R$</span>
-                  <span className="text-5xl font-black">9</span>
-                  <span className="text-2xl font-bold">,90</span>
-                  <span className="text-muted-foreground ml-1">/mês</span>
-                </div>
-
-                <div className="space-y-4 mb-8">
-                  {[
-                    'Dashboard completo com visão geral',
-                    'Transações ilimitadas',
-                    'Categorias personalizadas',
-                    'Relatórios e gráficos detalhados',
-                    'Metas financeiras',
-                    'Múltiplas contas bancárias',
-                    'Exportação de relatórios',
-                    'Suporte prioritário',
-                  ].map((benefit) => (
-                    <div key={benefit} className="flex items-center gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
-                      <span className="text-muted-foreground text-sm">{benefit}</span>
+          {isPlansLoading ? (
+            <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+              {[1, 2].map((i) => (
+                <div
+                  key={i}
+                  className="h-64 rounded-2xl bg-muted/30 border border-border animate-pulse"
+                />
+              ))}
+            </div>
+          ) : plans.length > 0 ? (
+            <div
+              className={`flex flex-wrap justify-center gap-6 ${
+                plans.length === 1 ? 'max-w-lg mx-auto' : ''
+              }`}
+            >
+              {plans.map((plan, i) => (
+                <motion.div
+                  key={plan.id}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.7, delay: i * 0.1 }}
+                  className="relative w-full sm:min-w-[280px] sm:max-w-[360px]"
+                >
+                  <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-blue-600/20 rounded-3xl blur-xl opacity-60" />
+                  <div className="relative bg-card border border-border rounded-2xl p-8 overflow-hidden">
+                    <div className="absolute top-0 right-0 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+                    <div className="relative">
+                      <div className="flex items-center gap-3 mb-6">
+                        <motion.div
+                          animate={{ rotate: [0, 10, -10, 0] }}
+                          transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                        >
+                          <Sparkles className="w-6 h-6 text-blue-400" />
+                        </motion.div>
+                        <span className="bg-blue-600/15 border border-blue-500/30 text-blue-600 dark:text-blue-300 text-sm font-semibold px-3 py-1 rounded-full">
+                          7 dias grátis
+                        </span>
+                      </div>
+                      <div className="mb-6">
+                        <h3 className="text-2xl font-bold mb-1">{plan.name}</h3>
+                        <p className="text-muted-foreground text-sm">{plan.description}</p>
+                      </div>
+                      <div className="flex items-baseline gap-1 mb-6">
+                        <span className="text-3xl font-black">{formatCurrency(plan.price)}</span>
+                        <span className="text-muted-foreground ml-1">/mês</span>
+                      </div>
+                      {(plan.benefits?.length ?? 0) > 0 && (
+                        <div className="space-y-3 mb-8">
+                          {(plan.benefits ?? []).map((benefit) => (
+                            <div key={benefit} className="flex items-center gap-3">
+                              <CheckCircle2 className="w-5 h-5 text-green-500 shrink-0" />
+                              <span className="text-muted-foreground text-sm">{benefit}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                      <Link
+                        to="/register"
+                        className="flex items-center justify-center gap-2 w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3.5 rounded-xl transition-colors font-semibold text-base shadow-lg shadow-primary/30"
+                      >
+                        Comece seu teste grátis
+                        <ArrowRight className="w-4 h-4" />
+                      </Link>
+                      <p className="text-center text-xs text-muted-foreground mt-4">
+                        Sem compromisso. Cancele a qualquer momento.
+                      </p>
                     </div>
-                  ))}
-                </div>
-
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              className="relative max-w-lg mx-auto"
+            >
+              <div className="relative bg-card border border-border rounded-2xl p-8 text-center">
+                <p className="text-muted-foreground">Planos em breve.</p>
                 <Link
                   to="/register"
-                  className="flex items-center justify-center gap-2 w-full bg-primary hover:bg-primary/90 text-primary-foreground py-3.5 rounded-xl transition-colors font-semibold text-base shadow-lg shadow-primary/30"
+                  className="inline-flex items-center gap-2 mt-4 bg-primary hover:bg-primary/90 text-primary-foreground py-3 px-6 rounded-xl transition-colors font-semibold"
                 >
-                  Comece seu teste grátis
+                  Criar conta grátis
                   <ArrowRight className="w-4 h-4" />
                 </Link>
-
-                <p className="text-center text-xs text-muted-foreground mt-4">
-                  Sem compromisso. Cancele a qualquer momento.
-                </p>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          )}
         </div>
       </section>
 
