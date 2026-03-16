@@ -8,6 +8,7 @@ import { getApiErrorMessage } from '@/app/utils/getApiErrorMessage';
 import { createPersonSchema, updatePersonSchema } from '../schemas/personSchema';
 import type { CreatePersonSchema, UpdatePersonSchema } from '../schemas/personSchema';
 import { Person, SharedAccessLevel } from '@/app/entities/Person';
+import { usePeople } from '@/app/hooks/usePeople';
 
 export function usePeopleController() {
   const { toast } = useToast();
@@ -15,7 +16,9 @@ export function usePeopleController() {
   const [isNewPersonModalOpen, setIsNewPersonModalOpen] = useState(false);
   const [personToEdit, setPersonToEdit] = useState<Person | null>(null);
   const [personToRemove, setPersonToRemove] = useState<Person | null>(null);
-  const [isAccessHistoryOpen, setIsAccessHistoryOpen] = useState(false);
+  const [personToViewHistory, setPersonToViewHistory] = useState<Person | null>(null);
+
+  const { people: peoples, isFetching: isLoadingPeoples } = usePeople();
 
   const createForm = useForm<CreatePersonSchema>({
     resolver: zodResolver(createPersonSchema),
@@ -135,11 +138,14 @@ export function usePeopleController() {
     openRemoveModal,
     closeRemoveModal,
     handleRemoveConfirm,
-    isAccessHistoryOpen,
-    openAccessHistory: () => setIsAccessHistoryOpen(true),
-    closeAccessHistory: () => setIsAccessHistoryOpen(false),
+    personToViewHistory,
+    isAccessHistoryOpen: !!personToViewHistory,
+    openAccessHistory: (person: Person) => setPersonToViewHistory(person),
+    closeAccessHistory: () => setPersonToViewHistory(null),
     isCreating: createMutation.isPending,
     isUpdating: updateMutation.isPending,
     isRemoving: removeMutation.isPending,
+    isLoadingPeoples,
+    peoples,
   };
 }

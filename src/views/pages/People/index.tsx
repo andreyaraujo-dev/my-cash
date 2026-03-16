@@ -1,7 +1,5 @@
-import { Users, Plus, History } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/views/components/ui/card';
+import { Users, Plus } from 'lucide-react';
 import { Button } from '@/views/components/ui/button';
-import { usePeople } from '@/app/hooks/usePeople';
 import { usePeopleAccessHistory } from '@/app/hooks/usePeople';
 import { usePeopleController } from './hooks/usePeopleController';
 import { PeopleList } from './components/PeopleList';
@@ -9,10 +7,9 @@ import { NewPersonModal } from './components/NewPersonModal';
 import { EditPersonModal } from './components/EditPersonModal';
 import { AccessHistoryModal } from './components/AccessHistoryModal';
 import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
+import { Skeleton } from '@/views/components/ui/skeleton';
 
 export function PeoplePage() {
-  const { people, isFetching } = usePeople();
-
   const {
     createForm,
     editForm,
@@ -30,50 +27,52 @@ export function PeoplePage() {
     openRemoveModal,
     closeRemoveModal,
     handleRemoveConfirm,
+    personToViewHistory,
     isAccessHistoryOpen,
     openAccessHistory,
     closeAccessHistory,
     isCreating,
     isUpdating,
     isRemoving,
+    isLoadingPeoples,
+    peoples,
   } = usePeopleController();
 
   const { accessHistory, isFetching: isFetchingHistory } = usePeopleAccessHistory(
-    isAccessHistoryOpen,
+    !!personToViewHistory,
+    personToViewHistory?.id,
   );
 
   return (
-    <div className="flex flex-col gap-8 w-full max-w-2xl">
-      <Card>
-        <CardHeader className="flex flex-row items-center gap-2">
+    <div className="flex flex-col gap-8 w-full max-w-4xl">
+      <header className="flex md:flex-row flex-col items-center justify-between">
+        <div className="flex flex-row items-center gap-2">
           <Users className="h-5 w-5 text-muted-foreground" />
           <div>
-            <CardTitle>Pessoas com acesso</CardTitle>
-            <CardDescription>
+            <h1 className="text-2xl font-bold">Pessoas com acesso</h1>
+            <span className="text-sm text-muted-foreground">
               Compartilhe sua conta com família ou amigos (até 4 pessoas)
-            </CardDescription>
+            </span>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex flex-wrap gap-2">
-            <Button className="gap-2" onClick={openNewPersonModal}>
-              <Plus size={16} />
-              Convidar pessoa
-            </Button>
-            <Button variant="outline" className="gap-2" onClick={openAccessHistory}>
-              <History size={16} />
-              Ver histórico de acesso
-            </Button>
-          </div>
+        </div>
 
-          <PeopleList
-            people={people}
-            isLoading={isFetching}
-            onEdit={openEditPersonModal}
-            onRemove={openRemoveModal}
-          />
-        </CardContent>
-      </Card>
+        {isLoadingPeoples ? (
+          <Skeleton className="h-10 w-32 rounded-md" />
+        ) : (
+          <Button className="gap-2 w-max" onClick={openNewPersonModal}>
+            <Plus size={16} />
+            Convidar pessoa
+          </Button>
+        )}
+      </header>
+
+      <PeopleList
+        people={peoples}
+        isLoading={isLoadingPeoples}
+        onEdit={openEditPersonModal}
+        onRemove={openRemoveModal}
+        onViewHistory={openAccessHistory}
+      />
 
       <NewPersonModal
         open={isNewPersonModalOpen}
@@ -108,6 +107,7 @@ export function PeoplePage() {
         onClose={closeAccessHistory}
         accessHistory={accessHistory}
         isLoading={isFetchingHistory}
+        person={personToViewHistory}
       />
     </div>
   );

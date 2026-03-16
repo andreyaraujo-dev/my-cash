@@ -1,9 +1,21 @@
 import { Person } from '@/app/entities/Person';
-import { Card } from '@/views/components/ui/card';
-import { Button } from '@/views/components/ui/button';
 import { Badge } from '@/views/components/ui/badge';
-import { Edit, Trash2 } from 'lucide-react';
-import { formatDate } from '@/app/utils/formatDate';
+import { Button } from '@/views/components/ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/views/components/ui/table';
+import { Edit, History, MoreHorizontal, Trash2 } from 'lucide-react';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/views/components/ui/dropdown-menu';
 
 const ACCESS_LEVEL_LABELS: Record<Person['accessLevel'], string> = {
   READ_ONLY: 'Leitura',
@@ -22,17 +34,21 @@ interface PeopleListProps {
   isLoading: boolean;
   onEdit: (person: Person) => void;
   onRemove: (person: Person) => void;
+  onViewHistory: (person: Person) => void;
 }
 
-export function PeopleList({ people, isLoading, onEdit, onRemove }: PeopleListProps) {
+export function PeopleList({
+  people,
+  isLoading,
+  onEdit,
+  onRemove,
+  onViewHistory,
+}: PeopleListProps) {
   if (isLoading) {
     return (
       <div className="space-y-3">
         {[1, 2, 3].map((i) => (
-          <Card key={i} className="p-4 animate-pulse">
-            <div className="h-5 bg-muted rounded w-1/3 mb-2" />
-            <div className="h-4 bg-muted rounded w-1/2" />
-          </Card>
+          <div key={i} className="h-14 bg-muted rounded-lg animate-pulse" />
         ))}
       </div>
     );
@@ -40,61 +56,80 @@ export function PeopleList({ people, isLoading, onEdit, onRemove }: PeopleListPr
 
   if (people.length === 0) {
     return (
-      <Card className="p-8 text-center">
+      <div className="rounded-lg border border-dashed p-8 text-center">
         <p className="text-muted-foreground">Nenhuma pessoa com acesso à conta.</p>
         <p className="text-sm text-muted-foreground mt-1">
           Convide alguém para compartilhar o acesso.
         </p>
-      </Card>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-3">
-      {people.map((person) => (
-        <Card key={person.id} className="p-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="min-w-0 flex-1">
-              <p className="font-medium truncate">{person.name}</p>
-              <p className="text-sm text-muted-foreground truncate">{person.email}</p>
-              <div className="flex gap-2 mt-2 flex-wrap">
-                <Badge variant="secondary" className="text-xs">
-                  {ACCESS_LEVEL_LABELS[person.accessLevel]}
-                </Badge>
-                <Badge
-                  variant={person.status === 'ACTIVE' ? 'default' : 'outline'}
-                  className="text-xs"
-                >
-                  {STATUS_LABELS[person.status]}
-                </Badge>
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">
-                Convidado em {formatDate(new Date(person.createdAt))}
-              </p>
-            </div>
-            {person.status !== 'REMOVED' && (
-              <div className="flex gap-1 shrink-0">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={() => onEdit(person)}
-                >
-                  <Edit size={14} />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-red-500 hover:text-red-600"
-                  onClick={() => onRemove(person)}
-                >
-                  <Trash2 size={14} />
-                </Button>
-              </div>
-            )}
-          </div>
-        </Card>
-      ))}
-    </div>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Nome</TableHead>
+          <TableHead>Email</TableHead>
+          <TableHead>Nível</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead className="text-right">Ações</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {people.map((person) => (
+          <TableRow key={person.id}>
+            <TableCell className="font-medium">{person.name}</TableCell>
+            <TableCell className="text-muted-foreground">{person.email}</TableCell>
+            <TableCell>
+              <Badge variant="secondary" className="text-xs">
+                {ACCESS_LEVEL_LABELS[person.accessLevel]}
+              </Badge>
+            </TableCell>
+            <TableCell>
+              <Badge
+                variant={person.status === 'ACTIVE' ? 'default' : 'outline'}
+                className="text-xs"
+              >
+                {STATUS_LABELS[person.status]}
+              </Badge>
+            </TableCell>
+            <TableCell className="text-right">
+              {person.status !== 'REMOVED' && (
+                <DropdownMenu modal={false}>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="h-8 w-8">
+                      <MoreHorizontal size={16} />
+                      <span className="sr-only">Abrir menu</span>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                    <DropdownMenuItem onClick={() => onEdit(person)}>
+                      <Edit size={14} className="mr-2" />
+                      Editar
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onSelect={() => {
+                        setTimeout(() => onViewHistory(person), 0);
+                      }}
+                    >
+                      <History size={14} className="mr-2" />
+                      Ver histórico de acesso
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => onRemove(person)}
+                      className="text-red-600 focus:text-red-600 focus:bg-red-50"
+                    >
+                      <Trash2 size={14} className="mr-2" />
+                      Remover
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }

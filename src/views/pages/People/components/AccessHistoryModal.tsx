@@ -1,5 +1,5 @@
 import { Modal } from '@/views/components/Modal';
-import { AccessLog } from '@/app/entities/Person';
+import { AccessLog, Person } from '@/app/entities/Person';
 import { formatDate } from '@/app/utils/formatDate';
 
 const ACTION_LABELS: Record<string, string> = {
@@ -14,6 +14,7 @@ interface AccessHistoryModalProps {
   onClose: () => void;
   accessHistory: AccessLog[];
   isLoading: boolean;
+  person?: Person | null;
 }
 
 export function AccessHistoryModal({
@@ -21,13 +22,18 @@ export function AccessHistoryModal({
   onClose,
   accessHistory,
   isLoading,
+  person,
 }: AccessHistoryModalProps) {
   const sortedHistory = [...accessHistory].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
 
+  const title = person
+    ? `Histórico de acesso - ${person.name}`
+    : 'Histórico de acesso';
+
   return (
-    <Modal open={open} title="Histórico de acesso" onClose={onClose}>
+    <Modal open={open} title={title} onClose={onClose}>
       <div className="mt-6 max-h-[400px] overflow-y-auto">
         {isLoading ? (
           <div className="space-y-3">
@@ -58,9 +64,11 @@ export function AccessHistoryModal({
                   </span>
                 </div>
                 <p className="text-sm mt-1">{log.description}</p>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {log.sharedPerson.name} ({log.sharedPerson.email})
-                </p>
+                {!person && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {log.sharedPerson.name} ({log.sharedPerson.email})
+                  </p>
+                )}
               </div>
             ))}
           </div>

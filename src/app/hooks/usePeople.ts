@@ -10,12 +10,14 @@ export function usePeople() {
   return { people: data ?? [], isFetching };
 }
 
-export function usePeopleAccessHistory(enabled = true) {
+export function usePeopleAccessHistory(enabled = true, personId?: string) {
   const { data, isFetching } = useQuery({
     queryKey: ['people', 'accessHistory'],
     queryFn: peopleService.getAccessHistory,
     enabled,
   });
 
-  return { accessHistory: data ?? [], isFetching };
+  const accessHistory = (data ?? []).filter((log) => !personId || log.sharedPersonId === personId);
+
+  return { accessHistory, isFetching };
 }
