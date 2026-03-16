@@ -10,8 +10,10 @@ import { Skeleton } from '@/views/components/ui/skeleton';
 import { PageTour } from '@/views/components/Tour/PageTour';
 import { transactionsTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
 import { useEffect, useState } from 'react';
+import { useSharedAccessLevel } from '@/app/hooks/useSharedAccessLevel';
 
 export function TransactionsPage() {
+  const { canCreate, canEdit } = useSharedAccessLevel();
   const {
     filters,
     isLoading,
@@ -38,13 +40,15 @@ export function TransactionsPage() {
   return (
     <TransactionsProvider>
       <div className="h-full flex flex-col gap-4 items-center">
-        <div className="flex justify-end w-full" data-tour="new-transaction-btn">
-          {isInitialLoading ? (
-            <Skeleton className="h-10 w-40 rounded-md" />
-          ) : (
-            <TransactionsFab className="w-max px-3 h-10 text-base" buttonText="Nova Transação" />
-          )}
-        </div>
+        {canCreate && (
+          <div className="flex justify-end w-full" data-tour="new-transaction-btn">
+            {isInitialLoading ? (
+              <Skeleton className="h-10 w-40 rounded-md" />
+            ) : (
+              <TransactionsFab className="w-max px-3 h-10 text-base" buttonText="Nova Transação" />
+            )}
+          </div>
+        )}
 
         <div className="w-full" data-tour="transactions-status">
           <TransactionStatus transactions={transactions} isLoading={isInitialLoading} />
@@ -68,9 +72,10 @@ export function TransactionsPage() {
           transactionIdToUpdate={transactionIdToUpdate}
           setIsOpenUpdateTransactionStatusDialog={setIsOpenUpdateTransactionStatusDialog}
           isOpenUpdateTransactionStatusDialog={isOpenUpdateTransactionStatusDialog}
+          canEdit={canEdit}
         />
 
-        {transactionBeingEdited && (
+        {canEdit && transactionBeingEdited && (
           <EditTransactionModal
             open={isEditModalOpen}
             onClose={handleCloseEditModal}
@@ -78,7 +83,7 @@ export function TransactionsPage() {
           />
         )}
 
-        <NewTransactionModal />
+        {canCreate && <NewTransactionModal />}
 
         <PageTour tourId={TOUR_IDS.TRANSACTIONS} steps={transactionsTourSteps} />
       </div>

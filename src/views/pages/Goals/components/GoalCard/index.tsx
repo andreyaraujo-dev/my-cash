@@ -11,10 +11,10 @@ import { ptBR } from 'date-fns/locale';
 
 interface GoalCardProps {
   goal: Goal;
-  onEdit: (goal: Goal) => void;
+  onEdit?: (goal: Goal) => void;
   onDelete: (goal: Goal) => void;
   onDetails: (goal: Goal) => void;
-  onAddValue: (goal: Goal) => void;
+  onAddValue?: (goal: Goal) => void;
 }
 
 function safeNumber(value: unknown): number {
@@ -112,15 +112,17 @@ export function GoalCard({ goal, onEdit, onDelete, onDetails, onAddValue }: Goal
             )}
           </div>
           <div className="flex gap-1">
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => onAddValue(goal)}
-              className="h-8 w-8"
-              title="Adicionar Valor"
-            >
-              <Plus className="w-4 h-4" />
-            </Button>
+            {onAddValue && (
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => onAddValue(goal)}
+                className="h-8 w-8"
+                title="Adicionar Valor"
+              >
+                <Plus className="w-4 h-4" />
+              </Button>
+            )}
             <Button
               size="icon"
               variant="ghost"
@@ -130,15 +132,17 @@ export function GoalCard({ goal, onEdit, onDelete, onDetails, onAddValue }: Goal
             >
               <Eye className="w-4 h-4" />
             </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              onClick={() => onEdit(goal)}
-              className="h-8 w-8"
-              title="Editar"
-            >
-              <Edit2 className="w-4 h-4" />
-            </Button>
+            {onEdit && (
+              <Button
+                size="icon"
+                variant="ghost"
+                onClick={() => onEdit(goal)}
+                className="h-8 w-8"
+                title="Editar"
+              >
+                <Edit2 className="w-4 h-4" />
+              </Button>
+            )}
             {canDelete && (
               <Button
                 size="icon"

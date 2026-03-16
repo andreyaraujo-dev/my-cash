@@ -7,10 +7,13 @@ import { RecentTransactions } from './components/RecentTransactions';
 import { PageTour } from '@/views/components/Tour/PageTour';
 import { homeTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
 import { useAccessPolicy } from '@/app/hooks/useAccessPolicy';
+import { useSharedAccessLevel } from '@/app/hooks/useSharedAccessLevel';
 import { Lock } from 'lucide-react';
 
 export function Dashboard() {
   const { isRestricted } = useAccessPolicy();
+  const { canCreate, canEdit } = useSharedAccessLevel();
+  const isReadOnly = isRestricted || !canEdit;
 
   return (
     <DashboardProvider>
@@ -36,7 +39,7 @@ export function Dashboard() {
                   <BalanceCard />
                 </div>
                 <div data-tour="accounts-section">
-                  <Accounts readOnly={isRestricted} />
+                  <Accounts readOnly={isReadOnly} />
                 </div>
                 <div data-tour="recent-transactions">
                   <RecentTransactions />
@@ -44,8 +47,8 @@ export function Dashboard() {
               </div>
             </main>
 
-            {!isRestricted && <NewAccountModal />}
-            {!isRestricted && accountBeingEdited && <EditAccountModal />}
+            {canCreate && !isRestricted && <NewAccountModal />}
+            {canEdit && accountBeingEdited && <EditAccountModal />}
 
             <PageTour tourId={TOUR_IDS.HOME} steps={homeTourSteps} />
           </div>

@@ -1,6 +1,7 @@
 import { Button } from '@/views/components/ui/button';
 import { Plus } from 'lucide-react';
 import { useAccountsController } from '../Dashboard/components/Accounts/useAccountsController';
+import { useSharedAccessLevel } from '@/app/hooks/useSharedAccessLevel';
 import { BankAccountType } from '@/app/entities/BankAccount';
 import { useMemo } from 'react';
 import { useTransactions } from '@/app/hooks/useTransactions';
@@ -8,7 +9,7 @@ import { PatrimonyCard } from './components/PatrimonyCard';
 import { AccountsList } from './components/AccountsList';
 import { AccountsStats } from './components/AccountsStats';
 import { NewAccountModal } from '../Dashboard/components/Modals/NewAccountModal';
-import { DashboardContext, DashboardProvider } from '@/app/context/DashboardContext';
+import { DashboardProvider } from '@/app/context/DashboardContext';
 import { EditAccountModal } from '../Dashboard/components/Modals/EditAccountModal';
 import { Skeleton } from '@/views/components/ui/skeleton';
 import { PageTour } from '@/views/components/Tour/PageTour';
@@ -17,21 +18,25 @@ import { accountsTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
 export function AccountsPage() {
   return (
     <DashboardProvider>
-      <DashboardContext.Consumer>
-        {({ accountBeingEdited }) => (
-          <>
-            <AccountsPageContent />
-            {accountBeingEdited && <EditAccountModal />}
-            <NewAccountModal />
-          </>
-        )}
-      </DashboardContext.Consumer>
+      <AccountsPageWithAccess />
     </DashboardProvider>
+  );
+}
+
+function AccountsPageWithAccess() {
+  const { canCreate, canEdit } = useSharedAccessLevel();
+  return (
+    <>
+      <AccountsPageContent />
+      {canEdit && <EditAccountModal />}
+      {canCreate && <NewAccountModal />}
+    </>
   );
 }
 
 export function AccountsPageContent() {
   const { accounts, isLoading: isLoadingAccounts, openNewAccountModal } = useAccountsController();
+  const { canCreate, canEdit } = useSharedAccessLevel();
   const totalCheckingAccount = accounts.filter(
     (account) => account.type === BankAccountType.checking,
   ).length;
@@ -111,16 +116,18 @@ export function AccountsPageContent() {
   return (
     <div className="flex flex-col justify-between gap-4 h-full">
       <div>
-        <div className="w-full flex justify-end" data-tour="new-account-btn">
-          {isLoadingAccounts ? (
-            <Skeleton className="w-32 h-10 rounded-md" />
-          ) : (
-            <Button className="w-max text-base " onClick={openNewAccountModal}>
-              <Plus />
-              Nova Conta
-            </Button>
-          )}
-        </div>
+        {canCreate && (
+          <div className="w-full flex justify-end" data-tour="new-account-btn">
+            {isLoadingAccounts ? (
+              <Skeleton className="w-32 h-10 rounded-md" />
+            ) : (
+              <Button className="w-max text-base " onClick={openNewAccountModal}>
+                <Plus />
+                Nova Conta
+              </Button>
+            )}
+          </div>
+        )}
 
         {(isLoadingAccounts || accounts.length > 0) && (
           <div data-tour="accounts-stats">
@@ -133,7 +140,12 @@ export function AccountsPageContent() {
           </div>
         )}
 
-        <AccountsList accounts={accounts} isLoading={isLoadingAccounts} />
+        <AccountsList
+          accounts={accounts}
+          isLoading={isLoadingAccounts}
+          canCreate={canCreate}
+          canEdit={canEdit}
+        />
       </div>
 
       <div data-tour="patrimony-card">

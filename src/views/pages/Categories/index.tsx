@@ -37,7 +37,7 @@ export function CategoriesPage() {
     handleDeleteConfirm,
     isLoadingDeleteCategory,
   } = useCategoriesController();
-  const { canDelete } = useSharedAccessLevel();
+  const { canCreate, canEdit, canDelete } = useSharedAccessLevel();
 
   const getBudgetStatus = (usage: number) => {
     if (usage >= 90) return { color: 'text-red-500', status: 'Crítico' };
@@ -53,12 +53,14 @@ export function CategoriesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Categorias</h1>
-        <div data-tour="new-category-btn">
-          <Button className="gap-2 w-max text-base" onClick={openNewCategoryModal}>
-            <Plus size={16} />
-            Nova Categoria
-          </Button>
-        </div>
+        {canCreate && (
+          <div data-tour="new-category-btn">
+            <Button className="gap-2 w-max text-base" onClick={openNewCategoryModal}>
+              <Plus size={16} />
+              Nova Categoria
+            </Button>
+          </div>
+        )}
       </div>
 
       <NewCategoryModal
@@ -143,14 +145,16 @@ export function CategoriesPage() {
                   </div>
 
                   <div className="flex gap-1">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="h-8 w-8"
-                      onClick={() => openEditCategoryModal(category)}
-                    >
-                      <Edit size={14} />
-                    </Button>
+                    {canEdit && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8"
+                        onClick={() => openEditCategoryModal(category)}
+                      >
+                        <Edit size={14} />
+                      </Button>
+                    )}
                     {canDelete && (
                       <Button
                         variant="ghost"
@@ -210,20 +214,22 @@ export function CategoriesPage() {
       </div>
 
       {/* Card de Adicionar Categoria */}
-      <Card
-        className="p-6 bg-card/30 border-dashed border-2 border-muted hover:border-primary/50 transition-colors cursor-pointer"
-        onClick={openNewCategoryModal}
-      >
-        <div className="flex flex-col items-center justify-center text-center space-y-2 py-8">
-          <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
-            <Plus size={24} className="text-muted-foreground" />
+      {canCreate && (
+        <Card
+          className="p-6 bg-card/30 border-dashed border-2 border-muted hover:border-primary/50 transition-colors cursor-pointer"
+          onClick={openNewCategoryModal}
+        >
+          <div className="flex flex-col items-center justify-center text-center space-y-2 py-8">
+            <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center">
+              <Plus size={24} className="text-muted-foreground" />
+            </div>
+            <h3 className="font-medium">Criar Nova Categoria</h3>
+            <p className="text-sm text-muted-foreground">
+              Organize melhor seus gastos criando categorias personalizadas
+            </p>
           </div>
-          <h3 className="font-medium">Criar Nova Categoria</h3>
-          <p className="text-sm text-muted-foreground">
-            Organize melhor seus gastos criando categorias personalizadas
-          </p>
-        </div>
-      </Card>
+        </Card>
+      )}
 
       <PageTour tourId={TOUR_IDS.CATEGORIES} steps={categoriesTourSteps} />
     </div>

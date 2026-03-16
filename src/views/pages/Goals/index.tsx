@@ -1,6 +1,7 @@
 import { Button } from '@/views/components/ui/button';
 import { Plus } from 'lucide-react';
 import { useGoalsController } from './hooks/useGoalsController';
+import { useSharedAccessLevel } from '@/app/hooks/useSharedAccessLevel';
 import { GoalsFilters } from './components/GoalsFilters';
 import { GoalsList } from './components/GoalsList';
 import { NewGoalModal } from './components/NewGoalModal';
@@ -44,6 +45,7 @@ export function GoalsPage() {
     goalToDelete,
   } = useGoalsController();
   const [hasLoadedFiltersOnce, setHasLoadedFiltersOnce] = useState(false);
+  const { canCreate, canEdit } = useSharedAccessLevel();
 
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -87,16 +89,18 @@ export function GoalsPage() {
     <div className="h-full flex flex-col gap-4">
       <header className="flex flex-row items-center justify-between gap-4">
         <h1 className="text-2xl font-bold">Minhas Metas</h1>
-        <div data-tour="new-goal-btn">
-          {isLoading ? (
-            <Skeleton className="h-10 w-32 rounded-md" />
-          ) : (
-            <Button onClick={handleOpenNewModal} className="w-max">
-              <Plus className="w-4 h-4 mr-2" />
-              Nova Meta
-            </Button>
-          )}
-        </div>
+        {canCreate && (
+          <div data-tour="new-goal-btn">
+            {isLoading ? (
+              <Skeleton className="h-10 w-32 rounded-md" />
+            ) : (
+              <Button onClick={handleOpenNewModal} className="w-max">
+                <Plus className="w-4 h-4 mr-2" />
+                Nova Meta
+              </Button>
+            )}
+          </div>
+        )}
       </header>
 
       <div data-tour="goals-filters">
@@ -112,16 +116,18 @@ export function GoalsPage() {
         <GoalsList
           goals={goals}
           isLoading={isLoading}
-          onEdit={handleOpenEditModal}
+          onEdit={canEdit ? handleOpenEditModal : undefined}
           onDelete={handleOpenDeleteModal}
           onDetails={handleOpenDetailsModal}
-          onAddValue={handleOpenOperationModal}
+          onAddValue={canEdit ? handleOpenOperationModal : undefined}
         />
       </div>
 
-      <NewGoalModal open={isNewModalOpen} onClose={handleCloseNewModal} />
+      {canCreate && <NewGoalModal open={isNewModalOpen} onClose={handleCloseNewModal} />}
 
-      <EditGoalModal open={isEditModalOpen} onClose={handleCloseEditModal} goal={goalBeingEdited} />
+      {canEdit && (
+        <EditGoalModal open={isEditModalOpen} onClose={handleCloseEditModal} goal={goalBeingEdited} />
+      )}
 
       <GoalDetailsModal
         open={isDetailsModalOpen}
@@ -129,11 +135,13 @@ export function GoalsPage() {
         goal={goalForDetails}
       />
 
-      <GoalOperationModal
-        open={isOperationModalOpen}
-        onClose={handleCloseOperationModal}
-        goal={goalForOperation}
-      />
+      {canEdit && (
+        <GoalOperationModal
+          open={isOperationModalOpen}
+          onClose={handleCloseOperationModal}
+          goal={goalForOperation}
+        />
+      )}
 
       <ConfirmDeleteGoalModal
         open={isDeleteModalOpen}

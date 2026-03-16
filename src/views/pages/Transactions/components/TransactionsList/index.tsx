@@ -19,6 +19,7 @@ interface TransactionsListProps {
   transactionIdToUpdate: string;
   setIsOpenUpdateTransactionStatusDialog: Dispatch<SetStateAction<boolean>>;
   isOpenUpdateTransactionStatusDialog: boolean;
+  canEdit?: boolean;
 }
 
 export function TransactionsList({
@@ -31,6 +32,7 @@ export function TransactionsList({
   transactionIdToUpdate,
   setIsOpenUpdateTransactionStatusDialog,
   isOpenUpdateTransactionStatusDialog,
+  canEdit = true,
 }: TransactionsListProps) {
   return (
     <Card className="p-6 w-full">
@@ -59,8 +61,8 @@ export function TransactionsList({
                 <TransactionItem
                   key={transaction.id}
                   transaction={transaction}
-                  onTogglePaid={() => handleTogglePaid(transaction.id)}
-                  onClick={() => handleOpenEditModal(transaction)}
+                  onTogglePaid={canEdit ? () => handleTogglePaid(transaction.id) : undefined}
+                  onClick={canEdit ? () => handleOpenEditModal(transaction) : undefined}
                 />
               ))
             )}

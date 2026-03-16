@@ -17,6 +17,7 @@ import { useGoals } from '@/app/hooks/useGoals';
 import { useCategories } from '@/app/hooks/useCategories';
 import { useSubscription } from '@/app/hooks/useSubscription';
 import { useAccessPolicy } from '@/app/hooks/useAccessPolicy';
+import { useUserAccessStore } from '@/app/store/useUserAccessStore';
 import { useProfileController } from './hooks/useProfileController';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '@/app/services/authService';
@@ -85,6 +86,7 @@ export function Profile() {
   const { categories, isFetching: isLoadingCategories } = useCategories();
   const { subscription, isLoading: isLoadingSubscription } = useSubscription();
   const { isRestricted } = useAccessPolicy();
+  const isAccountOwner = useUserAccessStore((state) => state.isAccountOwner);
 
   const deleteAccountMutation = useMutation({
     mutationFn: authService.deleteAccount,
@@ -405,87 +407,89 @@ export function Profile() {
         </CardContent>
       </Card>
 
-      {/* Seção – Assinatura */}
-      <Card data-tour="profile-subscription">
-        <CardHeader className="flex flex-row items-center gap-2">
-          <Receipt className="h-5 w-5 text-muted-foreground" />
-          <div>
-            <CardTitle>Assinatura</CardTitle>
-            <CardDescription>Gerencie sua assinatura do plano</CardDescription>
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {isLoadingSubscription ? (
-            <p className="text-muted-foreground">Carregando...</p>
-          ) : subscription ? (
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <span
-                  className={`text-sm font-medium ${subscription.isActive ? 'text-green-600' : 'text-muted-foreground'}`}
-                >
-                  {subscription.isTrial ? 'Trial' : subscription.isActive ? 'Ativa' : 'Cancelada'}
-                </span>
-                <span className="text-muted-foreground">·</span>
-                <span className="text-sm font-medium">
-                  Plano {subscription.plan === 'PREMIUM' ? 'Premium' : 'Basic'}
-                </span>
-                <span className="text-muted-foreground">·</span>
-                <span className="text-sm">
-                  {subscription.isTrial ? 'Gratuito' : `${formatCurrency(subscription.value)}/mês`}
-                </span>
-              </div>
-              {subscription.isTrial && subscription.trialEndsAt ? (
-                <p className="text-sm text-muted-foreground">
-                  Trial até {formatDate(new Date(subscription.trialEndsAt))}
-                  {getDaysRemaining(subscription.trialEndsAt) > 0 &&
-                    ` (${getDaysRemaining(subscription.trialEndsAt)} dias restantes)`}
-                </p>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  Próxima renovação: {formatDate(new Date(subscription.nextRenewalAt))}
-                  {getDaysRemaining(subscription.nextRenewalAt) > 0 &&
-                    ` (${getDaysRemaining(subscription.nextRenewalAt)} dias restantes)`}
-                </p>
-              )}
+      {/* Seção – Assinatura (apenas para dono da conta) */}
+      {isAccountOwner && (
+        <Card data-tour="profile-subscription">
+          <CardHeader className="flex flex-row items-center gap-2">
+            <Receipt className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <CardTitle>Assinatura</CardTitle>
+              <CardDescription>Gerencie sua assinatura do plano</CardDescription>
             </div>
-          ) : (
-            <p className="text-sm text-muted-foreground">
-              Você ainda não possui uma assinatura ativa.
-            </p>
-          )}
-          <div className="flex flex-wrap gap-2">
-            {(isRestricted || !subscription?.isActive) && (
-              <Button
-                onClick={() => setChoosePlanModalOpen(true)}
-                disabled={checkoutLoading}
-                isLoading={checkoutLoading}
-              >
-                Assinar
-              </Button>
-            )}
-            {subscription?.isActive && !subscription.isTrial && (
-              <>
-                {subscription.plan === 'BASIC' && (
-                  <Button onClick={() => navigate('/profile/subscription?upgrade=premium')}>
-                    Fazer upgrade para Premium
-                  </Button>
-                )}
-                {subscription.plan === 'PREMIUM' && (
-                  <Button
-                    variant="outline"
-                    onClick={() => navigate('/profile/subscription?downgrade=basic')}
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {isLoadingSubscription ? (
+              <p className="text-muted-foreground">Carregando...</p>
+            ) : subscription ? (
+              <div className="space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`text-sm font-medium ${subscription.isActive ? 'text-green-600' : 'text-muted-foreground'}`}
                   >
-                    Voltar para Basic
-                  </Button>
+                    {subscription.isTrial ? 'Trial' : subscription.isActive ? 'Ativa' : 'Cancelada'}
+                  </span>
+                  <span className="text-muted-foreground">·</span>
+                  <span className="text-sm font-medium">
+                    Plano {subscription.plan === 'PREMIUM' ? 'Premium' : 'Basic'}
+                  </span>
+                  <span className="text-muted-foreground">·</span>
+                  <span className="text-sm">
+                    {subscription.isTrial ? 'Gratuito' : `${formatCurrency(subscription.value)}/mês`}
+                  </span>
+                </div>
+                {subscription.isTrial && subscription.trialEndsAt ? (
+                  <p className="text-sm text-muted-foreground">
+                    Trial até {formatDate(new Date(subscription.trialEndsAt))}
+                    {getDaysRemaining(subscription.trialEndsAt) > 0 &&
+                      ` (${getDaysRemaining(subscription.trialEndsAt)} dias restantes)`}
+                  </p>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Próxima renovação: {formatDate(new Date(subscription.nextRenewalAt))}
+                    {getDaysRemaining(subscription.nextRenewalAt) > 0 &&
+                      ` (${getDaysRemaining(subscription.nextRenewalAt)} dias restantes)`}
+                  </p>
                 )}
-              </>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">
+                Você ainda não possui uma assinatura ativa.
+              </p>
             )}
-            <Button variant="outline" onClick={() => navigate('/profile/subscription')}>
-              Gerenciar assinatura
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+            <div className="flex flex-wrap gap-2">
+              {(isRestricted || !subscription?.isActive) && (
+                <Button
+                  onClick={() => setChoosePlanModalOpen(true)}
+                  disabled={checkoutLoading}
+                  isLoading={checkoutLoading}
+                >
+                  Assinar
+                </Button>
+              )}
+              {subscription?.isActive && !subscription.isTrial && (
+                <>
+                  {subscription.plan === 'BASIC' && (
+                    <Button onClick={() => navigate('/profile/subscription?upgrade=premium')}>
+                      Fazer upgrade para Premium
+                    </Button>
+                  )}
+                  {subscription.plan === 'PREMIUM' && (
+                    <Button
+                      variant="outline"
+                      onClick={() => navigate('/profile/subscription?downgrade=basic')}
+                    >
+                      Voltar para Basic
+                    </Button>
+                  )}
+                </>
+              )}
+              <Button variant="outline" onClick={() => navigate('/profile/subscription')}>
+                Gerenciar assinatura
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <ChangePasswordDialog
         open={changePasswordOpen}
@@ -587,17 +591,19 @@ export function Profile() {
             </div>
           </div>
 
-          <div className="pt-4 border-t">
-            <p className="text-sm text-muted-foreground mb-2">Zona de perigo</p>
-            <Button
-              variant="outline"
-              onClick={() => setDeleteAccountOpen(true)}
-              className="gap-2 border-red-900 hover:bg-red-900/20 text-red-900"
-            >
-              <Trash2 className="h-4 w-4" />
-              Excluir conta
-            </Button>
-          </div>
+          {isAccountOwner && (
+            <div className="pt-4 border-t">
+              <p className="text-sm text-muted-foreground mb-2">Zona de perigo</p>
+              <Button
+                variant="outline"
+                onClick={() => setDeleteAccountOpen(true)}
+                className="gap-2 border-red-900 hover:bg-red-900/20 text-red-900"
+              >
+                <Trash2 className="h-4 w-4" />
+                Excluir conta
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
 

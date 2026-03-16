@@ -7,9 +7,11 @@ import { Plus } from 'lucide-react';
 interface AccountsListProps {
   accounts: BankAccount[];
   isLoading: boolean;
+  canCreate?: boolean;
+  canEdit?: boolean;
 }
 
-export function AccountsList({ accounts, isLoading }: AccountsListProps) {
+export function AccountsList({ accounts, isLoading, canCreate = true, canEdit = true }: AccountsListProps) {
   const { accountsTypeMapper, openNewAccountModal } = useAccountsController();
 
   if (isLoading) return <AccountsGridSkeleton />;
@@ -20,14 +22,14 @@ export function AccountsList({ accounts, isLoading }: AccountsListProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {accounts.map((account) => (
           <div key={account.id} className="space-y-2">
-            <AccountCard data={account} />
+            <AccountCard data={account} readOnly={!canEdit} />
             <p className="text-sm text-muted-foreground text-center">
               {accountsTypeMapper(account)}
             </p>
           </div>
         ))}
 
-        {accounts.length === 0 && (
+        {accounts.length === 0 && canCreate && (
           <button
             type="button"
             onClick={openNewAccountModal}

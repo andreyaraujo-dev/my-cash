@@ -7,8 +7,8 @@ import { Check, Clock, Repeat } from 'lucide-react';
 
 interface TransactionItemProps {
   transaction: Transaction;
-  onTogglePaid: () => void;
-  onClick: () => void;
+  onTogglePaid?: () => void;
+  onClick?: () => void;
 }
 
 export function TransactionItem({
@@ -42,7 +42,7 @@ export function TransactionItem({
               {getInitials(name)}
             </AvatarFallback>
           </Avatar>
-          {type === 'EXPENSE' && (
+          {type === 'EXPENSE' && onTogglePaid && (
             <Button
               variant="outline"
               size="icon"
@@ -59,17 +59,28 @@ export function TransactionItem({
         </div>
 
         <div className="flex flex-col gap-1">
-          <button
-            type="button"
-            className={`font-medium text-left bg-transparent border-none p-0 m-0 cursor-pointer hover:underline flex items-center gap-1 ${!isPaid ? 'text-foreground' : 'text-muted-foreground'}`}
-            onClick={onClick}
-            tabIndex={0}
-          >
-            {name}
-            {recurrenceGroupId && (
-              <Repeat size={14} className="text-muted-foreground" />
-            )}
-          </button>
+          {onClick ? (
+            <button
+              type="button"
+              className={`font-medium text-left bg-transparent border-none p-0 m-0 cursor-pointer hover:underline flex items-center gap-1 ${!isPaid ? 'text-foreground' : 'text-muted-foreground'}`}
+              onClick={onClick}
+              tabIndex={0}
+            >
+              {name}
+              {recurrenceGroupId && (
+                <Repeat size={14} className="text-muted-foreground" />
+              )}
+            </button>
+          ) : (
+            <span
+              className={`font-medium flex items-center gap-1 ${!isPaid ? 'text-foreground' : 'text-muted-foreground'}`}
+            >
+              {name}
+              {recurrenceGroupId && (
+                <Repeat size={14} className="text-muted-foreground" />
+              )}
+            </span>
+          )}
           <p className="text-sm text-muted-foreground">{format(date, 'dd/MM/yyyy')}</p>
         </div>
       </div>

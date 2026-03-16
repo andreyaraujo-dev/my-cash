@@ -6,10 +6,10 @@ import { Target } from 'lucide-react';
 interface GoalsListProps {
   goals: Goal[];
   isLoading: boolean;
-  onEdit: (goal: Goal) => void;
+  onEdit?: (goal: Goal) => void;
   onDelete: (goal: Goal) => void;
   onDetails: (goal: Goal) => void;
-  onAddValue: (goal: Goal) => void;
+  onAddValue?: (goal: Goal) => void;
 }
 
 export function GoalsList({
