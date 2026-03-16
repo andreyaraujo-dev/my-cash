@@ -8,6 +8,8 @@ import { EditPersonModal } from './components/EditPersonModal';
 import { AccessHistoryModal } from './components/AccessHistoryModal';
 import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
 import { Skeleton } from '@/views/components/ui/skeleton';
+import { PageTour } from '@/views/components/Tour/PageTour';
+import { peopleTourSteps, TOUR_IDS } from '@/views/components/Tour/tours';
 
 export function PeoplePage() {
   const {
@@ -56,23 +58,27 @@ export function PeoplePage() {
           </div>
         </div>
 
-        {isLoadingPeoples ? (
-          <Skeleton className="h-10 w-32 rounded-md" />
-        ) : (
-          <Button className="gap-2 w-max" onClick={openNewPersonModal}>
-            <Plus size={16} />
-            Convidar pessoa
-          </Button>
-        )}
+        <div data-tour="new-person-btn">
+          {isLoadingPeoples ? (
+            <Skeleton className="h-10 w-32 rounded-md" />
+          ) : (
+            <Button className="gap-2 w-max" onClick={openNewPersonModal}>
+              <Plus size={16} />
+              Convidar pessoa
+            </Button>
+          )}
+        </div>
       </header>
 
-      <PeopleList
-        people={peoples}
-        isLoading={isLoadingPeoples}
-        onEdit={openEditPersonModal}
-        onRemove={openRemoveModal}
-        onViewHistory={openAccessHistory}
-      />
+      <div data-tour="people-list">
+        <PeopleList
+          people={peoples}
+          isLoading={isLoadingPeoples}
+          onEdit={openEditPersonModal}
+          onRemove={openRemoveModal}
+          onViewHistory={openAccessHistory}
+        />
+      </div>
 
       <NewPersonModal
         open={isNewPersonModalOpen}
@@ -109,6 +115,8 @@ export function PeoplePage() {
         isLoading={isFetchingHistory}
         person={personToViewHistory}
       />
+
+      <PageTour tourId={TOUR_IDS.PEOPLE} steps={peopleTourSteps} />
     </div>
   );
 }

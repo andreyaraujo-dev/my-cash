@@ -8,6 +8,7 @@ export const TOUR_IDS = {
   REPORTS: 'tour-reports',
   GOALS: 'tour-goals',
   PROFILE: 'tour-profile',
+  PEOPLE: 'tour-people',
 } as const;
 
 export const homeTourSteps: Step[] = [
@@ -157,6 +158,22 @@ export const profileTourSteps: Step[] = [
     target: '[data-tour="profile-subscription"]',
     title: 'Assinatura',
     content: 'Gerencie seu plano de assinatura e acompanhe o status do trial.',
+    disableBeacon: true,
+  },
+];
+
+export const peopleTourSteps: Step[] = [
+  {
+    target: '[data-tour="new-person-btn"]',
+    title: 'Convidar Pessoa',
+    content: 'Convide familiares ou amigos para compartilhar o acesso à sua conta (até 4 pessoas).',
+    disableBeacon: true,
+  },
+  {
+    target: '[data-tour="people-list"]',
+    title: 'Pessoas com Acesso',
+    content:
+      'Veja quem tem acesso à sua conta, edite níveis de permissão ou remova pessoas quando necessário.',
     disableBeacon: true,
   },
 ];
