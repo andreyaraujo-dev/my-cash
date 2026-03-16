@@ -85,7 +85,10 @@ export function useLoginController() {
 
   const handleSubmit = hookFormSubmit(async (data) => {
     try {
-      const response = await mutateAsync(data);
+      const response = await mutateAsync({
+        ...data,
+        deviceFingerprint: getDeviceFingerprint(),
+      });
 
       if ('accessToken' in response) {
         clearMfaChallenge();

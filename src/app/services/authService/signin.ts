@@ -3,6 +3,7 @@ import { httpClient } from '@/app/services/httpClient.ts';
 export interface SigninParams {
   email: string;
   password: string;
+  deviceFingerprint?: string;
 }
 
 export interface SigninSuccessResponse {
@@ -16,7 +17,11 @@ export interface SigninMfaRequiredResponse {
 
 export type SigninResponse = SigninSuccessResponse | SigninMfaRequiredResponse;
 
-export async function signin({ email, password }: SigninParams) {
-  const { data } = await httpClient.post<SigninResponse>('/auth/signin', { email, password });
+export async function signin({ email, password, deviceFingerprint }: SigninParams) {
+  const { data } = await httpClient.post<SigninResponse>('/auth/signin', {
+    email,
+    password,
+    deviceFingerprint,
+  });
   return data;
 }
