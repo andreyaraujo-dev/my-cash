@@ -1,5 +1,6 @@
 import {
   BarChart3,
+  Calculator,
   CreditCard,
   Home,
   PieChart,
@@ -35,6 +36,7 @@ import { isPremiumRoute } from '@/app/config/accessPolicy';
 import { useAccessPolicy } from '@/app/hooks/useAccessPolicy';
 import { useSubscription } from '@/app/hooks/useSubscription';
 import { PeoplePremiumRequiredModal } from '@/views/pages/People/components/PeoplePremiumRequiredModal';
+import { SimulationPremiumRequiredModal } from '@/views/pages/Simulations/components/SimulationPremiumRequiredModal';
 
 // Menu items para o app de finanças
 const items = [
@@ -67,6 +69,11 @@ const items = [
     title: 'Metas',
     url: '/goals',
     icon: Target,
+  },
+  {
+    title: 'Simulações',
+    url: '/simulations',
+    icon: Calculator,
   },
 ];
 
@@ -101,18 +108,20 @@ export function AppSidebar({ onBlockedAreaAttempt }: AppSidebarProps) {
   const { subscription } = useSubscription();
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isPeoplePremiumModalOpen, setIsPeoplePremiumModalOpen] = useState(false);
+  const [isSimulationPremiumModalOpen, setIsSimulationPremiumModalOpen] = useState(false);
 
   const isPeoplePremium = subscription?.plan === 'PREMIUM' && subscription?.isActive;
+  const isSimulationPremium = subscription?.plan === 'PREMIUM' && subscription?.isActive;
 
   const visibleFooterItems = footerItems.filter(
-    (item) => item.title !== 'Pessoas' || isAccountOwner
+    (item) => item.title !== 'Pessoas' || isAccountOwner,
   );
 
   return (
     <>
       <Sidebar collapsible="icon">
         <SidebarHeader
-          className={cn('border-b border-sidebar-border', open ? 'p-6' : 'py-6 px-3 min-h-6')}
+          className={cn('border-b border-sidebar-border', open ? 'p-6' : 'py-6 min-h-6')}
         >
           <SidebarGroup className="p-0">
             <SidebarGroupContent>
@@ -131,13 +140,17 @@ export function AppSidebar({ onBlockedAreaAttempt }: AppSidebarProps) {
               <SidebarMenu>
                 {items.map((item) => {
                   const isActive = location.pathname === item.url;
+                  const isSimulations = item.url === '/simulations';
                   const isBlocked = isRestricted && isPremiumRoute(item.url);
+                  const isSimulationLocked = isSimulations && !isSimulationPremium;
                   const buttonClassName = `w-full justify-start gap-3 h-12 ${
                     isBlocked
                       ? 'text-muted-foreground opacity-60 cursor-not-allowed'
-                      : isActive
-                        ? 'bg-secondary text-secondary-foreground'
-                        : 'text-muted-foreground hover:text-foreground'
+                      : isSimulationLocked
+                        ? 'text-muted-foreground opacity-60 hover:opacity-80'
+                        : isActive
+                          ? 'bg-secondary text-secondary-foreground'
+                          : 'text-muted-foreground hover:text-foreground'
                   }`;
 
                   if (isBlocked) {
@@ -153,6 +166,22 @@ export function AppSidebar({ onBlockedAreaAttempt }: AppSidebarProps) {
                           <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-primary/15 text-primary">
                             Premium
                           </span>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    );
+                  }
+
+                  if (isSimulationLocked) {
+                    return (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton
+                          tooltip="Simulações (Premium)"
+                          className={buttonClassName}
+                          onClick={() => setIsSimulationPremiumModalOpen(true)}
+                        >
+                          <item.icon />
+                          <span>{item.title}</span>
+                          <Lock className="ml-auto h-4 w-4" />
                         </SidebarMenuButton>
                       </SidebarMenuItem>
                     );
@@ -179,7 +208,7 @@ export function AppSidebar({ onBlockedAreaAttempt }: AppSidebarProps) {
           </SidebarGroup>
         </SidebarContent>
 
-        <SidebarFooter>
+        <SidebarFooter className="p-0">
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
@@ -248,6 +277,11 @@ export function AppSidebar({ onBlockedAreaAttempt }: AppSidebarProps) {
       <PeoplePremiumRequiredModal
         open={isPeoplePremiumModalOpen}
         onClose={() => setIsPeoplePremiumModalOpen(false)}
+      />
+
+      <SimulationPremiumRequiredModal
+        open={isSimulationPremiumModalOpen}
+        onClose={() => setIsSimulationPremiumModalOpen(false)}
       />
 
       <Modal

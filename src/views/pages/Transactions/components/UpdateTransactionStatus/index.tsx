@@ -44,7 +44,7 @@ export function UpdateTransactionStatus({
         });
       }
 
-      await queryClient.refetchQueries({ queryKey: ['transactions', filters] });
+      queryClient.refetchQueries({ queryKey: ['transactions', filters] });
       setIsOpen(false);
     } catch {
       toast({
@@ -66,7 +66,12 @@ export function UpdateTransactionStatus({
         </DialogHeader>
 
         <DialogFooter>
-          <Button type="button" onClick={() => setIsOpen(false)}>
+          <Button
+            type="button"
+            variant="destructive"
+            className="bg-transparent text-destructive hover:text-white border border-destructive"
+            onClick={() => setIsOpen(false)}
+          >
             Cancelar
           </Button>
           <Button
