@@ -64,7 +64,15 @@ export function ProjectionTable({ result }: ProjectionTableProps) {
                   <TableCell className="text-right text-muted-foreground">
                     {formatCurrency(row.baseBalance)}
                   </TableCell>
-                  <TableCell className="text-right font-medium">
+                  <TableCell
+                    className={`text-right font-medium ${
+                      row.simBalance > 0
+                        ? 'text-green-600 dark:text-green-400'
+                        : row.simBalance < 0
+                          ? 'text-red-600 dark:text-red-400'
+                          : 'text-muted-foreground'
+                    }`}
+                  >
                     {formatCurrency(row.simBalance)}
                   </TableCell>
                   <TableCell

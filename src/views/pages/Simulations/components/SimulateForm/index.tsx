@@ -44,6 +44,30 @@ export function SimulateForm({
       <CardContent>
         <Form {...form}>
           <form onSubmit={onSubmit} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="value"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {isExpense ? 'Valor da parcela' : 'Valor mensal recorrente'}
+                  </FormLabel>
+                  <FormControl>
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground">R$</span>
+                      <InputCurrency
+                        error={form.formState.errors.value?.message}
+                        {...field}
+                        value={field.value}
+                        onChange={field.onChange}
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
@@ -91,50 +115,25 @@ export function SimulateForm({
               />
             </div>
 
-            <FormField
-              control={form.control}
-              name="value"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    {isExpense ? 'Valor da parcela' : 'Valor mensal recorrente'}
-                  </FormLabel>
-                  <FormControl>
-                    <div className="flex items-center gap-2">
-                      <span className="text-muted-foreground">R$</span>
-                      <InputCurrency
-                        error={form.formState.errors.value?.message}
-                        {...field}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Data de início</FormLabel>
+                    <FormControl>
+                      <DatePickerInput
                         value={field.value}
                         onChange={field.onChange}
-                        className="text-2xl"
+                        error={form.formState.errors.date?.message}
                       />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Data de início</FormLabel>
-                  <FormControl>
-                    <DatePickerInput
-                      value={field.value}
-                      onChange={field.onChange}
-                      error={form.formState.errors.date?.message}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <FormField
                 control={form.control}
                 name="bankAccountId"
@@ -209,6 +208,7 @@ export function SimulateForm({
                         <InputCurrency
                           value={field.value ?? ''}
                           onChange={(val) => field.onChange(val || undefined)}
+                          className="text-base border rounded-md border-input h-12 px-3 py-1 font-normal md:text-sm"
                         />
                       </FormControl>
                       <FormMessage />

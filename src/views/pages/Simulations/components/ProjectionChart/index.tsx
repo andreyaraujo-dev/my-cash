@@ -24,8 +24,12 @@ function CustomTooltip({ active, payload }: any) {
     return (
       <div className="bg-popover border border-border rounded-lg p-3 shadow-lg">
         <p className="text-sm font-medium mb-2">{data.month}</p>
-        <p className="text-xs text-muted-foreground">Base: {formatCurrency(data.baseBalance)}</p>
-        <p className="text-xs text-muted-foreground">Simulado: {formatCurrency(data.simBalance)}</p>
+        <p className="text-xs text-muted-foreground">
+          Saldo Base: {formatCurrency(data.baseBalance)}
+        </p>
+        <p className="text-xs text-muted-foreground">
+          Saldo Simulado: {formatCurrency(data.simBalance)}
+        </p>
       </div>
     );
   }
@@ -64,7 +68,7 @@ export function ProjectionChart({ result }: ProjectionChartProps) {
           <Line
             type="monotone"
             dataKey="baseBalance"
-            name="Base"
+            name="Saldo Base"
             stroke="#94a3b8"
             strokeWidth={2}
             dot={{ fill: '#94a3b8', r: 3 }}
@@ -73,7 +77,7 @@ export function ProjectionChart({ result }: ProjectionChartProps) {
           <Line
             type="monotone"
             dataKey="simBalance"
-            name="Simulado"
+            name="Saldo Simulado"
             stroke="#3b82f6"
             strokeWidth={2}
             dot={{ fill: '#3b82f6', r: 3 }}
