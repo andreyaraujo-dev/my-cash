@@ -32,8 +32,6 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       onChange?.(selectedValue);
     }
 
-    const selectedOption = value ? options.find((o) => o.value === value) : null;
-
     return (
       <SelectShadcn onValueChange={handleSelect} value={value || undefined}>
         <SelectTrigger
@@ -45,18 +43,7 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           )}
         >
           <span className="flex flex-1 items-center gap-2 min-w-0 overflow-hidden">
-            {selectedOption?.type && selectedOption?.icon && (
-              <span className="flex shrink-0">
-                <CategoryIcon
-                  type={selectedOption.type}
-                  category={selectedOption.icon}
-                  className="h-7 w-7"
-                />
-              </span>
-            )}
-            <span className="flex-1 min-w-0 truncate">
-              <SelectValue placeholder={placeholder} />
-            </span>
+            <SelectValue placeholder={placeholder} />
           </span>
         </SelectTrigger>
 

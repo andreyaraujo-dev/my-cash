@@ -98,6 +98,8 @@ export function useSimulationsController() {
         .map((category) => ({
           value: category.id,
           label: category.name,
+          icon: category.icon,
+          type: category.type,
         })),
     [categories, type],
   );

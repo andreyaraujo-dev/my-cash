@@ -137,6 +137,8 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
                       options={categories.map((category) => ({
                         value: category.id,
                         label: category.name,
+                        icon: category.icon,
+                        type: category.type,
                       }))}
                     />
                   </FormControl>

@@ -111,6 +111,8 @@ export function NewTransactionModal() {
                       options={categories.map((category) => ({
                         value: category.id,
                         label: category.name,
+                        icon: category.icon,
+                        type: category.type,
                       }))}
                     />
                   </FormControl>
@@ -196,7 +198,6 @@ export function NewTransactionModal() {
                             form.setValue('recurrenceEndDate', undefined);
                           }
                         }}
-                        className="mr-2"
                       />
                     </FormControl>
                     <FormLabel className="text-foreground">Transação recorrente</FormLabel>
