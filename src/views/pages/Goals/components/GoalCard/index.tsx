@@ -4,6 +4,7 @@ import { Badge } from '@/views/components/ui/badge';
 import { Button } from '@/views/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/views/components/ui/card';
 import { Progress } from '@/views/components/ui/progress';
+import { CategoryIcon } from '@/views/components/icons/Categories/CategoryIcon';
 import { Calendar, Edit2, Eye, Plus, Trash2 } from 'lucide-react';
 import { useSharedAccessLevel } from '@/app/hooks/useSharedAccessLevel';
 import { format } from 'date-fns';
@@ -106,7 +107,15 @@ export function GoalCard({ goal, onEdit, onDelete, onDetails, onAddValue }: Goal
             <h3 className="font-semibold text-lg truncate">{goal.name}</h3>
             {goal.category && (
               <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-                <span>{goal.category.icon}</span>
+                {goal.category.type && goal.category.icon && (
+                  <span className="flex shrink-0">
+                    <CategoryIcon
+                      type={goal.category.type}
+                      category={goal.category.icon}
+                      className="h-7 w-7"
+                    />
+                  </span>
+                )}
                 <span>{goal.category.name}</span>
               </div>
             )}
@@ -172,7 +181,9 @@ export function GoalCard({ goal, onEdit, onDelete, onDetails, onAddValue }: Goal
             max={targetValue || 1}
             indicatorClassName={getProgressColor(progress)}
           />
-          <div className="text-right text-xs text-muted-foreground">{progress.toFixed(1)}% atingido</div>
+          <div className="text-right text-xs text-muted-foreground">
+            {progress.toFixed(1)}% atingido
+          </div>
         </div>
 
         {/* Data de vencimento */}

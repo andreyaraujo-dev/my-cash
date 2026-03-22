@@ -11,6 +11,7 @@ export interface Goal {
     id: string;
     name: string;
     icon: string;
+    type?: 'EXPENSE' | 'INCOME';
   };
   importance: 'LOW' | 'MEDIUM' | 'HIGH';
   priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';

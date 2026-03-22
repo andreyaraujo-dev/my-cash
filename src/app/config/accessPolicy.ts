@@ -10,6 +10,7 @@ export const PREMIUM_ROUTES = [
   '/categories',
   '/reports',
   '/goals',
+  '/simulations',
 ] as const;
 
 export function isRouteMatch(pathname: string, route: string) {

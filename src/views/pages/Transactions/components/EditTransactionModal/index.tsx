@@ -55,9 +55,7 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
         onClose={handleCloseScopeDialog}
         onSelect={handleScopeSelect}
         title={
-          pendingAction === 'edit'
-            ? 'Editar transação recorrente'
-            : 'Excluir transação recorrente'
+          pendingAction === 'edit' ? 'Editar transação recorrente' : 'Excluir transação recorrente'
         }
         isLoading={isLoadingScopeAction}
       />
@@ -74,11 +72,7 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
     );
 
   return (
-    <Modal
-      open={open}
-      title={isExpense ? 'Editar Despesa' : 'Editar Receita'}
-      onClose={onClose}
-    >
+    <Modal open={open} title={isExpense ? 'Editar Despesa' : 'Editar Receita'} onClose={onClose}>
       <Form {...form}>
         <form onSubmit={handleSubmit}>
           <div>
@@ -143,6 +137,8 @@ export function EditTransactionModal({ transaction, open, onClose }: EditTransac
                       options={categories.map((category) => ({
                         value: category.id,
                         label: category.name,
+                        icon: category.icon,
+                        type: category.type,
                       }))}
                     />
                   </FormControl>

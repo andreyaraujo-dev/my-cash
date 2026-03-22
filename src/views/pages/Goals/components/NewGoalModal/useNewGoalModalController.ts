@@ -120,6 +120,8 @@ export function useNewGoalModalController({ isOpen, onClose }: UseNewGoalModalCo
       categories.map((category) => ({
         value: category.id,
         label: category.name,
+        icon: category.icon,
+        type: category.type,
       })),
     [categories],
   );

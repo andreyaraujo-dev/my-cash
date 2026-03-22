@@ -1,0 +1,26 @@
+export const iconColorsMap = {
+  INCOME: {
+    default: { bg: '#EBFBEE', stroke: '#2B8A3E' },
+    salary: { bg: '#EBFBEE', stroke: '#2B8A3E' },
+    bonus: { bg: '#EBFBEE', stroke: '#2B8A3E' },
+    freelance: { bg: '#EBFBEE', stroke: '#2B8A3E' },
+  },
+  EXPENSE: {
+    default: { bg: '#FFF5F5', stroke: '#C92A2A' },
+    food: { bg: '#FFF5F5', stroke: '#FF6B6B' },
+    fun: { bg: '#F3F0FF', stroke: '#845EF7' },
+    grocery: { bg: '#EDF2FF', stroke: '#5C7CFA' },
+    home: { bg: '#FFF0F6', stroke: '#F06595' },
+    education: { bg: '#F8F0FC', stroke: '#CC5DE8' },
+    clothes: { bg: '#E7F5FF', stroke: '#339AF0' },
+    transport: { bg: '#FFF9DB', stroke: '#FCC419' },
+    travel: { bg: '#FFF4E6', stroke: '#FF922B' },
+    health: { bg: '#E6FFFA', stroke: '#12B886' },
+    pets: { bg: '#FFF9DB', stroke: '#F59F00' },
+    bills: { bg: '#F1F3F5', stroke: '#868E96' },
+    gifts: { bg: '#FFF0F6', stroke: '#E64980' },
+    subscriptions: { bg: '#E7F5FF', stroke: '#339AF0' },
+    gym: { bg: '#FFF4E6', stroke: '#FD7E14' },
+    creditCard: { bg: '#EDF2FF', stroke: '#5C7CFA' },
+  },
+} as const;

@@ -11,7 +11,12 @@ interface AccountsListProps {
   canEdit?: boolean;
 }
 
-export function AccountsList({ accounts, isLoading, canCreate = true, canEdit = true }: AccountsListProps) {
+export function AccountsList({
+  accounts,
+  isLoading,
+  canCreate = true,
+  canEdit = true,
+}: AccountsListProps) {
   const { accountsTypeMapper, openNewAccountModal } = useAccountsController();
 
   if (isLoading) return <AccountsGridSkeleton />;

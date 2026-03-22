@@ -67,18 +67,14 @@ export function TransactionItem({
               tabIndex={0}
             >
               {name}
-              {recurrenceGroupId && (
-                <Repeat size={14} className="text-muted-foreground" />
-              )}
+              {recurrenceGroupId && <Repeat size={14} className="text-muted-foreground" />}
             </button>
           ) : (
             <span
               className={`font-medium flex items-center gap-1 ${!isPaid ? 'text-foreground' : 'text-muted-foreground'}`}
             >
               {name}
-              {recurrenceGroupId && (
-                <Repeat size={14} className="text-muted-foreground" />
-              )}
+              {recurrenceGroupId && <Repeat size={14} className="text-muted-foreground" />}
             </span>
           )}
           <p className="text-sm text-muted-foreground">{format(date, 'dd/MM/yyyy')}</p>

@@ -120,7 +120,10 @@ export function CategoriesPage() {
       </div>
 
       {/* Lista de Categorias */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" data-tour="categories-list">
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+        data-tour="categories-list"
+      >
         {categories.map((category) => {
           const budgetStatus = getBudgetStatus(category.percentageUsed);
           const percentageUsed = category.percentageUsed;
@@ -131,9 +134,13 @@ export function CategoriesPage() {
                 {/* Header */}
                 <div className="flex items-start justify-between">
                   <div className="flex items-center gap-3">
-                    <Avatar className="h-10 w-10">
-                      <AvatarFallback className="bg-transparent text-white">
-                        <CategoryIcon type={category.type} category={category.icon} />
+                    <Avatar className="h-12 w-12 shrink-0">
+                      <AvatarFallback className="bg-transparent p-0">
+                        <CategoryIcon
+                          type={category.type}
+                          category={category.icon}
+                          className="h-10 w-10"
+                        />
                       </AvatarFallback>
                     </Avatar>
                     <div>

@@ -54,6 +54,9 @@ const ReportsPage = lazy(() =>
 const GoalsPage = lazy(() =>
   import('@/views/pages/Goals/index.tsx').then((module) => ({ default: module.GoalsPage })),
 );
+const SimulationsPage = lazy(() =>
+  import('@/views/pages/Simulations').then((module) => ({ default: module.SimulationsPage })),
+);
 const Profile = lazy(() =>
   import('@/views/pages/Profile').then((module) => ({ default: module.Profile })),
 );
@@ -98,6 +101,7 @@ export function Router() {
                 <Route path="/categories" element={<CategoriesPage />} />
                 <Route path="/reports" element={<ReportsPage />} />
                 <Route path="/goals" element={<GoalsPage />} />
+                <Route path="/simulations" element={<SimulationsPage />} />
               </Route>
             </Route>
           </Route>

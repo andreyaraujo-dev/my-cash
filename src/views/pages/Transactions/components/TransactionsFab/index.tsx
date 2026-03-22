@@ -41,13 +41,13 @@ export function TransactionsFab({ className, buttonText }: TransactionsFabProps)
       <DropdownMenuContent className="font-normal text-sm border" align="end">
         <DropdownMenuItem onSelect={() => handleOpenModal('EXPENSE')}>
           <span className="flex items-center justify-center gap-2">
-            <CategoryIcon type="EXPENSE" />
+            <CategoryIcon type="EXPENSE" className="h-8 w-8" />
           </span>
           Nova Despesa
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => handleOpenModal('INCOME')}>
           <span className="flex items-center justify-center gap-2">
-            <CategoryIcon type="INCOME" />
+            <CategoryIcon type="INCOME" className="h-8 w-8" />
             Nova Receita
           </span>
         </DropdownMenuItem>
