@@ -2,6 +2,7 @@ import { Goal } from '@/app/entities/Goal';
 import { Modal } from '@/views/components/Modal';
 import { Badge } from '@/views/components/ui/badge';
 import { Progress } from '@/views/components/ui/progress';
+import { CategoryIcon } from '@/views/components/icons/Categories/CategoryIcon';
 import { Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -103,7 +104,15 @@ export function GoalDetailsModal({ open, onClose, goal }: GoalDetailsModalProps)
           <h2 className="text-2xl font-bold mb-2">{goal.name}</h2>
           {goal.category && (
             <div className="flex items-center gap-2 text-muted-foreground">
-              <span>{goal.category.icon}</span>
+              {goal.category.type && goal.category.icon && (
+                <span className="flex shrink-0">
+                  <CategoryIcon
+                    type={goal.category.type}
+                    category={goal.category.icon}
+                    className="h-7 w-7"
+                  />
+                </span>
+              )}
               <span>{goal.category.name}</span>
             </div>
           )}

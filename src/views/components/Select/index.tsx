@@ -8,15 +8,20 @@ import {
   SelectValue,
 } from '../ui/select';
 import { forwardRef } from 'react';
+import { CategoryIcon } from '@/views/components/icons/Categories/CategoryIcon';
+
+export interface SelectOption {
+  value: string;
+  label: string;
+  icon?: string;
+  type?: 'EXPENSE' | 'INCOME';
+}
 
 interface SelectProps {
   className?: string;
   error?: string;
   placeholder?: string;
-  options: {
-    value: string;
-    label: string;
-  }[];
+  options: SelectOption[];
   value?: string;
   onChange?(value: string): void;
 }
@@ -26,6 +31,8 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
     function handleSelect(selectedValue: string) {
       onChange?.(selectedValue);
     }
+
+    const selectedOption = value ? options.find((o) => o.value === value) : null;
 
     return (
       <SelectShadcn onValueChange={handleSelect} value={value || undefined}>
@@ -37,7 +44,20 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
             className,
           )}
         >
-          <SelectValue placeholder={placeholder} />
+          <span className="flex flex-1 items-center gap-2 min-w-0 overflow-hidden">
+            {selectedOption?.type && selectedOption?.icon && (
+              <span className="flex shrink-0">
+                <CategoryIcon
+                  type={selectedOption.type}
+                  category={selectedOption.icon}
+                  className="h-7 w-7"
+                />
+              </span>
+            )}
+            <span className="flex-1 min-w-0 truncate">
+              <SelectValue placeholder={placeholder} />
+            </span>
+          </span>
         </SelectTrigger>
 
         <SelectContent className="z-[200] overflow-hidden rounded-2xl border-border shadow-[0px_11px_20px_0px_rgba(0,0,0,0.10)]">
@@ -46,9 +66,16 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
               <SelectItem
                 key={option.value}
                 value={option.value}
-                className="p-2 text-foreground text-sm data-[state=checked]:font-bold hover:bg-muted/80 outline-none rounded-lg transition-colors duration-150 ease-out cursor-pointer"
+                className="flex items-center gap-2 p-2 text-foreground text-sm data-[state=checked]:font-bold hover:bg-muted/80 outline-none rounded-lg transition-colors duration-150 ease-out cursor-pointer"
               >
-                {option.label}
+                <span className="flex items-center gap-2">
+                  {option.type && option.icon && (
+                    <span className="flex shrink-0">
+                      <CategoryIcon type={option.type} category={option.icon} className="h-5 w-5" />
+                    </span>
+                  )}
+                  <span>{option.label}</span>
+                </span>
               </SelectItem>
             ))
           ) : (

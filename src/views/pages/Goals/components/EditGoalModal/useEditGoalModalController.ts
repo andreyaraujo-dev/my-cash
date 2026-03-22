@@ -148,6 +148,8 @@ export function useEditGoalModalController({
       categories.map((category) => ({
         value: category.id,
         label: category.name,
+        icon: category.icon,
+        type: category.type,
       })),
     [categories],
   );

@@ -61,28 +61,28 @@ export function IconDropdownInput({
             <div className="text-foreground flex items-center">
               {!selectedIcon && <ChevronDownIcon className="h-4 w-4 opacity-50" />}
               {selectedIcon && type && (
-                <div className="w-8 h-8 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full">
-                  <CategoryIcon type={type} category={selectedIcon} />
-                </div>
+                <CategoryIcon type={type} category={selectedIcon} className="h-8 w-8" />
               )}
             </div>
           </button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent className="grid grid-cols-4 border-border w-64 p-2">
-          {availableIcons.map((iconKey) => (
-            <DropdownMenuItem
-              key={iconKey}
-              onSelect={() => handleSelect(iconKey)}
-              className="flex items-center justify-center p-2"
-            >
-              {type && (
-                <div className="w-8 h-8 flex items-center justify-center [&>svg]:w-full [&>svg]:h-full">
-                  <CategoryIcon type={type} category={iconKey} />
-                </div>
-              )}
-            </DropdownMenuItem>
-          ))}
+        <DropdownMenuContent className="z-[200] border-border p-2 w-max">
+          <div className="grid max-h-64 overflow-y-auto grid-cols-4 gap-1">
+            {availableIcons.map((iconKey) => (
+              <DropdownMenuItem
+                key={iconKey}
+                onSelect={() => handleSelect(iconKey)}
+                className="flex items-center justify-center p-2"
+              >
+                {type && (
+                  <div className="flex items-center justify-center [&>svg]:w-full [&>svg]:h-full">
+                    <CategoryIcon type={type} category={iconKey} className="h-10 w-10" />
+                  </div>
+                )}
+              </DropdownMenuItem>
+            ))}
+          </div>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

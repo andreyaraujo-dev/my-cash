@@ -1,27 +1,49 @@
-import { Clothes } from '@/views/components/icons/Categories/Expense/Clothes';
-import { Education } from '@/views/components/icons/Categories/Expense/Education';
-import { Expense } from '@/views/components/icons/Categories/Expense/Expense';
-import { Food } from '@/views/components/icons/Categories/Expense/Food';
-import { Fun } from '@/views/components/icons/Categories/Expense/Fun';
-import { Grocery } from '@/views/components/icons/Categories/Expense/Grocery';
-import { Home } from '@/views/components/icons/Categories/Expense/Home';
-import { Transport } from '@/views/components/icons/Categories/Expense/Transport';
-import { Travel } from '@/views/components/icons/Categories/Expense/Travel';
-import { Income } from '@/views/components/icons/Categories/Income/Income';
+import {
+  Briefcase,
+  Car,
+  CreditCard,
+  Dumbbell,
+  Gamepad2,
+  Gift,
+  GraduationCap,
+  HeartPulse,
+  Home,
+  Laptop,
+  PawPrint,
+  Plane,
+  Receipt,
+  RefreshCw,
+  Shirt,
+  ShoppingCart,
+  Star,
+  UtensilsCrossed,
+} from 'lucide-react';
+import { ExpenseDefault } from './Expense/ExpenseDefault';
+import { IncomeDefault } from './Income/IncomeDefault';
 
 export const iconsMap = {
   INCOME: {
-    default: Income,
+    default: IncomeDefault,
+    salary: Briefcase,
+    bonus: Star,
+    freelance: Laptop,
   },
   EXPENSE: {
-    default: Expense,
-    food: Food,
-    fun: Fun,
-    grocery: Grocery,
+    default: ExpenseDefault,
+    food: UtensilsCrossed,
+    fun: Gamepad2,
+    grocery: ShoppingCart,
     home: Home,
-    education: Education,
-    clothes: Clothes,
-    transport: Transport,
-    travel: Travel,
+    education: GraduationCap,
+    clothes: Shirt,
+    transport: Car,
+    travel: Plane,
+    health: HeartPulse,
+    pets: PawPrint,
+    bills: Receipt,
+    gifts: Gift,
+    subscriptions: RefreshCw,
+    gym: Dumbbell,
+    creditCard: CreditCard,
   },
 };
