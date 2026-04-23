@@ -49,7 +49,8 @@ export const transactionsTourSteps: Step[] = [
   {
     target: '[data-tour="transactions-status"]',
     title: 'Resumo',
-    content: 'Acompanhe o resumo das suas despesas pagas, pendentes e o total de transações.',
+    content:
+      'Acompanhe o resumo das suas despesas pagas, pendentes e o saldo total de todas as contas.',
     disableBeacon: true,
   },
 ];
