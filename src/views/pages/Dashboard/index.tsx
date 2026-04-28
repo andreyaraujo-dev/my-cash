@@ -1,7 +1,7 @@
 import { Accounts } from './components/Accounts';
 import { DashboardContext, DashboardProvider } from '@/app/context/DashboardContext.tsx';
-import { NewAccountModal } from '@/views/pages/Dashboard/components/Modals/NewAccountModal';
-import { EditAccountModal } from '@/views/pages/Dashboard/components/Modals/EditAccountModal';
+import { NewAccountModal } from '@/views/pages/Accounts/components/NewAccountModal';
+import { EditAccountModal } from '@/views/pages/Accounts/components/EditAccountModal';
 import { BalanceCard } from './components/BalanceCard';
 import { RecentTransactions } from './components/RecentTransactions';
 import { PageTour } from '@/views/components/Tour/PageTour';

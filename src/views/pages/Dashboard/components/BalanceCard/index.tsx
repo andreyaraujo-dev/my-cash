@@ -2,7 +2,7 @@ import { Button } from '@/views/components/ui/button';
 import { Card } from '@/views/components/ui/card';
 import { Eye, EyeOff, TrendingUp } from 'lucide-react';
 import { InfoAccountsTooltip } from '../Accounts/InfoAccountsTooltip';
-import { useAccountsController } from '../Accounts/useAccountsController';
+import { useAccountsController } from '@/views/pages/Accounts/useAccountsController';
 import { formatCurrency } from '@/app/utils/formatCurrency';
 // import { EyeIcon } from '@/views/components/icons/EyeIcon';
 import { cn } from '@/lib/utils';

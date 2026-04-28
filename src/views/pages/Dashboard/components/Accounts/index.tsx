@@ -2,10 +2,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 
 import { SliderNavigation } from '@/views/pages/Dashboard/components/Accounts/SliderNavigation.tsx';
-import { useAccountsController } from '@/views/pages/Dashboard/components/Accounts/useAccountsController.ts';
+import { useAccountsController } from '@/views/pages/Accounts/useAccountsController';
 import { Skeleton } from '@/views/components/ui/skeleton';
 import { PlusIcon } from 'lucide-react';
-import { AccountCard } from '../AccountCard';
+import { AccountCard } from '@/views/pages/Accounts/components/AccountCard';
 
 interface AccountsProps {
   readOnly?: boolean;

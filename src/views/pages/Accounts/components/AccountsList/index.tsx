@@ -1,6 +1,6 @@
 import { BankAccount } from '@/app/entities/BankAccount';
-import { AccountCard } from '@/views/pages/Dashboard/components/AccountCard';
-import { useAccountsController } from '@/views/pages/Dashboard/components/Accounts/useAccountsController';
+import { AccountCard } from '../AccountCard';
+import { useAccountsController } from '@/views/pages/Accounts/useAccountsController';
 import { AccountsGridSkeleton } from './AccountsGridSkeleton';
 import { Plus } from 'lucide-react';
 

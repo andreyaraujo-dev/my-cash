@@ -1,5 +1,7 @@
+import { ConfirmDeleteModal } from '@/views/components/ConfirmDeleteModal';
+import { useEditAccountModalController } from './useEditAccountModalController';
+import { useSharedAccessLevel } from '@/app/hooks/useSharedAccessLevel';
 import { Modal } from '@/views/components/Modal';
-import { useNewAccountModalController } from '@/views/pages/Dashboard/components/Modals/NewAccountModal/useNewAccountModalController.ts';
 import {
   Form,
   FormControl,
@@ -8,17 +10,45 @@ import {
   FormMessage,
 } from '@/views/components/ui/form.tsx';
 import { InputCurrency } from '@/views/components/InputCurrency';
-import { ColorsDropdownInput } from '@/views/components/ColorsDropdownInput';
-import { Button } from '@/views/components/ui/button.tsx';
 import { Input } from '@/views/components/ui/input.tsx';
 import { Select } from '@/views/components/Select';
+import { ColorsDropdownInput } from '@/views/components/ColorsDropdownInput';
+import { Button } from '@/views/components/ui/button.tsx';
 
-export function NewAccountModal() {
-  const { closeNewAccountModal, isNewAccountModalOpen, form, handleSubmit, isLoading } =
-    useNewAccountModalController();
+export function EditAccountModal() {
+  const {
+    closeEditAccountModal,
+    isEditAccountModalOpen,
+    form,
+    handleSubmit,
+    isLoading,
+    isDeleteModalOpen,
+    handleOpenDeleteModal,
+    handleCloseDeleteModal,
+    handleDeleteAccount,
+    isLoadingDelete,
+  } = useEditAccountModalController();
+  const { canDelete } = useSharedAccessLevel();
+
+  if (isDeleteModalOpen)
+    return (
+      <ConfirmDeleteModal
+        title="Tem certeza que deseja excluir esta conta?"
+        description="Ao excluir a conta, também serão excluídos todos os registros de
+        receitas e despesas relacionados."
+        isLoading={isLoadingDelete}
+        open={isDeleteModalOpen}
+        onClose={handleCloseDeleteModal}
+        onConfirm={handleDeleteAccount}
+      />
+    );
 
   return (
-    <Modal open={isNewAccountModalOpen} title="Nova Conta" onClose={closeNewAccountModal}>
+    <Modal
+      open={isEditAccountModalOpen}
+      title="Editar Conta"
+      onClose={closeEditAccountModal}
+    >
       <Form {...form}>
         <form onSubmit={handleSubmit}>
           <div>
@@ -119,8 +149,19 @@ export function NewAccountModal() {
             />
 
             <Button type="submit" className="w-full mt-6" isLoading={isLoading}>
-              Criar
+              Salvar
             </Button>
+
+            {canDelete && (
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full mt-2 text-red-500 hover:text-red-600 border-red-500/30 hover:border-red-500/50 hover:bg-red-500/10"
+                onClick={handleOpenDeleteModal}
+              >
+                Excluir conta
+              </Button>
+            )}
           </div>
         </form>
       </Form>

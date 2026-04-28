@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDashboard } from '@/app/hooks/useDashboard.ts';
 import { bankAccountsService } from '@/app/services/bankAccountService';
 import { currencyStringToNumber } from '@/app/utils/currencyStringToNumber.ts';
@@ -23,17 +23,24 @@ export function useEditAccountModalController() {
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      color: accountBeingEdited?.color,
-      name: accountBeingEdited?.name,
-      type: accountBeingEdited?.type,
-      initialBalance: accountBeingEdited?.initialBalance,
-    },
   });
 
   const { handleSubmit: hookFormSubmit } = form;
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+
+  useEffect(() => {
+    if (isEditAccountModalOpen && accountBeingEdited) {
+      form.reset({
+        color: accountBeingEdited.color,
+        name: accountBeingEdited.name,
+        type: accountBeingEdited.type,
+        initialBalance: accountBeingEdited.initialBalance,
+      });
+    } else {
+      form.reset({});
+    }
+  }, [isEditAccountModalOpen, accountBeingEdited]);
 
   const queryClient = useQueryClient();
   const { isPending, mutateAsync: updateAccount } = useMutation({
@@ -75,6 +82,7 @@ export function useEditAccountModalController() {
 
       queryClient.invalidateQueries({ queryKey: ['bankAccounts'] });
       toast({ title: 'Sucesso', description: 'Conta deletada com sucesso!', duration: 3000 });
+      handleCloseDeleteModal();
       closeEditAccountModal();
     } catch {
       toast({ title: 'Erro!', description: 'Erro ao deletar conta!', duration: 3000 });
