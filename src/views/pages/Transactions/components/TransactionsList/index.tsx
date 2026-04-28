@@ -1,18 +1,15 @@
-import { Badge } from '@/views/components/ui/badge';
-import { Card } from '@/views/components/ui/card';
-import { TransactionItem } from './TransactionItem';
-import { MONTHS } from '@/app/config/constants';
-import { Skeleton } from '@/views/components/ui/skeleton';
+import { Dispatch, SetStateAction, useMemo } from 'react';
+
 import { Transaction } from '@/app/entities/Transaction';
 import { TransactionsFilters } from '@/app/services/transactionsService/getAll';
-import { UpdateTransactionStatus } from '../UpdateTransactionStatus';
-import { Dispatch, SetStateAction } from 'react';
+import { useBankAccounts } from '@/app/hooks/useBankAccounts';
+import { useCategories } from '@/app/hooks/useCategories';
 
-interface TransactionsListProps {
-  transactions: Transaction[];
-  isLoading: boolean;
-  isInitialLoading: boolean;
-  filters: TransactionsFilters;
+import { Skeleton } from '@/views/components/ui/skeleton';
+import { UpdateTransactionStatus } from '../UpdateTransactionStatus';
+import { TransactionsTable } from '../TransactionsTable';
+
+export interface TransactionsListActions {
   handleOpenEditModal: (_transaction: Transaction) => void;
   // eslint-disable-next-line no-unused-vars
   handleTogglePaid: (id: string) => void;
@@ -20,61 +17,66 @@ interface TransactionsListProps {
   setIsOpenUpdateTransactionStatusDialog: Dispatch<SetStateAction<boolean>>;
   isOpenUpdateTransactionStatusDialog: boolean;
   canEdit?: boolean;
+  areValuesVisible?: boolean;
+}
+
+interface TransactionsListProps extends TransactionsListActions {
+  transactions: Transaction[];
+  isLoading: boolean;
+  isInitialLoading: boolean;
+  filters: TransactionsFilters;
+  sortable?: boolean;
 }
 
 export function TransactionsList({
   transactions,
   isInitialLoading,
   isLoading,
-  filters,
+  filters: _filters,
   handleOpenEditModal,
   handleTogglePaid,
   transactionIdToUpdate,
   setIsOpenUpdateTransactionStatusDialog,
   isOpenUpdateTransactionStatusDialog,
   canEdit = true,
+  areValuesVisible = true,
+  sortable = false,
 }: TransactionsListProps) {
-  return (
-    <Card className="p-6 w-full">
-      <div className="space-y-4">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Histórico de Transações</h2>
-          <div className="flex gap-2">
-            <Badge variant="outline">
-              {MONTHS[filters.month - 1]} {filters.year}
-            </Badge>
-          </div>
-        </div>
+  const { accounts } = useBankAccounts();
+  const { categories } = useCategories();
 
-        {isInitialLoading || isLoading ? (
-          <Skeleton className="w-full h-32 rounded-md" />
-        ) : (
-          <div className="space-y-1">
-            {isLoading ? (
-              <Skeleton className="w-full h-2/3 rounded-md" />
-            ) : transactions.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                Nenhuma transação encontrada
-              </div>
-            ) : (
-              transactions.map((transaction) => (
-                <TransactionItem
-                  key={transaction.id}
-                  transaction={transaction}
-                  onTogglePaid={canEdit ? () => handleTogglePaid(transaction.id) : undefined}
-                  onClick={canEdit ? () => handleOpenEditModal(transaction) : undefined}
-                />
-              ))
-            )}
-          </div>
-        )}
-      </div>
+  const accountMap = useMemo(
+    () => Object.fromEntries(accounts.map((a) => [a.id, a.name])),
+    [accounts],
+  );
+
+  const categoryMap = useMemo(
+    () => Object.fromEntries(categories.map((c) => [c.id, c.name])),
+    [categories],
+  );
+
+  return (
+    <>
+      {isInitialLoading || isLoading ? (
+        <Skeleton className="w-full h-32 rounded-md" />
+      ) : (
+        <TransactionsTable
+          transactions={transactions}
+          accountMap={accountMap}
+          categoryMap={categoryMap}
+          sortable={sortable}
+          canEdit={canEdit}
+          areValuesVisible={areValuesVisible}
+          handleOpenEditModal={handleOpenEditModal}
+          handleTogglePaid={handleTogglePaid}
+        />
+      )}
 
       <UpdateTransactionStatus
         isOpen={isOpenUpdateTransactionStatusDialog}
         setIsOpen={setIsOpenUpdateTransactionStatusDialog}
         transactionId={transactionIdToUpdate}
       />
-    </Card>
+    </>
   );
 }

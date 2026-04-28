@@ -7,6 +7,8 @@ export type TransactionsFilters = {
   month: number;
   year: number;
   bankAccountId?: string;
+  categoryId?: string;
+  isRecurrent?: boolean;
   type?: Transaction['type'];
   isPaid?: boolean;
   title?: string;

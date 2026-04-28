@@ -23,11 +23,15 @@ import { TransactionsFilters as Filters } from '@/app/services/transactionsServi
 import { Transaction } from '@/app/entities/Transaction';
 import { Skeleton } from '@/views/components/ui/skeleton';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useBankAccounts } from '@/app/hooks/useBankAccounts';
+import { useCategories } from '@/app/hooks/useCategories';
 
 interface TransactionsFiltersProps {
   filters: Filters;
   handleApplyFilters: (filters: {
-    bankAccountId?: string | undefined;
+    bankAccountId?: string;
+    categoryId?: string;
+    isRecurrent?: boolean;
     year: number;
     isPaid: boolean | undefined;
     month?: number;
@@ -43,6 +47,9 @@ export function TransactionsFilters({
   isLoading,
 }: TransactionsFiltersProps) {
   const [accordionValue, setAccordionValue] = useState<string>('');
+  const { accounts } = useBankAccounts();
+  const { categories } = useCategories();
+
   const form = useForm<FilterTransactionsSchema>({
     resolver: zodResolver(filterTransactionsSchema),
     defaultValues: {
@@ -51,6 +58,10 @@ export function TransactionsFilters({
       isPaid: filters.isPaid ? 'paid' : filters.isPaid === undefined ? 'all' : 'pending',
       name: filters.title ?? '',
       type: filters.type ?? 'ALL',
+      bankAccountId: filters.bankAccountId ?? 'ALL',
+      categoryId: filters.categoryId ?? 'ALL',
+      isRecurrent:
+        filters.isRecurrent === true ? 'yes' : filters.isRecurrent === false ? 'no' : 'all',
     },
   });
 
@@ -61,6 +72,7 @@ export function TransactionsFilters({
       setAccordionValue('transactions-filters');
     }
   }, [isMobile, accordionValue]);
+
   const appliedFiltersCount = useMemo(() => {
     const currentDate = new Date();
     const defaultMonth = currentDate.getMonth() + 1;
@@ -72,6 +84,8 @@ export function TransactionsFilters({
     if (filters.type) count += 1;
     if (typeof filters.isPaid !== 'undefined') count += 1;
     if (filters.bankAccountId) count += 1;
+    if (filters.categoryId) count += 1;
+    if (typeof filters.isRecurrent !== 'undefined') count += 1;
     if (filters.month !== defaultMonth) count += 1;
     if (filters.year !== defaultYear) count += 1;
 
@@ -86,6 +100,10 @@ export function TransactionsFilters({
         month: data.month as number,
         type: data.type === 'ALL' ? undefined : data.type,
         title: data.name,
+        bankAccountId: data.bankAccountId === 'ALL' ? undefined : data.bankAccountId,
+        categoryId: data.categoryId === 'ALL' ? undefined : data.categoryId,
+        isRecurrent:
+          data.isRecurrent === 'yes' ? true : data.isRecurrent === 'no' ? false : undefined,
       }),
     );
 
@@ -146,165 +164,218 @@ export function TransactionsFilters({
           </AccordionTrigger>
           <AccordionContent className="pt-4">
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(handleSubmit)}
-                className="flex flex-col md:flex-row gap-2 items-end justify-between w-full"
-              >
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem className="sm:flex-1 sm:min-w-40">
-                      <FormLabel>Título</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          type="search"
-                          placeholder="Buscar transações..."
-                          className="w-full"
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+              <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col gap-3">
+                {/* Linha 1: Busca + Conta + Categoria + Recorrência */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-end">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem className="lg:col-span-1">
+                        <FormLabel>Título</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="search"
+                            placeholder="Buscar transações..."
+                            className="w-full"
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="month"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Mês</FormLabel>
+                  <FormField
+                    control={form.control}
+                    name="bankAccountId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Conta</FormLabel>
+                        <FormControl>
+                          <Select
+                            {...field}
+                            value={field.value ?? 'ALL'}
+                            onChange={field.onChange}
+                            className="w-full"
+                            options={[
+                              { label: 'Todas', value: 'ALL' },
+                              ...accounts.map((a) => ({ value: a.id, label: a.name })),
+                            ]}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
 
-                      <FormControl>
-                        <Select
-                          {...field}
-                          value={field.value?.toString()}
-                          onChange={(value: string) => {
-                            const monthValue = parseInt(value, 10);
-                            field.onChange(monthValue);
-                          }}
-                          options={[
-                            { value: '1', label: 'Janeiro' },
-                            { value: '2', label: 'Fevereiro' },
-                            { value: '3', label: 'Março' },
-                            { value: '4', label: 'Abril' },
-                            { value: '5', label: 'Maio' },
-                            { value: '6', label: 'Junho' },
-                            { value: '7', label: 'Julho' },
-                            { value: '8', label: 'Agosto' },
-                            { value: '9', label: 'Setembro' },
-                            { value: '10', label: 'Outubro' },
-                            { value: '11', label: 'Novembro' },
-                            { value: '12', label: 'Dezembro' },
-                          ]}
-                          className="w-full min-w-32"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+                  <FormField
+                    control={form.control}
+                    name="categoryId"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Categoria</FormLabel>
+                        <FormControl>
+                          <Select
+                            {...field}
+                            value={field.value ?? 'ALL'}
+                            onChange={field.onChange}
+                            className="w-full"
+                            options={[
+                              { label: 'Todas', value: 'ALL' },
+                              ...categories.map((c) => ({ value: c.id, label: c.name })),
+                            ]}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="year"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Ano</FormLabel>
+                  <FormField
+                    control={form.control}
+                    name="isRecurrent"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Recorrência</FormLabel>
+                        <FormControl>
+                          <Select
+                            {...field}
+                            value={field.value ?? 'all'}
+                            onChange={(value: 'all' | 'yes' | 'no') => field.onChange(value)}
+                            className="w-full"
+                            options={[
+                              { label: 'Todas', value: 'all' },
+                              { label: 'Recorrente', value: 'yes' },
+                              { label: 'Não recorrente', value: 'no' },
+                            ]}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </div>
 
-                      <FormControl>
-                        <Select
-                          {...field}
-                          value={field.value?.toString()}
-                          onChange={(value: string) => {
-                            const yearValue = parseInt(value, 10);
-                            field.onChange(yearValue);
-                          }}
-                          options={(() => {
-                            const currentYear = new Date().getFullYear();
-                            const years = [];
-                            for (let year = currentYear; year >= currentYear - 9; year--) {
-                              years.push({
-                                value: year.toString(),
-                                label: year.toString(),
-                              });
+                {/* Linha 2: Mês + Ano + Tipo + Status + Botão */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 items-end">
+                  <FormField
+                    control={form.control}
+                    name="month"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Mês</FormLabel>
+                        <FormControl>
+                          <Select
+                            {...field}
+                            value={field.value?.toString()}
+                            onChange={(value: string) => {
+                              field.onChange(parseInt(value, 10));
+                            }}
+                            options={[
+                              { value: '1', label: 'Janeiro' },
+                              { value: '2', label: 'Fevereiro' },
+                              { value: '3', label: 'Março' },
+                              { value: '4', label: 'Abril' },
+                              { value: '5', label: 'Maio' },
+                              { value: '6', label: 'Junho' },
+                              { value: '7', label: 'Julho' },
+                              { value: '8', label: 'Agosto' },
+                              { value: '9', label: 'Setembro' },
+                              { value: '10', label: 'Outubro' },
+                              { value: '11', label: 'Novembro' },
+                              { value: '12', label: 'Dezembro' },
+                            ]}
+                            className="w-full"
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="year"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Ano</FormLabel>
+                        <FormControl>
+                          <Select
+                            {...field}
+                            value={field.value?.toString()}
+                            onChange={(value: string) => {
+                              field.onChange(parseInt(value, 10));
+                            }}
+                            options={(() => {
+                              const currentYear = new Date().getFullYear();
+                              const years = [];
+                              for (let year = currentYear; year >= currentYear - 9; year--) {
+                                years.push({ value: year.toString(), label: year.toString() });
+                              }
+                              return years;
+                            })()}
+                            className="w-full"
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Tipo</FormLabel>
+                        <FormControl>
+                          <Select
+                            {...field}
+                            value={field.value || 'ALL'}
+                            onChange={(value: 'INCOME' | 'EXPENSE' | 'ALL') =>
+                              field.onChange(value)
                             }
-                            return years;
-                          })()}
-                          className="w-full min-w-24"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
+                            options={[
+                              { label: 'Todos', value: 'ALL' },
+                              { label: 'Receitas', value: 'INCOME' },
+                              { label: 'Despesas', value: 'EXPENSE' },
+                            ]}
+                            className="w-full"
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
 
-                <FormField
-                  control={form.control}
-                  name="type"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Tipo</FormLabel>
+                  <FormField
+                    control={form.control}
+                    name="isPaid"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Status</FormLabel>
+                        <FormControl>
+                          <Select
+                            {...field}
+                            value={field.value || 'all'}
+                            onChange={(value: 'paid' | 'pending' | 'all') => field.onChange(value)}
+                            className="w-full"
+                            options={[
+                              { label: 'Todos', value: 'all' },
+                              { label: 'Pagos', value: 'paid' },
+                              { label: 'Pendentes', value: 'pending' },
+                            ]}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
 
-                      <FormControl>
-                        <Select
-                          {...field}
-                          value={field.value || 'ALL'}
-                          onChange={(value: 'INCOME' | 'EXPENSE' | 'ALL') => {
-                            field.onChange(value);
-                          }}
-                          options={[
-                            { label: 'Todos', value: 'ALL' },
-                            { label: 'Receitas', value: 'INCOME' },
-                            { label: 'Despesas', value: 'EXPENSE' },
-                          ]}
-                          className="w-full min-w-28"
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="isPaid"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Status</FormLabel>
-
-                      <FormControl>
-                        <Select
-                          {...field}
-                          value={field.value || ''}
-                          onChange={(value: 'paid' | 'pending' | 'all') => {
-                            field.onChange(value);
-                          }}
-                          className="w-full min-w-28"
-                          options={[
-                            { label: 'Todos', value: 'all' },
-                            { label: 'Pagos', value: 'paid' },
-                            { label: 'Pendentes', value: 'pending' },
-                          ]}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-
-                <Button
-                  type="submit"
-                  className="h-12 w-max"
-                  isLoading={form.formState.isSubmitting}
-                >
-                  {isMobile ? (
-                    <>
-                      <span className="text-sm font-medium">Aplicar Filtros</span>
-                      <Filter size={16} />
-                    </>
-                  ) : (
+                  <Button
+                    type="submit"
+                    className="h-12 w-full"
+                    isLoading={form.formState.isSubmitting}
+                  >
                     <Filter size={16} />
-                  )}
-                </Button>
+                    <span className="text-sm font-medium">Aplicar Filtros</span>
+                  </Button>
+                </div>
               </form>
             </Form>
           </AccordionContent>

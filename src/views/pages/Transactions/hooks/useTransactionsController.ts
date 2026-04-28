@@ -12,6 +12,8 @@ export type TransactionsFilters = {
   month: number;
   year: number;
   bankAccountId?: string;
+  categoryId?: string;
+  isRecurrent?: boolean;
   type?: Transaction['type'];
   isPaid?: boolean;
   title?: string;
@@ -41,13 +43,17 @@ export function useTransactionsController() {
 
   function handleApplyFilters({
     bankAccountId,
+    categoryId,
+    isRecurrent,
     year,
     isPaid,
     month,
     type,
     title,
   }: {
-    bankAccountId?: string | undefined;
+    bankAccountId?: string;
+    categoryId?: string;
+    isRecurrent?: boolean;
     year: number;
     isPaid: boolean | undefined;
     month?: number;
@@ -57,6 +63,8 @@ export function useTransactionsController() {
     setFilters((prevState) => ({
       ...prevState,
       bankAccountId,
+      categoryId,
+      isRecurrent,
       year,
       isPaid,
       title,
