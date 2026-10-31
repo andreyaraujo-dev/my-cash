@@ -1,50 +1,68 @@
-# React + TypeScript + Vite
+# MyCash
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação web para controle financeiro pessoal, integrada à [Fincheck API](../fincheck-api).
 
-Currently, two official plugins are available:
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+![React](https://img.shields.io/badge/React-TypeScript-61DAFB?logo=react)
+![Vite](https://img.shields.io/badge/Vite-7-646CFF?logo=vite)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Visão geral
 
-## Expanding the ESLint configuration
+O MyCash permite acompanhar contas bancárias, categorias, transações, metas, relatórios e recursos de compartilhamento. A interface também contempla notificações e acesso a planos/assinaturas quando habilitados pela API.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Stack
 
-- Configure the top-level `parserOptions` property like this:
+- React e TypeScript
+- Vite
+- React Router
+- Tailwind CSS e componentes shadcn/ui
+- Cliente HTTP para a Fincheck API
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Configuração local
+
+Pré-requisitos: Node.js 20+ e a [Fincheck API](../fincheck-api) em execução.
+
+```bash
+npm install
+cp .env.example .env
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Configure `VITE_API_URL` para a URL da API e `VITE_APP_URL` para a URL do frontend. `VITE_CLARITY_ID` é opcional para telemetria.
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+## Executando
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm run dev
+```
+
+Acesse a URL exibida pelo Vite. Para produção:
+
+```bash
+npm run build
+npm run preview
+```
+
+## Fluxo de uso
+
+1. Crie uma conta ou entre com suas credenciais.
+2. Cadastre contas bancárias e categorias.
+3. Registre receitas e despesas e acompanhe seus status.
+4. Crie metas e visualize relatórios financeiros.
+5. Use o compartilhamento com pessoas e as notificações quando disponíveis no plano.
+
+O passo a passo completo está em [`docs/USAGE.md`](docs/USAGE.md).
+
+## Screenshots
+
+Coloque prints do dashboard e dos fluxos do sistema em [`assets/screenshots/`](assets/screenshots/):
+
+```md
+<!-- ![Dashboard MyCash](assets/screenshots/dashboard.png) -->
+```
+
+## Qualidade
+
+```bash
+npm run lint
+npm run build
 ```
